@@ -1,0 +1,132 @@
+/* opcodes
+    0000 = HALT
+    0001 = PUSHC
+    0010 = POP
+    0011 = POPOUT
+    0100 = PUSHREG
+    0101 = POPREG
+    0110 = ADD
+    0111 = SUB
+    1000 = JMP
+    1001 = BRZ
+    1010 = BRLZ
+*/
+
+vars {
+  /* Off-chip interface */
+  chan<12> PC;
+  chan<12> IN;
+  chan<12> OUT;
+
+  /* FETCH */
+  chan<12> FEX;
+  int<1> isbr;
+  int<4> fetch_op;
+  int<8> fetch_data;
+  int<12> temp;
+  int<12> pc_index;
+
+  /* EXECUTE */
+  int<4> exec_op;
+  int<8> exec_data;
+  int<8> exec_temp;
+  int<12> exec_prc;
+
+  /* STACK */
+  chan<1> stack0_op; // 0 = pop, 1 = push
+  chan<8> stack0_comm;
+  int<8> stack0_data;
+  // ... (generated)
+
+  /* REGS */
+  int<8> reg0;
+  int<8> reg1;
+  int<8> reg2;
+  int<8> reg3;
+}
+
+/* opcodes
+    0000 = HALT
+    0001 = PUSHC
+    0010 = POP
+    0011 = POPOUT
+    0100 = PUSHREG
+    0101 = POPREG
+    0110 = ADD
+    0111 = SUB
+    1000 = JMP
+    1001 = BRZ
+    1010 = BRLZ
+*/
+
+vars {
+  /* Off-chip interface */
+  chan<12> PC;
+  chan<12> IN;
+  chan<12> OUT;
+
+  /* FETCH */
+  chan<12> FEX;
+  int<1> isbr;
+  int<4> fetch_op;
+  int<8> fetch_data;
+  int<12> temp;
+  int<12> pc_index;
+
+  /* EXECUTE */
+  int<4> exec_op;
+  int<8> exec_data;
+  int<8> exec_temp;
+  int<12> exec_prc;
+
+  /* STACK */
+  chan<1> stack0_op; // 0 = pop, 1 = push
+  chan<8> stack0_comm;
+  int<8> stack0_data;
+  // ... (generated)
+
+  /* REGS */
+  int<8> reg0;
+  int<8> reg1;
+  int<8> reg2;
+  int<8> reg3;
+}
+
+
+chp {
+  *[ PC!(pc_index); IN?(fetch_op, fetch_data); isbr := is_branch_4(fetch_op);
+      [ isbr -> FEX!(fetch_op, fetch_data); FEX!(pc_index); FEX?(pc_index)
+      [] else -> pc_index := pcadd_12(pc_index, 1); FEX!(fetch_op, fetch_data); FEX?(temp)
+      ]
+  ] 
+||
+  *[ FEX?(exec_op, exec_data);
+    [ is_pushc_4(exec_op) -> stack0_op!1; stack0_comm!exec_data
+    [] is_pop_4(exec_op) -> stack0_op!0; stack0_comm?exec_data
+    [] is_popout_4(exec_op) -> stack0_op!0; stack0_comm?exec_data; OUT!exec_data
+    [] is_pushreg_4(exec_op) -> stack0_op!1;
+        [ is_reg0_4(exec_data) -> stack0_comm!reg0
+        [] is_reg1_4(exec_data) -> stack0_comm!reg1
+        [] is_reg2_4(exec_data) -> stack0_comm!reg2
+        [] is_reg3_4(exec_data) -> stack0_comm!reg3
+        ]
+    [] is_popreg_4(exec_op) -> stack0_op!0;
+        [ is_reg0_4(exec_data) -> stack0_comm?reg0
+        [] is_reg1_4(exec_data) -> stack0_comm?reg1
+        [] is_reg2_4(exec_data) -> stack0_comm?reg2
+        [] is_reg3_4(exec_data) -> stack0_comm?reg3
+        ]
+    [] is_add_4(exec_op) -> stack1_data := stackadd_8(stack0_data, stack1_data); stack_op!0; stack_comm?exec_temp
+    [] is_sub_4(exec_op) -> stack1_data := stacksub_8(stack0_data, stack1_data); stack_op!0; stack_comm?exec_temp
+    [] is_jmp_4(exec_op) -> FEX?(exec_pc); exec_temp := pcadd_12(exec_pc, exec_data)
+    [] is_brz_4(exec_op) -> FEX?(exec_pc);
+        [ is_zero_8(stack0_data) -> FEX?(exec_pc); exec_temp := pcadd_12(exec_pc, exec_data)
+        [] else -> exec_temp := pcadd_12(exec_pc, 1)
+        ]
+    [] is_brlz_4(exec_op) -> FEX?(exec_pc);
+        [ is_less_than_zero_8(stack0_data) -> exec_temp := pcadd_12(exec_pc, exec_data)
+        [] else -> exec_temp := pcadd_12(exec_pc, 1)
+        ]
+    ]; FEX!exec_temp
+  ]
+}
