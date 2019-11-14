@@ -27,7 +27,10 @@ vars {
   int<12> pc_index;
 
   /* EXECUTE */
-  int<4> exec_op;
+  int<1> exec_op_0;
+  int<1> exec_op_1;
+  int<1> exec_op_2;
+  int<1> exec_op_3;
   int<8> exec_data;
   int<8> exec_temp;
   int<12> exec_prc;
@@ -65,8 +68,8 @@ chp {
       ]
   ]
 ||
-  *[ FEX?(exec_op, exec_data);
-    [ is_pushc_4(exec_op) -> stack0_op_chan!1; stack0_comm_chan!exec_data
+  *[ FEX?(exec_op_0, exec_op_1, exec_op_2, exec_op_3, exec_data);
+    [ ~exec_op_0 & ~exec_op_1 & ~exec_op_2 & ~exec_op_3 -> stack0_op_chan!1; stack0_comm_chan!exec_data
     [] is_pop_4(exec_op) -> stack0_op_chan!0; stack0_comm_chan?exec_data
     [] is_popout_4(exec_op) -> stack0_op_chan!0; stack0_comm_chan?exec_data; OUT!exec_data
     [] is_pushreg_4(exec_op) -> stack0_op_chan!1;
