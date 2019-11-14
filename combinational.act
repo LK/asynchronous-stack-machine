@@ -1,0 +1,60 @@
+import "globals.act";
+import "channel.act";
+
+defproc add(bool a, b; bool cin; bool s, cout)
+{
+	bool _a, _b, _cin;
+	prs {
+		 a =>_a-
+		 b =>_b-
+		 cin =>_cin-
+		(~a & ~b & ~_cin) | (~a & ~_b & ~cin) | (~_a & ~_b & ~_cin) | (~_a & ~b & ~cin) -> s+
+		(_a & b & cin) | (_a & _b & _cin) | (a & _b & cin) | (a & b & _cin) -> s-
+		(~_a & ~_b) | (~_a & ~b & ~_cin) | (~a & ~_b & ~_cin) -> cout+
+		(_a & _b) | (_a & b & _cin) | (a & _b & _cin) -> cout-
+	}
+}
+
+/* MSB = array[7] .. array[0] = LSB */
+defproc add8(bool a[8], b[8]; bool cin; bool out[8], cout)
+{
+	add x[8];
+	(; i : 8 : x[i].a = a[i]; x[i].b = b[i]; x[i].s = out[i]; )
+	x[0].cin = cin;
+	x[7].cout = cout;
+	(; i : 1..7 : x[i].cin = x[i-1].cout; )
+}
+
+defproc fblock(bool a, b; bool g0, g1, g2, g3; bool out)
+{
+	bool _a, _b, _g0, _g1, _g2, _g3;
+	prs {
+		 a->_a-
+		~a->_a+
+		 b->_b-
+		~b->_b+
+		 g0->_g0-
+		~g0->_g0+
+		 g1->_g1-
+		~g1->_g1+
+		 g2->_g2-
+		~g2->_g2+
+		 g3->_g3-
+		~g3->_g3+
+		(_a & _b & _g0) | (_a & b & _g1) | (a & b & _g3) | (a & _b & _g2)->out-
+		(~a & ~b & ~ _g0) | (~a & ~_b & ~_g1) | (~_a & ~_b & ~_g3) | (~_a & ~b & ~_g2)->out+
+	}
+}
+
+defproc fblock8(bool a[8], b[8]; bool g0, g1, g2, g3; bool out[8])
+{
+        fblock f[8];
+        (; i : 8 : f[i].a = a[i];
+                f[i].b = b[i];
+                f[i].out = out[i];
+                f[i].g0 = g0;
+                f[i].g1 = g1;
+                f[i].g2 = g2;
+                f[i].g3 = g3; )
+
+}
