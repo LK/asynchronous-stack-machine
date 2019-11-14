@@ -1,0 +1,121 @@
+defproc bundled_is_halt_1(bool go_r, dualrail opcode[4], dualrail out) {
+	bool _gor;
+	prs {
+		go.r => _gor-
+		~opcode[0].t & ~opcode[1].t & ~opcode[2].t & ~opcode[3].t & ~_gor -> out.t+
+		~opcode[0].f | ~opcode[1].f | ~opcode[2].f | ~opcode[3].f & ~_gor -> out.f+
+		_gor -> out.t-
+		_gor -> out.f-
+	}
+}
+
+defproc bundled_is_pushc_1(bool go_r, dualrail opcode[4], dualrail out) {
+	bool _gor;
+	prs {
+		go.r => _gor-
+		~opcode[0].t & ~opcode[1].t & ~opcode[2].t & ~opcode[3].f & ~_gor -> out.t+
+		~opcode[0].f | ~opcode[1].f | ~opcode[2].f | ~opcode[3].t & ~_gor -> out.f+
+		_gor -> out.t-
+		_gor -> out.f-
+	}
+}
+
+defproc bundled_is_pop_1(bool go_r, dualrail opcode[4], dualrail out) {
+	bool _gor;
+	prs {
+		go.r => _gor-
+		~opcode[0].t & ~opcode[1].t & ~opcode[2].f & ~opcode[3].t & ~_gor -> out.t+
+		~opcode[0].f | ~opcode[1].f | ~opcode[2].t | ~opcode[3].f & ~_gor -> out.f+
+		_gor -> out.t-
+		_gor -> out.f-
+	}
+}
+
+defproc bundled_is_popout_1(bool go_r, dualrail opcode[4], dualrail out) {
+	bool _gor;
+	prs {
+		go.r => _gor-
+		~opcode[0].t & ~opcode[1].t & ~opcode[2].f & ~opcode[3].f & ~_gor -> out.t+
+		~opcode[0].f | ~opcode[1].f | ~opcode[2].t | ~opcode[3].t & ~_gor -> out.f+
+		_gor -> out.t-
+		_gor -> out.f-
+	}
+}
+
+defproc bundled_is_pushreg_1(bool go_r, dualrail opcode[4], dualrail out) {
+	bool _gor;
+	prs {
+		go.r => _gor-
+		~opcode[0].t & ~opcode[1].f & ~opcode[2].t & ~opcode[3].t & ~_gor -> out.t+
+		~opcode[0].f | ~opcode[1].t | ~opcode[2].f | ~opcode[3].f & ~_gor -> out.f+
+		_gor -> out.t-
+		_gor -> out.f-
+	}
+}
+
+defproc bundled_is_popreg_1(bool go_r, dualrail opcode[4], dualrail out) {
+	bool _gor;
+	prs {
+		go.r => _gor-
+		~opcode[0].t & ~opcode[1].f & ~opcode[2].t & ~opcode[3].f & ~_gor -> out.t+
+		~opcode[0].f | ~opcode[1].t | ~opcode[2].f | ~opcode[3].t & ~_gor -> out.f+
+		_gor -> out.t-
+		_gor -> out.f-
+	}
+}
+
+defproc bundled_is_add_1(bool go_r, dualrail opcode[4], dualrail out) {
+	bool _gor;
+	prs {
+		go.r => _gor-
+		~opcode[0].t & ~opcode[1].f & ~opcode[2].f & ~opcode[3].t & ~_gor -> out.t+
+		~opcode[0].f | ~opcode[1].t | ~opcode[2].t | ~opcode[3].f & ~_gor -> out.f+
+		_gor -> out.t-
+		_gor -> out.f-
+	}
+}
+
+defproc bundled_is_sub_1(bool go_r, dualrail opcode[4], dualrail out) {
+	bool _gor;
+	prs {
+		go.r => _gor-
+		~opcode[0].t & ~opcode[1].f & ~opcode[2].f & ~opcode[3].f & ~_gor -> out.t+
+		~opcode[0].f | ~opcode[1].t | ~opcode[2].t | ~opcode[3].t & ~_gor -> out.f+
+		_gor -> out.t-
+		_gor -> out.f-
+	}
+}
+
+defproc bundled_is_jmp_1(bool go_r, dualrail opcode[4], dualrail out) {
+	bool _gor;
+	prs {
+		go.r => _gor-
+		~opcode[0].f & ~opcode[1].t & ~opcode[2].t & ~opcode[3].t & ~_gor -> out.t+
+		~opcode[0].t | ~opcode[1].f | ~opcode[2].f | ~opcode[3].f & ~_gor -> out.f+
+		_gor -> out.t-
+		_gor -> out.f-
+	}
+}
+
+defproc bundled_is_brz_1(bool go_r, dualrail opcode[4], dualrail out) {
+	bool _gor;
+	prs {
+		go.r => _gor-
+		~opcode[0].f & ~opcode[1].t & ~opcode[2].t & ~opcode[3].f & ~_gor -> out.t+
+		~opcode[0].t | ~opcode[1].f | ~opcode[2].f | ~opcode[3].t & ~_gor -> out.f+
+		_gor -> out.t-
+		_gor -> out.f-
+	}
+}
+
+defproc bundled_is_brlz_1(bool go_r, dualrail opcode[4], dualrail out) {
+	bool _gor;
+	prs {
+		go.r => _gor-
+		~opcode[0].f & ~opcode[1].t & ~opcode[2].f & ~opcode[3].t & ~_gor -> out.t+
+		~opcode[0].t | ~opcode[1].f | ~opcode[2].t | ~opcode[3].f & ~_gor -> out.f+
+		_gor -> out.t-
+		_gor -> out.f-
+	}
+}
+
