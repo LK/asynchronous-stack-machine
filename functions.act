@@ -1,0 +1,85 @@
+import "globals.act";
+import "channel.act";
+import "combinational.act";
+
+defproc delaybuf(bool in, out)
+{
+  bool _x;
+  prs {
+     in => _x-
+     _x => out-
+  }
+}
+
+template<pint D>
+defproc delay (bool in, out)
+{
+  delaybuf d[D];
+  (i:D-1:d[i].out=d[i+1].in;)
+  d[0].in = in;
+  d[D-1].out = out;
+}
+
+/* Combinational logic for 4 bit compare -- necessitate all 4 inputs
+  to be low and the delay to be high to set out.t true.
+  otherwise, wait for delay high to set out.f false.
+ */
+defproc bundled_cmp_1 (bool go_r; dualrail c[4]; dualrail out)
+{
+   /* combinational logic */
+   delay<4> d;
+   bool _dout;
+   d.in = go_r;
+   prs {
+      d.out => _dout-
+      ~_dout & ((~c[0].f & ~c[1].f & ~c[2].f & ~c[3].f) | (~c[0].t & ~c[1].t & ~c[2].t & ~c[3].t)) => out.t+
+      ~_dout & ((~c[0].f | ~c[1].f | ~c[2].f | ~c[3].f) & (~c[0].t | ~c[1].t | ~c[2].t | ~c[3].t)) => out.f+
+   }
+}
+
+defproc bundled_add_8 (bool go_r; dualrail x[8]; dualrail y[8]; dualrail out[8])
+{
+   /* combinational logic */
+   delay<62> d;
+   bool _dout;
+   d.in = go_r;
+
+   bool cout;
+   bool cin;
+   add8 a (,,cin,, cout);
+   (; i : 8 : a.a[i] = x[i].t; a.b[i] = y[i].t; )
+
+   bool _aout[8];
+   prs {
+      Reset -> cin-
+      d.out => _dout-
+      (i:8: a.out[i] => _aout[i]-
+            ~_dout & ~_aout[i] => out[i].t+
+            ~_dout & ~a.out[i] => out[i].f+
+      )
+   }
+}
+
+defproc bundled_fblock_8 (bool go_r; dualrail c[4]; dualrail x[8], y[8]; dualrail out[8])
+{
+   /* combinational logic */
+   delay<2> d;
+   bool _dout;
+   d.in = go_r;
+   fblock8 fblock;
+   (; i : 8 : fblock.a[i] = x[i].t; fblock.b[i] = y[i].t;)
+   fblock.g0 = c[0].t;
+   fblock.g1 = c[1].t;
+   fblock.g2 = c[2].t;
+   fblock.g3 = c[3].t;
+
+   bool _out[8];
+
+   prs {
+      d.out => _dout-
+      (i:8: ~_dout & ~fblock.out[i] => out[i].f+
+            ~fblock.out[i] => _out[i]+
+            ~_dout & ~_out[i] => out[i].t+
+      )
+   }
+}
