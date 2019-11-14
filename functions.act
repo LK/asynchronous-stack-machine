@@ -1,7 +1,6 @@
 import "globals.act";
 import "channel.act";
-import "lab2_procs.act";
-//import "lennys_cells.act";
+import "combinational.act";
 
 defproc delaybuf(bool in, out)
 {
@@ -21,56 +20,27 @@ defproc delay (bool in, out)
   d[D-1].out = out;
 }
 
-/*defproc bundled_cmp_1 (bool go_r; dualrail c[4]; dualrail out)
-{
-   // combinational logic
-   delay<4> d;
-   bool _dout;
-   d.in = go_r;
-
-   prs {
-      d.out => _dout-
-      ~_dout & ~c[0].f => out.t+
-      ~_dout & ~c[0].t => out.f+
-   }
-}*/
-
+/* Combinational logic for 4 bit compare -- necessitate all 4 inputs
+  to be low and the delay to be high to set out.t true.
+  otherwise, wait for delay high to set out.f false.
+ */
 defproc bundled_cmp_1 (bool go_r; dualrail c[4]; dualrail out)
 {
    /* combinational logic */
    delay<4> d;
    bool _dout;
    d.in = go_r;
-
-   prs {
-      d.out => _dout-
-      ~_dout & ~c[0].f => out.t+
-      ~_dout & ~c[0].t => out.f+
-   }
-}
-
-
-/* Combinational logic for 4 bit compare -- necessitate all 4 inputs
-  to be low and the delay to be high to set out.t true.
-  otherwise, wait for delay high to set out.f false.
- */
-defproc bundled_cmp_4 (bool go_r; dualrail c[4]; dualrail out)
-{
-   delay<4> d;
-   bool _dout;
-   d.in = go_r;
-
    prs {
       d.out => _dout-
       ~_dout & ((~c[0].f & ~c[1].f & ~c[2].f & ~c[3].f) | (~c[0].t & ~c[1].t & ~c[2].t & ~c[3].t)) => out.t+
-      ~_dout & (c[0].f | c[1].f | c[2].f | c[3].f) & (c[0].t | c[1].t | c[2].t | c[3].t) => out.f+
+      ~_dout & ((~c[0].f | ~c[1].f | ~c[2].f | ~c[3].f) & (~c[0].t | ~c[1].t | ~c[2].t | ~c[3].t)) => out.f+
    }
 }
 
 defproc bundled_add_8 (bool go_r; dualrail x[8]; dualrail y[8]; dualrail out[8])
 {
    /* combinational logic */
-   delay<16> d;
+   delay<62> d;
    bool _dout;
    d.in = go_r;
 
@@ -78,11 +48,10 @@ defproc bundled_add_8 (bool go_r; dualrail x[8]; dualrail y[8]; dualrail out[8])
    bool cin;
    add8 a (,,cin,, cout);
    (; i : 8 : a.a[i] = x[i].t; a.b[i] = y[i].t; )
-   //(; i : 8 : a.x[i] = x[i].t; a.y[i] = y[i].t; )
 
    bool _aout[8];
    prs {
-      _Reset => cin-
+      Reset -> cin-
       d.out => _dout-
       (i:8: a.out[i] => _aout[i]-
             ~_dout & ~_aout[i] => out[i].t+
@@ -91,18 +60,26 @@ defproc bundled_add_8 (bool go_r; dualrail x[8]; dualrail y[8]; dualrail out[8])
    }
 }
 
-
 defproc bundled_fblock_8 (bool go_r; dualrail c[4]; dualrail x[8], y[8]; dualrail out[8])
 {
    /* combinational logic */
-   delay<4> d;
+   delay<2> d;
    bool _dout;
    d.in = go_r;
+   fblock8 fblock;
+   (; i : 8 : fblock.a[i] = x[i].t; fblock.b[i] = y[i].t;)
+   fblock.g0 = c[0].t;
+   fblock.g1 = c[1].t;
+   fblock.g2 = c[2].t;
+   fblock.g3 = c[3].t;
+
+   bool _out[8];
 
    prs {
       d.out => _dout-
-      (i:8: ~_dout & ~x[i].f => out[i].t+
-            ~_dout & ~x[i].t => out[i].f+
+      (i:8: ~_dout & ~fblock.out[i] => out[i].f+
+            ~fblock.out[i] => _out[i]+
+            ~_dout & ~_out[i] => out[i].t+
       )
    }
 }
