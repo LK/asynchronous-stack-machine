@@ -33,10 +33,23 @@ vars {
   int<12> exec_prc;
 
   /* STACK */
-  chan<1> stack0_op; // 0 = pop, 1 = push
-  chan<8> stack0_comm;
-  int<8> stack0_data;
-  // ... (generated)
+	int<1> stack0_is_full;
+	int<1> stack0_op;
+	int<8> stack0_data;
+	chan<8> stack0_op_chan;
+	chan<8> stack0_comm_chan;
+
+	int<1> stack1_is_full;
+	int<1> stack1_op;
+	int<8> stack1_data;
+	chan<8> stack1_op_chan;
+	chan<8> stack1_comm_chan;
+
+	int<1> stack2_is_full;
+	int<1> stack2_op;
+	int<8> stack2_data;
+	chan<8> stack2_op_chan;
+	chan<8> stack2_comm_chan;
 
   /* REGS */
   int<8> reg0;
@@ -53,23 +66,23 @@ chp {
   ]
 ||
   *[ FEX?(exec_op, exec_data);
-    [ is_pushc_4(exec_op) -> stack0_op!1; stack0_comm!exec_data
-    [] is_pop_4(exec_op) -> stack0_op!0; stack0_comm?exec_data
-    [] is_popout_4(exec_op) -> stack0_op!0; stack0_comm?exec_data; OUT!exec_data
-    [] is_pushreg_4(exec_op) -> stack0_op!1;
-        [ is_reg0_4(exec_data) -> stack0_comm!reg0
-        [] is_reg1_4(exec_data) -> stack0_comm!reg1
-        [] is_reg2_4(exec_data) -> stack0_comm!reg2
-        [] is_reg3_4(exec_data) -> stack0_comm!reg3
+    [ is_pushc_4(exec_op) -> stack0_op_chan!1; stack0_comm_chan!exec_data
+    [] is_pop_4(exec_op) -> stack0_op_chan!0; stack0_comm_chan?exec_data
+    [] is_popout_4(exec_op) -> stack0_op_chan!0; stack0_comm_chan?exec_data; OUT!exec_data
+    [] is_pushreg_4(exec_op) -> stack0_op_chan!1;
+        [ is_reg0_4(exec_data) -> stack0_comm_chan!reg0
+        [] is_reg1_4(exec_data) -> stack0_comm_chan!reg1
+        [] is_reg2_4(exec_data) -> stack0_comm_chan!reg2
+        [] is_reg3_4(exec_data) -> stack0_comm_chan!reg3
         ]
-    [] is_popreg_4(exec_op) -> stack0_op!0;
-        [ is_reg0_4(exec_data) -> stack0_comm?reg0
-        [] is_reg1_4(exec_data) -> stack0_comm?reg1
-        [] is_reg2_4(exec_data) -> stack0_comm?reg2
-        [] is_reg3_4(exec_data) -> stack0_comm?reg3
+    [] is_popreg_4(exec_op) -> stack0_op_chan!0;
+        [ is_reg0_4(exec_data) -> stack0_comm_chan?reg0
+        [] is_reg1_4(exec_data) -> stack0_comm_chan?reg1
+        [] is_reg2_4(exec_data) -> stack0_comm_chan?reg2
+        [] is_reg3_4(exec_data) -> stack0_comm_chan?reg3
         ]
-    [] is_add_4(exec_op) -> stack1_data := stackadd_8(stack0_data, stack1_data); stack_op!0; stack_comm?exec_temp
-    [] is_sub_4(exec_op) -> stack1_data := stacksub_8(stack0_data, stack1_data); stack_op!0; stack_comm?exec_temp
+    [] is_add_4(exec_op) -> stack1_data := stackadd_8(stack0_data, stack1_data); stack_op_chan!0; stack_comm_chan?exec_temp
+    [] is_sub_4(exec_op) -> stack1_data := stacksub_8(stack0_data, stack1_data); stack_op_chan!0; stack_comm_chan?exec_temp
     [] is_jmp_4(exec_op) -> FEX?(exec_pc); exec_temp := pcadd_12(exec_pc, exec_data)
     [] is_brz_4(exec_op) -> FEX?(exec_pc);
         [ is_zero_8(stack0_data) -> FEX?(exec_pc); exec_temp := pcadd_12(exec_pc, exec_data)
@@ -81,4 +94,24 @@ chp {
         ]
     ]; FEX!exec_temp
   ]
+ ||
+ /* STACK */
+ stack0_is_full := 0;
+	*[ stack0_op_chan?stack0_op;
+	[ ~stack0_is_full & stack0_op -> stack0_comm_chan?stack0_data, stack0_is_full := 1
+	[] ~stack0_is_full & ~stack0_op -> stack1_op_chan!0; stack1_comm_chan?stack0_data; stack0_comm_chan!stack0_data
+	[] stack0_is_full & stack0_op -> stack1_op_chan!1; stack1_comm_chan!stack0_data; stack0_comm_chan?stack0_data
+	[] stack0_is_full & ~stack0_op -> stack0_comm_chan!stack0_data, stack0_is_full := 0
+	] ] ||
+	stack1_is_full := 0;
+	*[ stack1_op_chan?stack1_op;
+	[ ~stack1_is_full & stack1_op -> stack1_comm_chan?stack1_data, stack1_is_full := 1
+	[] ~stack1_is_full & ~stack1_op -> stack2_op_chan!0; stack2_comm_chan?stack1_data; stack1_comm_chan!stack1_data
+	[] stack1_is_full & stack1_op -> stack2_op_chan!1; stack2_comm_chan!stack1_data; stack1_comm_chan?stack1_data
+	[] stack1_is_full & ~stack1_op -> stack1_comm_chan!stack1_data, stack1_is_full := 0
+	] ] ||
+	*[ stack2_op_chan?stack2_op;
+	[ stack2_op -> stack2_comm_chan?stack2_data
+	[] ~stack2_op -> stack2_comm_chan!stack2_data
+	] ]
 }
