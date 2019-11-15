@@ -32,27 +32,28 @@ vars {
   int<1> exec_op_2;
   int<1> exec_op_3;
   int<8> exec_data;
-  int<8> exec_temp;
-  int<12> exec_prc;
+  int<8> exec_dump;
+  int<12> exec_temp;
+  int<12> exec_pc;
   int<1> exec_func_bit;
 
   /* STACK */
 	int<1> stack0_is_full;
 	int<1> stack0_op;
 	int<8> stack0_data;
-	chan<8> stack0_op_chan;
+	chan<1> stack0_op_chan;
 	chan<8> stack0_comm_chan;
 
 	int<1> stack1_is_full;
 	int<1> stack1_op;
 	int<8> stack1_data;
-	chan<8> stack1_op_chan;
+	chan<1> stack1_op_chan;
 	chan<8> stack1_comm_chan;
 
 	int<1> stack2_is_full;
 	int<1> stack2_op;
 	int<8> stack2_data;
-	chan<8> stack2_op_chan;
+	chan<1> stack2_op_chan;
 	chan<8> stack2_comm_chan;
 
   /* REGS */
@@ -63,9 +64,9 @@ vars {
 }
 
 chp {
-  *[ PC!(pc_index); IN?(fetch_op, fetch_data); isbr := is_branch_4(fetch_op);
+  *[ PC!(pc_index); IN?(fetch_op, fetch_data); isbr := is_branch_1(fetch_op);
       [ isbr -> FEX!(fetch_op, fetch_data); FEX!(pc_index); FEX?(pc_index)
-      [] else -> pc_index := pcadd_12(pc_index, 1); FEX!(fetch_op, fetch_data); FEX?(temp)
+      [] else -> pc_index := pcincrement_12(pc_index); FEX!(fetch_op, fetch_data); FEX?(temp)
       ]
   ]
 ||
@@ -73,29 +74,29 @@ chp {
     [ ~exec_op_0 & ~exec_op_1 & ~exec_op_2 & ~exec_op_3 -> skip
     [] ~exec_op_0 & ~exec_op_1 & ~exec_op_2 & exec_op_3 -> stack0_op_chan!1; stack0_comm_chan!exec_data
     [] ~exec_op_0 & ~exec_op_1 & exec_op_2 & ~exec_op_3 -> stack0_op_chan!0; stack0_comm_chan?exec_data
-    [] ~exec_op_0 & ~exec_op_1 & exec_op_2 & exec_op_3 -> stack0_op_chan!0; stack0_comm_chan?exec_data; OUT!exec_data
+    [] ~exec_op_0 & ~exec_op_1 & exec_op_2 & exec_op_3 -> stack0_op_chan!0; stack0_comm_chan?exec_data; OUT!(exec_op, exec_data)
     [] ~exec_op_0 & exec_op_1 & ~exec_op_2 & ~exec_op_3 -> stack0_op_chan!1;
       exec_func_bit := is_reg0_1(exec_data); [ exec_func_bit -> stack0_comm_chan!reg0 ];
       exec_func_bit := is_reg1_1(exec_data); [ exec_func_bit -> stack0_comm_chan!reg1 ];
       exec_func_bit := is_reg2_1(exec_data); [ exec_func_bit -> stack0_comm_chan!reg2 ];
-      exec_func_bit := is_reg3_1(exec_data); [ exec_func_bit -> stack0_comm_chan!reg3 ];
+      exec_func_bit := is_reg3_1(exec_data); [ exec_func_bit -> stack0_comm_chan!reg3 ]
     [] ~exec_op_0 & exec_op_1 & ~exec_op_2 & exec_op_3 -> stack0_op_chan!0;
       exec_func_bit := is_reg0_1(exec_data); [ exec_func_bit -> stack0_comm_chan?reg0 ];
       exec_func_bit := is_reg1_1(exec_data); [ exec_func_bit -> stack0_comm_chan?reg1 ];
       exec_func_bit := is_reg2_1(exec_data); [ exec_func_bit -> stack0_comm_chan?reg2 ];
-      exec_func_bit := is_reg3_1(exec_data); [ exec_func_bit -> stack0_comm_chan?reg3 ];
-    [] ~exec_op_0 & exec_op_1 & exec_op_2 & ~exec_op_3 -> stack1_data := stackadd_8(stack0_data, stack1_data); stack_op_chan!0; stack_comm_chan?exec_temp
-    [] ~exec_op_0 & exec_op_1 & exec_op_2 & exec_op_3 -> stack1_data := stacksub_8(stack0_data, stack1_data); stack_op_chan!0; stack_comm_chan?exec_temp
+      exec_func_bit := is_reg3_1(exec_data); [ exec_func_bit -> stack0_comm_chan?reg3 ]
+    [] ~exec_op_0 & exec_op_1 & exec_op_2 & ~exec_op_3 -> stack1_data := stackadd_8(stack0_data, stack1_data); stack0_op_chan!0; stack0_comm_chan?exec_dump
+    [] ~exec_op_0 & exec_op_1 & exec_op_2 & exec_op_3 -> stack1_data := stacksub_8(stack0_data, stack1_data); stack0_op_chan!0; stack0_comm_chan?exec_dump
     [] exec_op_0 & ~exec_op_1 & ~exec_op_2 & ~exec_op_3 -> FEX?(exec_pc); exec_temp := pcadd_12(exec_pc, exec_data)
     [] exec_op_0 & ~exec_op_1 & ~exec_op_2 & exec_op_3 -> FEX?(exec_pc);
       exec_func_bit := is_zero_1(stack0_data);
         [ exec_func_bit -> FEX?(exec_pc); exec_temp := pcadd_12(exec_pc, exec_data)
-        [] else -> exec_temp := pcadd_12(exec_pc, 1)
+        [] else -> exec_temp := pcincrement_12(exec_pc)
         ]
     [] exec_op_0 & ~exec_op_1 & exec_op_2 & ~exec_op_3 -> FEX?(exec_pc);
       exec_func_bit := is_less_than_zero_1(stack0_data);
         [ exec_func_bit -> exec_temp := pcadd_12(exec_pc, exec_data)
-        [] else -> exec_temp := pcadd_12(exec_pc, 1)
+        [] else -> exec_temp := pcincrement_12(exec_pc)
         ]
     ]; FEX!exec_temp
   ]
