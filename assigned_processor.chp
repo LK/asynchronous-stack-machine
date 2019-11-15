@@ -67,7 +67,7 @@ vars {
 chp {
   *[ PC!(pc_index); IN?(fetch_op, fetch_data); isbr := is_branch_1(fetch_op);
       [ isbr -> FEX!(fetch_op, fetch_data); FEX!(pc_index); FEX?(pc_index)
-      [] else -> pc_index := pcadd_12(pc_index, 1); FEX!(fetch_op, fetch_data); FEX?(temp)
+      [] else -> op_pop := 1; pc_index := pcincrement_12(pc_index); FEX!(fetch_op, fetch_data); FEX?(temp)
       ]
   ]
 ||
@@ -99,11 +99,11 @@ chp {
     [] op_jmp4 -> FEX?(exec_pc); exec_temp := pcadd_12(exec_pc, exec_data)
     [] op_brz -> FEX?(exec_pc);
         [ is_zero -> FEX?(exec_pc); exec_temp := pcadd_12(exec_pc, exec_data)
-        [] else -> exec_temp := pcadd_12(exec_pc, 1)
+        [] else -> exec_temp := pcincrement_12(exec_pc)
         ]
     [] op_brlz -> FEX?(exec_pc);
         [ is_less_than_zero -> exec_temp := pcadd_12(exec_pc, exec_data)
-        [] else -> exec_temp := pcadd_12(exec_pc, 1)
+        [] else -> exec_temp := pcincrement_12(exec_pc)
         ]
     ]; FEX!exec_temp
   ]
