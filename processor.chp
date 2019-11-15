@@ -34,6 +34,7 @@ vars {
   int<8> exec_data;
   int<8> exec_temp;
   int<12> exec_prc;
+  int<1> exec_func_bit;
 
   /* STACK */
 	int<1> stack0_is_full;
@@ -74,26 +75,26 @@ chp {
     [] ~exec_op_0 & ~exec_op_1 & exec_op_2 & ~exec_op_3 -> stack0_op_chan!0; stack0_comm_chan?exec_data
     [] ~exec_op_0 & ~exec_op_1 & exec_op_2 & exec_op_3 -> stack0_op_chan!0; stack0_comm_chan?exec_data; OUT!exec_data
     [] ~exec_op_0 & exec_op_1 & ~exec_op_2 & ~exec_op_3 -> stack0_op_chan!1;
-        [ is_reg0_4(exec_data) -> stack0_comm_chan!reg0
-        [] is_reg1_4(exec_data) -> stack0_comm_chan!reg1
-        [] is_reg2_4(exec_data) -> stack0_comm_chan!reg2
-        [] is_reg3_4(exec_data) -> stack0_comm_chan!reg3
-        ]
+      exec_func_bit := is_reg0_1(exec_data); [ exec_func_bit -> stack0_comm_chan!reg0 ];
+      exec_func_bit := is_reg1_1(exec_data); [ exec_func_bit -> stack0_comm_chan!reg1 ];
+      exec_func_bit := is_reg2_1(exec_data); [ exec_func_bit -> stack0_comm_chan!reg2 ];
+      exec_func_bit := is_reg3_1(exec_data); [ exec_func_bit -> stack0_comm_chan!reg3 ];
     [] ~exec_op_0 & exec_op_1 & ~exec_op_2 & exec_op_3 -> stack0_op_chan!0;
-        [ is_reg0_4(exec_data) -> stack0_comm_chan?reg0
-        [] is_reg1_4(exec_data) -> stack0_comm_chan?reg1
-        [] is_reg2_4(exec_data) -> stack0_comm_chan?reg2
-        [] is_reg3_4(exec_data) -> stack0_comm_chan?reg3
-        ]
+      exec_func_bit := is_reg0_1(exec_data); [ exec_func_bit -> stack0_comm_chan?reg0 ];
+      exec_func_bit := is_reg1_1(exec_data); [ exec_func_bit -> stack0_comm_chan?reg1 ];
+      exec_func_bit := is_reg2_1(exec_data); [ exec_func_bit -> stack0_comm_chan?reg2 ];
+      exec_func_bit := is_reg3_1(exec_data); [ exec_func_bit -> stack0_comm_chan?reg3 ];
     [] ~exec_op_0 & exec_op_1 & exec_op_2 & ~exec_op_3 -> stack1_data := stackadd_8(stack0_data, stack1_data); stack_op_chan!0; stack_comm_chan?exec_temp
     [] ~exec_op_0 & exec_op_1 & exec_op_2 & exec_op_3 -> stack1_data := stacksub_8(stack0_data, stack1_data); stack_op_chan!0; stack_comm_chan?exec_temp
     [] exec_op_0 & ~exec_op_1 & ~exec_op_2 & ~exec_op_3 -> FEX?(exec_pc); exec_temp := pcadd_12(exec_pc, exec_data)
     [] exec_op_0 & ~exec_op_1 & ~exec_op_2 & exec_op_3 -> FEX?(exec_pc);
-        [ is_zero_8(stack0_data) -> FEX?(exec_pc); exec_temp := pcadd_12(exec_pc, exec_data)
+      exec_func_bit := is_zero_1(stack0_data);
+        [ exec_func_bit -> FEX?(exec_pc); exec_temp := pcadd_12(exec_pc, exec_data)
         [] else -> exec_temp := pcadd_12(exec_pc, 1)
         ]
     [] exec_op_0 & ~exec_op_1 & exec_op_2 & ~exec_op_3 -> FEX?(exec_pc);
-        [ is_less_than_zero_8(stack0_data) -> exec_temp := pcadd_12(exec_pc, exec_data)
+      exec_func_bit := is_less_than_zero_1(stack0_data);
+        [ exec_func_bit -> exec_temp := pcadd_12(exec_pc, exec_data)
         [] else -> exec_temp := pcadd_12(exec_pc, 1)
         ]
     ]; FEX!exec_temp
