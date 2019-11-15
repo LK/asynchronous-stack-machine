@@ -25,10 +25,10 @@ def gen_guard_condition(bit_idx, truth, inverted):
 
 for name, code in OPCODES.items():
   truths = compute_truths_for_code(code)
-  print(f'defproc bundled_is_{name}_1(bool go_r, dualrail opcode[4], dualrail out) {{')
+  print(f'defproc bundled_is_{name}_1(bool go_r; dualrail opcode[4]; dualrail out) {{')
   print('\tbool _gor;')
   print('\tprs {')
-  print('\t\tgo.r => _gor-')
+  print('\t\tgo_r => _gor-')
   print('\t\t' + ' & '.join([gen_guard_condition(i, t, True) for i, t in enumerate(truths)]) + ' & ~_gor -> out.t+')
   print('\t\t' + ' | '.join([gen_guard_condition(i, not t, True) for i, t in enumerate(truths)]) + ' & ~_gor -> out.f+')
   print('\t\t_gor -> out.t-')

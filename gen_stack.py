@@ -10,7 +10,7 @@ for i in range(num_entries + 1):
     print(f'\tint<1> stack{i}_is_full;')
     print(f'\tint<1> stack{i}_op;')
     print(f'\tint<{bitwidth}> stack{i}_data;')
-    print(f'\tchan<{bitwidth}> stack{i}_op_chan;')
+    print(f'\tchan<1> stack{i}_op_chan;')
     print(f'\tchan<{bitwidth}> stack{i}_comm_chan;')
     print()
 print('}')
