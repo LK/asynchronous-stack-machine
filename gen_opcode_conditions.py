@@ -20,12 +20,12 @@ def compute_truths_for_code(code):
   return truths
 
 def gen_guard_condition(bit_idx, truth, inverted):
-    return ('~' if inverted else '') + f'opcode[{bit_idx}].' + ('t' if (not truth and inverted) or
+    return ('~' if inverted else '') + f'v0[{bit_idx}].' + ('t' if (not truth and inverted) or
             (truth and not inverted) else 'f')
 
 for name, code in OPCODES.items():
   truths = compute_truths_for_code(code)
-  print(f'defproc bundled_is_{name}_1(bool go_r; dualrail opcode[4]; dualrail out) {{')
+  print(f'defproc bundled_is_{name}_1(bool go_r; dualrail v0[4]; dualrail out) {{')
   print('\tbool _gor;')
   print('\tprs {')
   print('\t\tgo_r => _gor-')
@@ -36,3 +36,15 @@ for name, code in OPCODES.items():
   print('\t}')
   print('}')
   print()
+
+print('defproc bundled_is_branch_1(bool go_r; dualrail v0[4]; dualrail out) {')
+print('\tbool_gor;')
+print('\tprs {')
+print('\t\tgo_r => _gor-')
+print('\t\t~v0[3].f & ~_gor -> out.t+')
+print('\t\t~v0[3].t & ~_gor -> out.f+')
+print('\t\t_gor -> out.t-')
+print('\t\t_gor -> out.f-')
+print('\t}')
+print('}')
+print()
