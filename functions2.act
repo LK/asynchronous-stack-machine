@@ -80,14 +80,14 @@ defproc bundled_stacksub_8 (bool go_r; dualrail v0[8]; dualrail v1[8]; dualrail 
    }
 }
 
-defproc bundled_fblock_8 (bool go_r; dualrail c[4]; dualrail v0[8], v1[8]; dualrail out[8])
+defproc bundled_fblock_8 (bool go_r; dualrail c[4]; dualrail x[8], y[8]; dualrail out[8])
 {
    /* combinational logic */
    delay<2> d;
    bool _dout;
    d.in = go_r;
    fblock8 fblock;
-   (; i : 8 : fblock.a[i] = v0[i].t; fblock.b[i] = v1[i].t;)
+   (; i : 8 : fblock.a[i] = x[i].t; fblock.b[i] = y[i].t;)
    fblock.g0 = c[0].t;
    fblock.g1 = c[1].t;
    fblock.g2 = c[2].t;
@@ -102,6 +102,83 @@ defproc bundled_fblock_8 (bool go_r; dualrail c[4]; dualrail v0[8], v1[8]; dualr
             ~_dout & ~_out[i] => out[i].t+
       )
    }
+}
+
+defproc bundled_is_branch_1(bool go_r; dualrail v0[4]; dualrail out) {
+  bool _gor;
+  prs {
+    go_r => _gor-
+    ~_gor & ~v0[0].f -> out.t+
+    ~_gor & ~v0[0].t -> out.f+
+    _gor -> out.t-
+    _gor -> out.f-
+  }
+}
+
+defproc bundled_is_zero_1(bool go_r; dualrail v0[12]; dualrail out) {
+  bool _gor;
+  prs {
+    go_r => _gor-
+    ~_gor & (&i:12: ~v0[i].t) -> out.t+
+    ~_gor & (|i:12: ~v0[0].f) -> out.f+
+    _gor -> out.t-
+    _gor -> out.f-
+  }
+}
+
+defproc bundled_is_less_than_zero_1(bool go_r; dualrail v0[12]; dualrail out) {
+  bool _gor;
+  prs {
+    go_r => _gor-
+    ~_gor & ~v0[11].f -> out.t+
+    ~_gor & ~v0[11].t -> out.f+
+    _gor -> out.t-
+    _gor -> out.f-
+  }
+}
+
+defproc bundled_is_reg0_1(bool go_r; dualrail v0[8]; dualrail out) {
+  bool _gor;
+  prs {
+    go_r => _gor-
+    ~_gor & ~v0[0].t & ~v0[1].t -> out.t+
+    ~_gor & (~v0[0].f | ~v0[1].f) -> out.f+
+    _gor -> out.t-
+    _gor -> out.f-
+  }
+}
+
+defproc bundled_is_reg1_1(bool go_r; dualrail v0[8]; dualrail out) {
+  bool _gor;
+  prs {
+    go_r => _gor-
+    ~_gor & ~v0[0].f & ~v0[1].t -> out.t+
+    ~_gor & (~v0[0].t | ~v0[1].f) -> out.f+
+    _gor -> out.t-
+    _gor -> out.f-
+  }
+}
+
+defproc bundled_is_reg2_1(bool go_r; dualrail v0[8]; dualrail out) {
+  bool _gor;
+  prs {
+    go_r => _gor-
+    ~_gor & ~v0[0].t & ~v0[1].f -> out.t+
+    ~_gor & (~v0[0].f | ~v0[1].t) -> out.f+
+    _gor -> out.t-
+    _gor -> out.f-
+  }
+}
+
+defproc bundled_is_reg3_1(bool go_r; dualrail v0[8]; dualrail out) {
+  bool _gor;
+  prs {
+    go_r => _gor-
+    ~_gor & ~v0[0].f & ~v0[1].f -> out.t+
+    ~_gor & (~v0[0].t | ~v0[1].t) -> out.f+
+    _gor -> out.t-
+    _gor -> out.f-
+  }
 }
 
 defproc bundled_pcincrement_12 (bool go_r; dualrail v0[12]; dualrail out[12])
@@ -159,70 +236,4 @@ defproc bundled_pcadd_12 (bool go_r; dualrail v0[12]; dualrail v1[8]; dualrail o
       )
    }
    /*       (i:8..11: Reset -> msbs[i]-) */
-}
-
-defproc bundled_is_zero_1(bool go_r; dualrail v0[12]; dualrail out) {
-  bool _gor;
-  prs {
-    go_r => _gor-
-    ~_gor & (&i:12: ~v0[i].t) -> out.t+
-    ~_gor & (|i:12: ~v0[0].f) -> out.f+
-    _gor -> out.t-
-    _gor -> out.f-
-  }
-}
-
-defproc bundled_is_less_than_zero_1(bool go_r; dualrail v0[12]; dualrail out) {
- bool _gor;
- prs {
-   go_r => _gor-
-   ~_gor & ~v0[11].f -> out.t+
-   ~_gor & ~v0[11].t -> out.f+
-   _gor -> out.t-
-   _gor -> out.f-
- }
-}
-
-defproc bundled_is_reg0_1(bool go_r; dualrail v0[8]; dualrail out) {
- bool _gor;
- prs {
-   go_r => _gor-
-   ~_gor & ~v0[0].t & ~v0[1].t -> out.t+
-   ~_gor & (~v0[0].f | ~v0[1].f) -> out.f+
-   _gor -> out.t-
-   _gor -> out.f-
- }
-}
-
-defproc bundled_is_reg1_1(bool go_r; dualrail v0[8]; dualrail out) {
- bool _gor;
- prs {
-   go_r => _gor-
-   ~_gor & ~v0[0].f & ~v0[1].t -> out.t+
-   ~_gor & (~v0[0].t | ~v0[1].f) -> out.f+
-   _gor -> out.t-
-   _gor -> out.f-
- }
-}
-
-defproc bundled_is_reg2_1(bool go_r; dualrail v0[8]; dualrail out) {
- bool _gor;
- prs {
-   go_r => _gor-
-   ~_gor & ~v0[0].t & ~v0[1].f -> out.t+
-   ~_gor & (~v0[0].f | ~v0[1].t) -> out.f+
-   _gor -> out.t-
-   _gor -> out.f-
- }
-}
-
-defproc bundled_is_reg3_1(bool go_r; dualrail v0[8]; dualrail out) {
- bool _gor;
- prs {
-   go_r => _gor-
-   ~_gor & ~v0[0].f & ~v0[1].f -> out.t+
-   ~_gor & (~v0[0].t | ~v0[1].t) -> out.f+
-   _gor -> out.t-
-   _gor -> out.f-
- }
 }
