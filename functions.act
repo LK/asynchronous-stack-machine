@@ -60,6 +60,26 @@ defproc bundled_add_8 (bool go_r; dualrail x[8]; dualrail y[8]; dualrail out[8])
    }
 }
 
+defproc bundled_sub_8 (bool go_r; dualrail x[8]; dualrail y[8]; dualrail out[8])
+{
+   /* combinational logic */
+   delay<62> d;
+   d.in = go_r;
+   bool cout, cin, _dout;
+   add8 s (,, cin,, cout);
+   (; i : 8 : s.a[i] = x[i].t; s.b[i] = y[i].f; )
+
+   bool _sout[8];
+   prs {
+      ~_Reset -> cin+
+      d.out => _dout-
+      (i:8: s.out[i] => _sout[i]-
+	    ~_dout & ~_sout[i] => out[i].t+
+	    ~_dout & ~s.out[i] => out[i].f+
+      )
+   }
+}
+
 defproc bundled_fblock_8 (bool go_r; dualrail c[4]; dualrail x[8], y[8]; dualrail out[8])
 {
    /* combinational logic */
@@ -82,4 +102,61 @@ defproc bundled_fblock_8 (bool go_r; dualrail c[4]; dualrail x[8], y[8]; dualrai
             ~_dout & ~_out[i] => out[i].t+
       )
    }
+}
+
+defproc bundled_pcincrement_12 (bool go_r; dualrail v0[12]; dualrail out[12])
+{
+   /* combinational logic */
+   delay<62> d;
+   d.in = go_r;
+   bool one[12];
+   bool cout, cin, _dout;
+   add12 s (,, cin,, cout);
+   (; i : 12 : s.a[i] = v0[i].t; s.b[i] = one[i]; )
+
+   bool _sout[12];
+   prs {
+      Reset -> cin-
+      ~_Reset -> one[0]+
+      (i:1..11: Reset -> one[i]-)
+      (i:12: s.out[i] => _sout[i]-
+	       ~_dout & ~_sout[i] => out[i].t+
+	       ~_dout & ~s.out[i] => out[i].f+
+      )
+   }
+}
+
+defproc bundled_pcadd_12 (bool go_r; dualrail x[12]; dualrail y[8]; dualrail out[12])
+{
+   /* combinational logic */
+   delay<62> d;
+   bool _dout;
+   d.in = go_r;
+
+   bool cout, cin;
+   /*bool msbs[4];*/
+   bool y8, y9, y10, y11;
+   add12 a (,,cin,, cout);
+   (i:12: a.a[i] = x[i].t; )
+   (i:8: a.b[i] = y[i].t; )
+   /*(i:8..11: a.b[i] = msbs[i]; )*/
+   a.b[8] = y8;
+   a.b[9] = y9;
+   a.b[10] = y10;
+   a.b[11] = y11;
+
+   bool _aout[12];
+   prs {
+      Reset -> cin-
+      Reset -> y8-
+      Reset -> y9-
+      Reset -> y10-
+      Reset -> y11-
+      d.out => _dout-
+      (i:12: a.out[i] => _aout[i]-
+            ~_dout & ~_aout[i] => out[i].t+
+            ~_dout & ~a.out[i] => out[i].f+
+      )
+   }
+   /*       (i:8..11: Reset -> msbs[i]-) */
 }

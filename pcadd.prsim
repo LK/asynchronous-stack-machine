@@ -1,0 +1,274 @@
+watch Reset
+watch _Reset
+watch p.cin
+watch go_r
+watch p.d.out
+watch pc[0].t
+watch pc[0].f
+watch pc[1].t
+watch pc[1].f
+watch pc[2].t
+watch pc[2].f
+watch pc[3].t
+watch pc[3].f
+watch pc[4].t
+watch pc[4].f
+watch pc[5].t
+watch pc[5].f
+watch pc[6].t
+watch pc[6].f
+watch pc[7].t
+watch pc[7].f
+watch pc[8].t
+watch pc[8].f
+watch pc[9].t
+watch pc[9].f
+watch pc[10].t
+watch pc[10].f
+watch pc[11].t
+watch pc[11].f
+watch d[0].t
+watch d[0].f
+watch d[1].t
+watch d[1].f
+watch d[2].t
+watch d[2].f
+watch d[3].t
+watch d[3].f
+watch d[4].t
+watch d[4].f
+watch d[5].t
+watch d[5].f
+watch d[6].t
+watch d[6].f
+watch d[7].t
+watch d[7].f
+watch out[0].t
+watch out[0].f
+watch out[1].t
+watch out[1].f
+watch out[2].t
+watch out[2].f
+watch out[3].t
+watch out[3].f
+watch out[4].t
+watch out[4].f
+watch out[5].t
+watch out[5].f
+watch out[6].t
+watch out[6].f
+watch out[7].t
+watch out[7].f
+watch out[8].t
+watch out[8].f
+watch out[9].t
+watch out[9].f
+watch out[10].t
+watch out[10].f
+watch out[11].t
+watch out[11].f
+set_principal Reset
+set_principal _Reset
+set_principal ba.cin
+set_principal go_r
+set_principal pc[0].t
+set_principal pc[0].f
+set_principal pc[1].t
+set_principal pc[1].f
+set_principal pc[2].t
+set_principal pc[2].f
+set_principal pc[3].t
+set_principal pc[3].f
+set_principal pc[4].t
+set_principal pc[4].f
+set_principal pc[5].t
+set_principal pc[5].f
+set_principal pc[6].t
+set_principal pc[6].f
+set_principal pc[7].t
+set_principal pc[7].f
+set_principal pc[8].t
+set_principal pc[8].f
+set_principal pc[9].t
+set_principal pc[9].f
+set_principal pc[10].t
+set_principal pc[10].f
+set_principal pc[11].t
+set_principal pc[11].f
+set_principal d[0].t
+set_principal d[0].f
+set_principal d[1].t
+set_principal d[1].f
+set_principal d[2].t
+set_principal d[2].f
+set_principal d[3].t
+set_principal d[3].f
+set_principal d[4].t
+set_principal d[4].f
+set_principal d[5].t
+set_principal d[5].f
+set_principal d[6].t
+set_principal d[6].f
+set_principal d[7].t
+set_principal d[7].f
+set_principal out[0].t
+set_principal out[0].f
+set_principal out[1].t
+set_principal out[1].f
+set_principal out[2].t
+set_principal out[2].f
+set_principal out[3].t
+set_principal out[3].f
+set_principal out[4].t
+set_principal out[4].f
+set_principal out[5].t
+set_principal out[5].f
+set_principal out[6].t
+set_principal out[6].f
+set_principal out[7].t
+set_principal out[7].f
+set_principal out[8].t
+set_principal out[8].f
+set_principal out[9].t
+set_principal out[9].f
+set_principal out[10].t
+set_principal out[10].f
+set_principal out[11].t
+set_principal out[11].f
+mode reset
+set Reset 1
+set pc[0].t 0
+set pc[0].f 1
+set pc[1].t 0
+set pc[1].f 1
+set pc[2].t 0
+set pc[2].f 1
+set pc[3].t 0
+set pc[3].f 1
+set pc[4].t 0
+set pc[4].f 1
+set pc[5].t 0
+set pc[5].f 1
+set pc[6].t 0
+set pc[6].f 1
+set pc[7].t 0
+set pc[7].f 1
+set pc[8].t 0
+set pc[8].f 1
+set pc[9].t 0
+set pc[9].f 1
+set pc[10].t 0
+set pc[10].f 1
+set pc[11].t 0
+set pc[11].f 1
+set d[0].t 0
+set d[0].f 1
+set d[1].t 0
+set d[1].f 1
+set d[2].t 0
+set d[2].f 1
+set d[3].t 0
+set d[3].f 1
+set d[4].t 0
+set d[4].f 1
+set d[5].t 0
+set d[5].f 1
+set d[6].t 0
+set d[6].f 1
+set d[7].t 0
+set d[7].f 1
+cycle
+set Reset 0
+set _Reset 1
+set go_r 0
+cycle
+status X
+mode run
+assert p.cin 0
+set go_r 1
+cycle
+assert out[0].t 0
+assert out[0].f 1
+assert out[1].t 0
+assert out[1].f 1
+assert out[2].t 0
+assert out[2].f 1
+assert out[3].t 0
+assert out[3].f 1
+assert out[4].t 0
+assert out[4].f 1
+assert out[5].t 0
+assert out[5].f 1
+assert out[6].t 0
+assert out[6].f 1
+assert out[7].t 0
+assert out[7].f 1
+assert out[8].t 0
+assert out[8].f 1
+assert out[9].t 0
+assert out[9].f 1
+assert out[10].t 0
+assert out[10].f 1
+assert out[11].t 0
+assert out[11].f 1
+set go_r 0
+cycle
+set pc[0].t 1
+set pc[0].f 0
+set pc[1].t 0
+set pc[1].f 1
+set pc[2].t 0
+set pc[2].f 1
+set pc[3].t 0
+set pc[3].f 1
+set pc[4].t 0
+set pc[4].f 1
+set pc[5].t 0
+set pc[5].f 1
+set pc[6].t 0
+set pc[6].f 1
+set pc[7].t 1
+set pc[7].f 0
+set pc[8].t 0
+set pc[8].f 1
+set pc[9].t 0
+set pc[9].f 1
+set pc[10].t 1
+set pc[10].f 0
+set pc[11].t 0
+set pc[11].f 1
+set d[0].t 1
+set d[0].f 0
+set d[1].t 0
+set d[1].f 1
+set d[2].t 0
+set d[2].f 1
+set d[3].t 1
+set d[3].f 0
+set d[4].t 0
+set d[4].f 1
+set d[5].t 0
+set d[5].f 1
+set d[6].t 0
+set d[6].f 1
+set d[7].t 1
+set d[7].f 0
+cycle
+set go_r 1
+cycle
+assert out[0].t 0
+assert out[0].f 1
+assert out[1].t 1
+assert out[1].f 0
+assert out[2].t 0
+assert out[2].f 1
+assert out[3].t 1
+assert out[3].f 0
+assert out[4].t 0
+assert out[4].f 1
+assert out[5].t 0
+assert out[5].f 1
+assert out[6].t 0
+assert out[6].f 1
+assert out[7].t 0
+assert out[7].f 1
