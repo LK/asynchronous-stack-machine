@@ -160,3 +160,14 @@ defproc bundled_pcadd_12 (bool go_r; dualrail x[12]; dualrail y[8]; dualrail out
    }
    /*       (i:8..11: Reset -> msbs[i]-) */
 }
+
+defproc bundled_is_zero_1(bool go_r; dualrail v0[12]; dualrail out) {
+  bool _gor;
+  prs {
+    go_r => _gor-
+    ~_gor & (&i:12: ~v0[i].t) -> out.t+
+    ~_gor & (|i:12: ~v0[0].f) -> out.f+
+    _gor -> out.t-
+    _gor -> out.f-
+  }
+}
