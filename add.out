@@ -1,0 +1,218 @@
+watch Reset
+watch _Reset
+watch ba.cin
+watch go_r
+watch ba.d.out
+watch x[0].t
+watch x[0].f
+watch x[1].t
+watch x[1].f
+watch x[2].t
+watch x[2].f
+watch x[3].t
+watch x[3].f
+watch x[4].t
+watch x[4].f
+watch x[5].t
+watch x[5].f
+watch x[6].t
+watch x[6].f
+watch x[7].t
+watch x[7].f
+watch y[0].t
+watch y[0].f
+watch y[1].t
+watch y[1].f
+watch y[2].t
+watch y[2].f
+watch y[3].t
+watch y[3].f
+watch y[4].t
+watch y[4].f
+watch y[5].t
+watch y[5].f
+watch y[6].t
+watch y[6].f
+watch y[7].t
+watch y[7].f
+watch out[0].t
+watch out[0].f
+watch out[1].t
+watch out[1].f
+watch out[2].t
+watch out[2].f
+watch out[3].t
+watch out[3].f
+watch out[4].t
+watch out[4].f
+watch out[5].t
+watch out[5].f
+watch out[6].t
+watch out[6].f
+watch out[7].t
+watch out[7].f
+set_principal Reset
+set_principal _Reset
+set_principal ba.cin
+set_principal go_r
+set_principal x[0].t
+set_principal x[0].f
+set_principal x[1].t
+set_principal x[1].f
+set_principal x[2].t
+set_principal x[2].f
+set_principal x[3].t
+set_principal x[3].f
+set_principal x[4].t
+set_principal x[4].f
+set_principal x[5].t
+set_principal x[5].f
+set_principal x[6].t
+set_principal x[6].f
+set_principal x[7].t
+set_principal x[7].f
+set_principal y[0].t
+set_principal y[0].f
+set_principal y[1].t
+set_principal y[1].f
+set_principal y[2].t
+set_principal y[2].f
+set_principal y[3].t
+set_principal y[3].f
+set_principal y[4].t
+set_principal y[4].f
+set_principal y[5].t
+set_principal y[5].f
+set_principal y[6].t
+set_principal y[6].f
+set_principal y[7].t
+set_principal y[7].f
+set_principal out[0].t
+set_principal out[0].f
+set_principal out[1].t
+set_principal out[1].f
+set_principal out[2].t
+set_principal out[2].f
+set_principal out[3].t
+set_principal out[3].f
+set_principal out[4].t
+set_principal out[4].f
+set_principal out[5].t
+set_principal out[5].f
+set_principal out[6].t
+set_principal out[6].f
+set_principal out[7].t
+set_principal out[7].f
+mode reset
+set Reset 1
+set x[0].t 0
+set x[0].f 1
+set x[1].t 0
+set x[1].f 1
+set x[2].t 0
+set x[2].f 1
+set x[3].t 0
+set x[3].f 1
+set x[4].t 0
+set x[4].f 1
+set x[5].t 0
+set x[5].f 1
+set x[6].t 0
+set x[6].f 1
+set x[7].t 0
+set x[7].f 1
+set y[0].t 0
+set y[0].f 1
+set y[1].t 0
+set y[1].f 1
+set y[2].t 0
+set y[2].f 1
+set y[3].t 0
+set y[3].f 1
+set y[4].t 0
+set y[4].f 1
+set y[5].t 0
+set y[5].f 1
+set y[6].t 0
+set y[6].f 1
+set y[7].t 0
+set y[7].f 1
+cycle
+set Reset 0
+set _Reset 1
+set go_r 0
+cycle
+status X
+mode run
+assert ba.cin 0
+set go_r 1
+cycle
+assert out[0].t 0
+assert out[0].f 1
+assert out[1].t 0
+assert out[1].f 1
+assert out[2].t 0
+assert out[2].f 1
+assert out[3].t 0
+assert out[3].f 1
+assert out[4].t 0
+assert out[4].f 1
+assert out[5].t 0
+assert out[5].f 1
+assert out[6].t 0
+assert out[6].f 1
+assert out[7].t 0
+assert out[7].f 1
+set go_r 0
+cycle
+set x[0].t 0
+set x[0].f 1
+set x[1].t 0
+set x[1].f 1
+set x[2].t 0
+set x[2].f 1
+set x[3].t 0
+set x[3].f 1
+set x[4].t 0
+set x[4].f 1
+set x[5].t 0
+set x[5].f 1
+set x[6].t 0
+set x[6].f 1
+set x[7].t 1
+set x[7].f 0
+set y[0].t 1
+set y[0].f 0
+set y[1].t 1
+set y[1].f 0
+set y[2].t 1
+set y[2].f 0
+set y[3].t 1
+set y[3].f 0
+set y[4].t 0
+set y[4].f 1
+set y[5].t 0
+set y[5].f 1
+set y[6].t 0
+set y[6].f 1
+set y[7].t 0
+set y[7].f 1
+cycle
+set go_r 1
+cycle
+assert out[0].t 1
+assert out[0].f 0
+assert out[1].t 1
+assert out[1].f 0
+assert out[2].t 1
+assert out[2].f 0
+assert out[3].t 1
+assert out[3].f 0
+assert out[4].t 0
+assert out[4].f 1
+assert out[5].t 0
+assert out[5].f 1
+assert out[6].t 0
+assert out[6].f 1
+assert out[7].t 1
+assert out[7].f 0

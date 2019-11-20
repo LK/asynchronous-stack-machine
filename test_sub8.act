@@ -1,0 +1,8 @@
+import "functions.act";
+
+dualrail x[8];
+dualrail y[8];
+dualrail out[8];
+bool go_r;
+
+bundled_sub_8 ba(go_r, x, y, out);

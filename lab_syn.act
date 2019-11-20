@@ -4,6 +4,8 @@
  */
 import "globals.act";
 import "channel.act";
+import "functions.act";
+import "opcode_conditions.act";
 
 /*
   a1of2: dual-rail data channel
