@@ -1,4 +1,5 @@
 import "lab_syn.act";
+import "functions.act";
 
 defproc toplevel (a1of1 go)
 {
@@ -2585,3 +2586,5 @@ defproc toplevel (a1of1 go)
 
  go = c_0;
 }
+
+toplevel t;

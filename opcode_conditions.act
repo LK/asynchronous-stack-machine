@@ -118,4 +118,3 @@ defproc bundled_is_brlz_1(bool go_r, dualrail opcode[4], dualrail out) {
 		_gor -> out.f-
 	}
 }
-

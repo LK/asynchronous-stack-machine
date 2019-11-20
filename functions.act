@@ -83,3 +83,14 @@ defproc bundled_fblock_8 (bool go_r; dualrail c[4]; dualrail x[8], y[8]; dualrai
       )
    }
 }
+
+defproc bundled_is_branch_1(bool go_r; dualrail v0[4]; dualrail out) {
+  bool _gor;
+  prs {
+    go_r => _gor-
+    ~_gor & ~v0[0].f -> out.t+
+    ~_gor & ~v0[0].t -> out.f+
+    _gor -> out.t-
+    _gor -> out.f-
+  }
+}
