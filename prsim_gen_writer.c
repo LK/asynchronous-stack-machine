@@ -52,7 +52,7 @@ int main ( int argc, char * argv[] )
     }
 
     // set_principal
-    fprintf(f, "set_principal Reset\nset_principal _Reset\nset_principal ba.cin\nset_principal go_r\n");
+    fprintf(f, "set_principal Reset\nset_principal _Reset\nset_principal %s.cin\nset_principal go_r\n", argv[2]);
     for(i = 0; i < in1_size; i++)
     {
       fprintf(f, "set_principal %s[%d].t\n", in1_name, i);
@@ -75,7 +75,7 @@ int main ( int argc, char * argv[] )
     }
 
     // set init vals
-    fprintf(f, "mode reset\nset Reset 1\n");
+    fprintf(f, "mode reset\nset Reset 1\nset _Reset 0\n");
     for(i = 0; i < in1_size; i++)
     {
       fprintf(f, "set %s[%d].t 0\n", in1_name, i);

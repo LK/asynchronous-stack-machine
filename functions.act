@@ -109,16 +109,16 @@ defproc bundled_pcincrement_12 (bool go_r; dualrail v0[12]; dualrail out[12])
    /* combinational logic */
    delay<62> d;
    d.in = go_r;
-   bool one[12];
+   bool zero[12];
    bool cout, cin, _dout;
    add12 s (,, cin,, cout);
-   (; i : 12 : s.a[i] = v0[i].t; s.b[i] = one[i]; )
+   (; i : 12 : s.a[i] = v0[i].t; s.b[i] = zero[i]; )
 
    bool _sout[12];
    prs {
-      Reset -> cin-
-      ~_Reset -> one[0]+
-      (i:1..11: Reset -> one[i]-)
+      ~_Reset -> cin+
+      d.out => _dout-
+      (i:12: Reset -> zero[i]-)
       (i:12: s.out[i] => _sout[i]-
 	       ~_dout & ~_sout[i] => out[i].t+
 	       ~_dout & ~s.out[i] => out[i].f+
