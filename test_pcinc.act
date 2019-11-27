@@ -1,0 +1,7 @@
+import "functions.act";
+
+dualrail pc[12];
+dualrail out[12];
+bool go_r;
+
+bundled_pcincrement_12 p(go_r, pc, out);

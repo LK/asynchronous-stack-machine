@@ -37,7 +37,7 @@ defproc bundled_cmp_1 (bool go_r; dualrail c[4]; dualrail out)
    }
 }
 
-defproc bundled_add_8 (bool go_r; dualrail x[8]; dualrail y[8]; dualrail out[8])
+defproc bundled_stackadd_8 (bool go_r; dualrail v0[8]; dualrail v1[8]; dualrail out[8])
 {
    /* combinational logic */
    delay<62> d;
@@ -47,7 +47,7 @@ defproc bundled_add_8 (bool go_r; dualrail x[8]; dualrail y[8]; dualrail out[8])
    bool cout;
    bool cin;
    add8 a (,,cin,, cout);
-   (; i : 8 : a.a[i] = x[i].t; a.b[i] = y[i].t; )
+   (; i : 8 : a.a[i] = v0[i].t; a.b[i] = v1[i].t; )
 
    bool _aout[8];
    prs {
@@ -56,6 +56,26 @@ defproc bundled_add_8 (bool go_r; dualrail x[8]; dualrail y[8]; dualrail out[8])
       (i:8: a.out[i] => _aout[i]-
             ~_dout & ~_aout[i] => out[i].t+
             ~_dout & ~a.out[i] => out[i].f+
+      )
+   }
+}
+
+defproc bundled_stacksub_8 (bool go_r; dualrail v0[8]; dualrail v1[8]; dualrail out[8])
+{
+   /* combinational logic */
+   delay<62> d;
+   d.in = go_r;
+   bool cout, cin, _dout;
+   add8 s (,, cin,, cout);
+   (; i : 8 : s.a[i] = v0[i].t; s.b[i] = v1[i].f; )
+
+   bool _sout[8];
+   prs {
+      ~_Reset -> cin+
+      d.out => _dout-
+      (i:8: s.out[i] => _sout[i]-
+	    ~_dout & ~_sout[i] => out[i].t+
+	    ~_dout & ~s.out[i] => out[i].f+
       )
    }
 }
@@ -93,4 +113,127 @@ defproc bundled_is_branch_1(bool go_r; dualrail v0[4]; dualrail out) {
     _gor -> out.t-
     _gor -> out.f-
   }
+}
+
+defproc bundled_is_zero_1(bool go_r; dualrail v0[12]; dualrail out) {
+  bool _gor;
+  prs {
+    go_r => _gor-
+    ~_gor & (&i:12: ~v0[i].t) -> out.t+
+    ~_gor & (|i:12: ~v0[0].f) -> out.f+
+    _gor -> out.t-
+    _gor -> out.f-
+  }
+}
+
+defproc bundled_is_less_than_zero_1(bool go_r; dualrail v0[12]; dualrail out) {
+  bool _gor;
+  prs {
+    go_r => _gor-
+    ~_gor & ~v0[11].f -> out.t+
+    ~_gor & ~v0[11].t -> out.f+
+    _gor -> out.t-
+    _gor -> out.f-
+  }
+}
+
+defproc bundled_is_reg0_1(bool go_r; dualrail v0[8]; dualrail out) {
+  bool _gor;
+  prs {
+    go_r => _gor-
+    ~_gor & ~v0[0].t & ~v0[1].t -> out.t+
+    ~_gor & (~v0[0].f | ~v0[1].f) -> out.f+
+    _gor -> out.t-
+    _gor -> out.f-
+  }
+}
+
+defproc bundled_is_reg1_1(bool go_r; dualrail v0[8]; dualrail out) {
+  bool _gor;
+  prs {
+    go_r => _gor-
+    ~_gor & ~v0[0].f & ~v0[1].t -> out.t+
+    ~_gor & (~v0[0].t | ~v0[1].f) -> out.f+
+    _gor -> out.t-
+    _gor -> out.f-
+  }
+}
+
+defproc bundled_is_reg2_1(bool go_r; dualrail v0[8]; dualrail out) {
+  bool _gor;
+  prs {
+    go_r => _gor-
+    ~_gor & ~v0[0].t & ~v0[1].f -> out.t+
+    ~_gor & (~v0[0].f | ~v0[1].t) -> out.f+
+    _gor -> out.t-
+    _gor -> out.f-
+  }
+}
+
+defproc bundled_is_reg3_1(bool go_r; dualrail v0[8]; dualrail out) {
+  bool _gor;
+  prs {
+    go_r => _gor-
+    ~_gor & ~v0[0].f & ~v0[1].f -> out.t+
+    ~_gor & (~v0[0].t | ~v0[1].t) -> out.f+
+    _gor -> out.t-
+    _gor -> out.f-
+  }
+}
+
+defproc bundled_pcincrement_12 (bool go_r; dualrail v0[12]; dualrail out[12])
+{
+   /* combinational logic */
+   delay<100> d;
+   d.in = go_r;
+   bool zero[12];
+   bool cout, cin, _dout;
+   add12 s (,, cin,, cout);
+   (; i : 12 : s.a[i] = v0[i].t; s.b[i] = zero[i]; )
+
+   bool _sout[12];
+   prs {
+      ~_Reset -> cin+
+      d.out => _dout-
+      (i:12: Reset -> zero[i]-)
+      (i:12: s.out[i] => _sout[i]-
+	       ~_dout & ~_sout[i] => out[i].t+
+	       ~_dout & ~s.out[i] => out[i].f+
+      )
+   }
+}
+
+defproc bundled_pcadd_12 (bool go_r; dualrail v0[12]; dualrail v1[8]; dualrail out[12])
+{
+   /* combinational logic */
+   delay<100> d;
+   bool _dout;
+   d.in = go_r;
+
+   bool cout, cin;
+   /*bool msbs[4];*/
+   bool y8, y9, y10, y11;
+   add12 a (,,cin,, cout);
+   (i:12: a.a[i] = v0[i].t; )
+   (i:8: a.b[i] = v1[i].t; )
+   /*(i:8..11: a.b[i] = msbs[i]; )*/
+   a.b[8] = y8;
+   a.b[9] = y9;
+   a.b[10] = y10;
+   a.b[11] = y11;
+
+   bool _aout[12];
+   prs {
+      Reset -> cin-
+      Reset -> y8-
+      Reset -> y9-
+      Reset -> y10-
+      Reset -> y11-
+      d.out => _dout-
+      (i:12: a.out[i] => _aout[i]-
+            ~_dout & ~_aout[i] => out[i].t+
+            ~_dout & ~a.out[i] => out[i].f+
+      )
+   }
+   /*       (i:8..11: Reset -> msbs[i]-) */
 }
