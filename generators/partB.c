@@ -18,7 +18,7 @@ void print_vars (Chp *c)
   hash_bucket_t *b;
   int i;
   symbol *sym;
-  
+
   if (!c || !c->sym) return;
   if (c->sym->n == 0) return;
 
@@ -355,7 +355,7 @@ int print_one_gc (chp_gc_t *gc)
   int a, b;
   int ret = gc_chan_count++;
   if (!gc) return -1;
-  
+
   printf (" r1of2 gc_%d;\n", ret);
   if (gc->g) {
     int seq;
@@ -448,7 +448,7 @@ int print_gc (int loop, chp_gc_t *gc)
     /* multi-stage or gate */
     a = stmt_count++;
     printf (" syn_or2 or_%d(gc_%d.t,gc_%d.t);\n", a,
-	    start_gc_chan, start_gc_chan+1); 
+	    start_gc_chan, start_gc_chan+1);
     for (i=start_gc_chan+2; i < end_gc_chan; i++) {
       b = stmt_count++;
       printf (" syn_or2 or_%d(or_%d.out,gc_%d.t);\n", b, a, i);
@@ -536,7 +536,7 @@ int print_chp_stmt (chp_lang_t *c)
 
       sprintf (buf, "c_%d.r", ret);
       a = print_expr_tmpvar (buf, go_r, a, func_bitwidth);
-      
+
       //printf (" c_%d.r = e_%d.go_r;\n", ret, base_var);
       printf (" c_%d.a = chan_%s.a;\n", ret, c->u.comm.chan);
       v = find_symbol (__chp, c->u.comm.chan);
@@ -685,7 +685,7 @@ void print_chp_structure (Chp *c)
 
   /* symbol table printed for you */
   print_vars (c);
-  
+
   i = print_chp_stmt (c->c);
   printf (" go = c_%d;\n", i);
   printf ("}\n");
@@ -700,7 +700,7 @@ void check_types (Chp *c)
 int main (int argc, char **argv)
 {
   Chp *c;
-  
+
   if (argc != 2) {
     fprintf (stderr, "Usage: %s <chp>\n", argv[0]);
     return 1;
@@ -709,7 +709,7 @@ int main (int argc, char **argv)
   c = read_chp (argv[1]);
 
   /* check that variables are used properly */
-  check_types (c);
+  // check_types (c);
 
   /* print the CHP program please */
   __chp = c;

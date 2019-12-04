@@ -86,7 +86,7 @@ chp {
   	] ]
   ||
   *[ PC!(pc_index); IN?(fetch_op, fetch_data); isbr := is_branch_1(fetch_op);
-      [ isbr -> FEX!(fetch_op, fetch_data); FEX!(pc_index); FEX?(pc_index)
+      [ is_branch_1(fetch_op) -> FEX!(fetch_op, fetch_data); FEX!(pc_index); FEX?(pc_index)
       [] else -> op_pop := 1; pc_index := pcincrement_12(pc_index); FEX!(fetch_op, fetch_data); FEX?(temp)
       ]
   ]
