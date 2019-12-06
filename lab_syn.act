@@ -11,7 +11,7 @@ import "channel.act";
   dualrail: one-bit of data
 */
 
-/* 
+/*
  * Variable initialization
  */
 defproc syn_var_init_true (dualrail v)
@@ -25,7 +25,7 @@ defproc syn_var_init_true (dualrail v)
  }
 }
 
-/* 
+/*
  * Variable initialization
  */
 defproc syn_var_init_false (dualrail v)
@@ -85,11 +85,11 @@ defproc syn_ctree (bool in[N]; bool out)
   ]
 }
 
-/* 
+/*
  *  Input: go
  *         in : channel
  *         v : one-bit variable
- *  
+ *
  */
 defproc syn_recv (a1of1 go; dualrail v; a1of2 in)
 {
@@ -133,7 +133,7 @@ defproc syn_expr_vararray (bool go_r; dualrail v[N]; dualrail out[N])
         ev[i].v = v[i];
         ev[i].out = out[i];
 	)
-}	
+}
 
 /* AND */
 defproc syn_expr_and (dualrail in1, in2; dualrail out)
@@ -164,10 +164,24 @@ defproc syn_expr_or (dualrail in1, in2; dualrail out)
   }
 }
 
+/* EQ */
+defproc syn_expr_eq (dualrail in1, in2; dualrail out)
+{
+  _dualrail _out;
+  prs {
+    in1.t & in2.t | in1.f & in2.f -> _out.t-
+   ~in1.t & ~in1 .f & ~in2.t & ~in2.f -> _out.t+
+    in1.t & in2.f | in1.f & in2.t -> _out.f-
+   ~in1.t & ~in1 .f & ~in2.t & ~in2.f -> _out.f+
+    _out.t => out.t-
+    _out.f => out.f-
+  }
+}
+
 /* NOT */
 defproc syn_expr_not (dualrail in; dualrail out)
 {
-  out.t = in.f; 
+  out.t = in.f;
   out.f = in.t;
 }
 
@@ -190,7 +204,7 @@ defproc syn_notand (bool x, y, out)
       _inv | y => out-
   }
 }
-    
+
 
 defproc syn_skip (a1of1 go)
 {

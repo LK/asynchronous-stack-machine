@@ -1,0 +1,48 @@
+"e.in1.t"&"e.in2.t"|"e.in1.f"&"e.in2.f"->"e._out.t"-
+~"e.in1.t"&~"e.in1.f"&~"e.in2.t"&~"e.in2.f"->"e._out.t"+
+"e.in1.t"&"e.in2.f"|"e.in1.f"&"e.in2.t"->"e._out.f"-
+~"e.in1.t"&~"e.in1.f"&~"e.in2.t"&~"e.in2.f"->"e._out.f"+
+"e._out.t"->"e.out.t"-
+~("e._out.t")->"e.out.t"+
+"e._out.f"->"e.out.f"-
+~("e._out.f")->"e.out.f"+
+= "e._out.d[0]" "e._out.f"
+= "e._out.d[1]" "e._out.t"
+= "e._out.d[0]" "e._out.f"
+= "e._out.d[1]" "e._out.t"
+= "e.in1.d[0]" "e.in1.f"
+= "e.in1.d[1]" "e.in1.t"
+= "e.in1.d[0]" "e.in1.f"
+= "e.in1.d[1]" "e.in1.t"
+= "e.out.d[0]" "e.out.f"
+= "e.out.d[1]" "e.out.t"
+= "e.out.d[0]" "e.out.f"
+= "e.out.d[1]" "e.out.t"
+= "e.in2.d[0]" "e.in2.f"
+= "e.in2.d[1]" "e.in2.t"
+= "e.in2.d[0]" "e.in2.f"
+= "e.in2.d[1]" "e.in2.t"
+= "in1.d[0]" "in1.f"
+= "in1.d[1]" "in1.t"
+= "in1.f" "e.in1.f"
+= "in1.t" "e.in1.t"
+= "in1.d[0]" "e.in1.d[0]"
+= "in1.d[1]" "e.in1.d[1]"
+= "in1.d[0]" "in1.f"
+= "in1.d[1]" "in1.t"
+= "out.d[0]" "out.f"
+= "out.d[1]" "out.t"
+= "out.f" "e.out.f"
+= "out.t" "e.out.t"
+= "out.d[0]" "e.out.d[0]"
+= "out.d[1]" "e.out.d[1]"
+= "out.d[0]" "out.f"
+= "out.d[1]" "out.t"
+= "in2.d[0]" "in2.f"
+= "in2.d[1]" "in2.t"
+= "in2.f" "e.in2.f"
+= "in2.t" "e.in2.t"
+= "in2.d[0]" "e.in2.d[0]"
+= "in2.d[1]" "e.in2.d[1]"
+= "in2.d[0]" "in2.f"
+= "in2.d[1]" "in2.t"

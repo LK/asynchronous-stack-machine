@@ -1,0 +1,7 @@
+import "lab_syn.act";
+
+dualrail in1;
+dualrail in2;
+dualrail out;
+
+syn_expr_eq e (in1, in2, out);

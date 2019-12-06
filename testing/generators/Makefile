@@ -4,7 +4,7 @@
 CC     = gcc
 CFLAGS = -g3 -std=c99 -pedantic -Wall
 
-all: clean prsim_add8_writer prsim_gen_writer
+all: clean prsim_add8_writer prsim_gen_writer prsim_gen_tests
 
 prsim_add8_writer: prsim_add8_writer.o
 	${CC} ${CFLAGS} -o $@ $^
@@ -12,6 +12,8 @@ prsim_add8_writer: prsim_add8_writer.o
 prsim_gen_writer: prsim_gen_writer.o
 	${CC} ${CFLAGS} -o $@ $^
 
+prsim_gen_tests: prsim_gen_tests.o
+	${CC} ${CFLAGS} -o $@ $^
 
 clean:
-	${RM} prsim_add8_writer prsim_gen_writer vgcore*
+	${RM} prsim_add8_writer prsim_gen_writer prsim_gen_tests vgcore*

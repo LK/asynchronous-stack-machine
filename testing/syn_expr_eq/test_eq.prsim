@@ -1,0 +1,71 @@
+
+watch in1.t
+watch in1.f
+watch in2.t
+watch in2.f
+watch out.t
+watch out.f
+set in1.t 0
+set in1.f 0
+set in2.f 0
+set in2.t 0
+cycle
+
+assert out.t 0
+assert out.f 0
+
+set in1.t 1
+set in2.t 1
+cycle
+
+assert out.t 1
+assert out.f 0
+
+set in1.t 0
+set in2.t 0
+cycle
+
+assert out.t 0
+assert out.f 0
+
+set in1.f 1
+set in2.t 1
+cycle
+
+assert out.t 0
+assert out.f 1
+
+set in1.f 0
+set in2.t 0
+cycle
+
+assert out.t 0
+assert out.f 0
+
+set in1.f 1
+set in2.f 1
+cycle
+
+assert out.t 1
+assert out.f 0
+
+set in1.f 0
+set in2.f 0
+cycle
+
+assert out.t 0
+assert out.f 0
+
+set in1.t 1
+set in2.f 1
+cycle
+
+assert out.t 0
+assert out.f 1
+
+set in1.t 0
+set in2.f 0
+cycle
+
+assert out.t 0
+assert out.f 0

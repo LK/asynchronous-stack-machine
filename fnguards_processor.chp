@@ -85,44 +85,37 @@ chp {
   	[] ~stack1_op -> stack1_comm_chan!stack1_data
   	] ]
   ||
-  *[ PC!(pc_index); IN?(fetch_op, fetch_data); isbr := is_branch_1(fetch_op);
-      [ isbr -> FEX!(fetch_op, fetch_data); FEX!(pc_index); FEX?(pc_index)
+  *[ PC!(pc_index); IN?(fetch_op, fetch_data);
+      [ is_branch_1(fetch_op) = 1 -> FEX!(fetch_op, fetch_data); FEX!(pc_index); FEX?(pc_index)
       [] else -> op_pop := 1; pc_index := pcincrement_12(pc_index); FEX!(fetch_op, fetch_data); FEX?(temp)
       ]
   ]
   ||
-  *[ FEX?(exec_op, exec_data); op_pushc := is_pushc_1(exec_op); op_pop := is_pop_1(exec_op);
-     op_popout := is_popout_1(exec_op); op_pushreg := is_pushreg_1(exec_op);
-     op_add4 := is_add_1(exec_op); op_sub4 := is_sub_1(exec_op);
-     op_jmp4 := is_jmp_1(exec_op); op_brz := is_brz_1(exec_op);
-     op_brlz := is_brlz_1(exec_op); op_popreg := is_popreg_1(exec_op);
-     is_zero := is_zero_1(stack0_data); is_less_than_zero := is_less_than_zero_1(stack0_data);
-     is_reg0 := is_reg0_1(exec_data); is_reg1 := is_reg1_1(exec_data);
-     is_reg2 := is_reg2_1(exec_data); is_reg3 := is_reg3_1(exec_data);
-    [ op_pushc-> stack0_op_chan!1; stack0_comm_chan!exec_data
-    [] op_pop -> stack0_op_chan!0; stack0_comm_chan?exec_data
-    [] op_popout -> stack0_op_chan!0; stack0_comm_chan?exec_data; OUT!(exec_op, exec_data)
-    [] op_pushreg -> stack0_op_chan!1;
-        [ is_reg0 -> stack0_comm_chan!reg0
-        [] is_reg1 -> stack0_comm_chan!reg1
-        [] is_reg2 -> stack0_comm_chan!reg2
-        [] is_reg3 -> stack0_comm_chan!reg3
+  *[ FEX?(exec_op, exec_data);
+    [ is_pushc_1(exec_op) = 1 -> stack0_op_chan!1; stack0_comm_chan!exec_data
+    [] is_pop_1(exec_op) = 1 -> stack0_op_chan!0; stack0_comm_chan?exec_data
+    [] is_popout_1(exec_op) = 1 -> stack0_op_chan!0; stack0_comm_chan?exec_data; OUT!(exec_op, exec_data)
+    [] is_pushreg_1(exec_op) = 1 -> stack0_op_chan!1;
+        [ is_reg0_1(exec_data) = 1 -> stack0_comm_chan!reg0
+        [] is_reg1_1(exec_data) = 1 -> stack0_comm_chan!reg1
+        [] is_reg2_1(exec_data) = 1 -> stack0_comm_chan!reg2
+        [] is_reg3_1(exec_data) = 1 -> stack0_comm_chan!reg3
         ]
-    [] op_popreg -> stack0_op_chan!0;
-        [ is_reg0 -> stack0_comm_chan?reg0
-        [] is_reg1 -> stack0_comm_chan?reg1
-        [] is_reg2 -> stack0_comm_chan?reg2
-        [] is_reg3 -> stack0_comm_chan?reg3
+    [] is_popreg_1(exec_op) = 1 -> stack0_op_chan!0;
+        [ is_reg0_1(exec_data) = 1 -> stack0_comm_chan?reg0
+        [] is_reg1_1(exec_data) = 1 -> stack0_comm_chan?reg1
+        [] is_reg2_1(exec_data) = 1 -> stack0_comm_chan?reg2
+        [] is_reg3_1(exec_data) = 1 -> stack0_comm_chan?reg3
         ]
-    [] op_add4 -> stack1_data := stackadd_8(stack0_data, stack1_data); stack0_op_chan!0; stack0_comm_chan?exec_dump
-    [] op_sub4 -> stack1_data := stacksub_8(stack0_data, stack1_data); stack0_op_chan!0; stack0_comm_chan?exec_dump
-    [] op_jmp4 -> FEX?(exec_pc); exec_temp := pcadd_12(exec_pc, exec_data)
-    [] op_brz -> FEX?(exec_pc);
-        [ is_zero -> FEX?(exec_pc); exec_temp := pcadd_12(exec_pc, exec_data)
+    [] is_add_1(exec_op) = 1 -> stack1_data := stackadd_8(stack0_data, stack1_data); stack0_op_chan!0; stack0_comm_chan?exec_dump
+    [] is_sub_1(exec_op) = 1 -> stack1_data := stacksub_8(stack0_data, stack1_data); stack0_op_chan!0; stack0_comm_chan?exec_dump
+    [] is_jmp_1(exec_op) = 1 -> FEX?(exec_pc); exec_temp := pcadd_12(exec_pc, exec_data)
+    [] is_brz_1(exec_op) = 1 -> FEX?(exec_pc);
+        [ is_zero_1(stack0_data) = 1 -> FEX?(exec_pc); exec_temp := pcadd_12(exec_pc, exec_data)
         [] else -> exec_temp := pcincrement_12(exec_pc)
         ]
-    [] op_brlz -> FEX?(exec_pc);
-        [ is_less_than_zero -> exec_temp := pcadd_12(exec_pc, exec_data)
+    [] is_brlz_1(exec_op) = 1 -> FEX?(exec_pc);
+        [ is_less_than_zero_1(stack0_data) = 1 -> exec_temp := pcadd_12(exec_pc, exec_data)
         [] else -> exec_temp := pcincrement_12(exec_pc)
         ]
     ]; FEX!exec_temp
