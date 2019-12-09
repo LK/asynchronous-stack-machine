@@ -1,0 +1,42 @@
+initialize
+random
+watch Reset
+watch _Reset
+watch b
+watch abc[0].t
+watch abc[0].f
+watch abc[1].t
+watch abc[1].f
+watch abc[2].t
+watch abc[2].f
+set b 0
+set abc[0].t 0
+set abc[0].f 1
+set abc[1].t 0
+set abc[1].f 1
+set abc[2].t 0
+set abc[2].f 1
+cycle
+
+assert b 1
+assert abc[0].t 0
+assert abc[0].f 1
+assert abc[1].t 0
+assert abc[1].f 1
+assert abc[2].t 1
+assert abc[2].f 0
+set abc[0].t 1
+set abc[0].f 0
+set abc[1].t 0
+set abc[1].f 1
+set abc[2].t 0
+set abc[2].f 1
+cycle
+
+assert b 0
+assert abc[0].t 0
+assert abc[0].f 1
+assert abc[1].t 1
+assert abc[1].f 0
+assert abc[2].t 0
+assert abc[2].f 1

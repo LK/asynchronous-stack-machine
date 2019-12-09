@@ -1,0 +1,2 @@
+bool b 0,1,n,0
+dualrail abc[3] 000,001,100,010

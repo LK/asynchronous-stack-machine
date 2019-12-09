@@ -105,31 +105,31 @@ int _print_expr (Expr *e)
   int ret;
   switch (e->type) {
     case E_AND:
-    ret = binop ("syn_expr_and", e);
+      ret = binop ("syn_expr_and", e);
     break;
     case E_OR:
-    ret = binop ("syn_expr_or", e);
+      ret = binop ("syn_expr_or", e);
     break;
     case E_PLUS:
-    ret = 0;
-    //binop ("+", e);
-    break;
+      ret = 0;
+      //binop ("+", e);
+      break;
     case E_MINUS:
-    ret = 0;
+      ret = 0;
     //binop ("-", e);
     break;
     case E_NOT:
     case E_COMPLEMENT:
-    ret = unop ("syn_expr_not", e);
+      ret = unop ("syn_expr_not", e);
     break;
     case E_UMINUS:
-    ret = 0;
+      ret = 0;
     //printf ("~(");
     //print_expr (e->u.e.l);
     //printf (")");
     break;
     case E_PROBE:
-    ret = 0;
+      ret = 0;
     //printf ("#%s", (char *)e->u.e.l);
     break;
     case E_VAR:

@@ -1,0 +1,8 @@
+import "functions.act";
+
+dualrail in1[4];
+dualrail in2[8];
+dualrail out[12];
+bool go_r;
+
+bundled_join_12 s (go_r, in1, in2, out);
