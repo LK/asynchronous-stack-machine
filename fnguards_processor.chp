@@ -70,7 +70,7 @@ chp {
   ||
   *[ PC!(pc_index); IN?(temp); fetch_op := split_4(temp); fetch_data := split_8(temp);
       [ is_branch_1(fetch_op) = 1 -> FEX!(temp); FEX!(pc_index); FEX?(pc_index)
-      [] else -> op_pop := 1; pc_index := pcincrement_12(pc_index); FEX!(temp); FEX?(temp)
+      [] else -> pc_index := pcincrement_12(pc_index); FEX!(temp); FEX?(temp)
       ]
   ]
   ||

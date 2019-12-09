@@ -120,7 +120,7 @@ defproc bundled_is_brlz_1(bool go_r; dualrail v0[4]; dualrail out) {
 }
 
 defproc bundled_is_branch_1(bool go_r; dualrail v0[4]; dualrail out) {
-	bool_gor;
+	bool _gor;
 	prs {
 		go_r => _gor-
 		~v0[3].f & ~_gor -> out.t+
