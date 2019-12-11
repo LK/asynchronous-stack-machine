@@ -33,18 +33,71 @@ vars {
   int<12> exec_pc;
 
   /* STACK */
-  // ... (generated)
   int<1> stack0_is_full;
-  int<1> stack0_op; // 0 = pop, 1 = push
-  int<8> stack0_data;
-  chan<1> stack0_op_chan;
-  chan<8> stack0_comm_chan;
-  int<1> stack1_is_full;
-  int<1> stack1_op;
-  int<8> stack1_data;
-  chan<1> stack1_op_chan;
-  chan<8> stack1_comm_chan;
+	int<1> stack0_op;
+	int<8> stack0_data;
+	chan<1> stack0_op_chan;
+	chan<8> stack0_comm_chan;
 
+	int<1> stack1_is_full;
+	int<1> stack1_op;
+	int<8> stack1_data;
+	chan<1> stack1_op_chan;
+	chan<8> stack1_comm_chan;
+
+	int<1> stack2_is_full;
+	int<1> stack2_op;
+	int<8> stack2_data;
+	chan<1> stack2_op_chan;
+	chan<8> stack2_comm_chan;
+
+	int<1> stack3_is_full;
+	int<1> stack3_op;
+	int<8> stack3_data;
+	chan<1> stack3_op_chan;
+	chan<8> stack3_comm_chan;
+
+	int<1> stack4_is_full;
+	int<1> stack4_op;
+	int<8> stack4_data;
+	chan<1> stack4_op_chan;
+	chan<8> stack4_comm_chan;
+
+	int<1> stack5_is_full;
+	int<1> stack5_op;
+	int<8> stack5_data;
+	chan<1> stack5_op_chan;
+	chan<8> stack5_comm_chan;
+
+	int<1> stack6_is_full;
+	int<1> stack6_op;
+	int<8> stack6_data;
+	chan<1> stack6_op_chan;
+	chan<8> stack6_comm_chan;
+
+	int<1> stack7_is_full;
+	int<1> stack7_op;
+	int<8> stack7_data;
+	chan<1> stack7_op_chan;
+	chan<8> stack7_comm_chan;
+
+	int<1> stack8_is_full;
+	int<1> stack8_op;
+	int<8> stack8_data;
+	chan<1> stack8_op_chan;
+	chan<8> stack8_comm_chan;
+
+	int<1> stack9_is_full;
+	int<1> stack9_op;
+	int<8> stack9_data;
+	chan<1> stack9_op_chan;
+	chan<8> stack9_comm_chan;
+
+	int<1> stack10_is_full;
+	int<1> stack10_op;
+	int<8> stack10_data;
+	chan<1> stack10_op_chan;
+	chan<8> stack10_comm_chan;
 
   /* REGS */
   int<8> reg0;
@@ -55,25 +108,11 @@ vars {
 
 
 chp {
-  stack0_is_full := 0;
-	*[ stack0_op_chan?stack0_op;
-  	[ ~stack0_is_full & stack0_op -> stack0_comm_chan?stack0_data, stack0_is_full := 1
-  	[] ~stack0_is_full & ~stack0_op -> stack1_op_chan!0; stack1_comm_chan?stack0_data; stack0_comm_chan!stack0_data
-  	[] stack0_is_full & stack0_op -> stack1_op_chan!1; stack1_comm_chan!stack0_data; stack0_comm_chan?stack0_data
-  	[] stack0_is_full & ~stack0_op -> stack0_comm_chan!stack0_data, stack0_is_full := 0
-  	] ]
-  ||
-	*[ stack1_op_chan?stack1_op;
-  	[ stack1_op -> stack1_comm_chan?stack1_data
-  	[] ~stack1_op -> stack1_comm_chan!stack1_data
-  	] ]
-  ||
   *[ PC!(pc_index); IN?(temp); fetch_op := split_4(temp); fetch_data := split_8(temp);
       [ is_branch_1(fetch_op) = 1 -> FEX!(temp); FEX!(pc_index); FEX?(pc_index)
       [] else -> pc_index := pcincrement_12(pc_index); FEX!(temp); FEX?(temp)
       ]
-  ]
-  ||
+  ] ||
   *[ FEX?exec_temp; exec_op := split_4(exec_temp); exec_data := split_8(exec_temp);
     [ is_pushc_1(exec_op) = 1 -> stack0_op_chan!1; stack0_comm_chan!exec_data
     [] is_pop_1(exec_op) = 1 -> stack0_op_chan!0; stack0_comm_chan?exec_data
@@ -102,5 +141,79 @@ chp {
         [] else -> exec_temp := pcincrement_12(exec_pc)
         ]
     ]; FEX!exec_temp
-  ]
+  ] ||
+	stack0_is_full := 0;
+	*[ stack0_op_chan?stack0_op;
+	[ ~stack0_is_full & stack0_op -> stack0_comm_chan?stack0_data, stack0_is_full := 1
+	[] ~stack0_is_full & ~stack0_op -> stack1_op_chan!0; stack1_comm_chan?stack0_data; stack0_comm_chan!stack0_data
+	[] stack0_is_full & stack0_op -> stack1_op_chan!1; stack1_comm_chan!stack0_data; stack0_comm_chan?stack0_data
+	[] stack0_is_full & ~stack0_op -> stack0_comm_chan!stack0_data, stack0_is_full := 0
+	] ] ||
+	stack1_is_full := 0;
+	*[ stack1_op_chan?stack1_op;
+	[ ~stack1_is_full & stack1_op -> stack1_comm_chan?stack1_data, stack1_is_full := 1
+	[] ~stack1_is_full & ~stack1_op -> stack2_op_chan!0; stack2_comm_chan?stack1_data; stack1_comm_chan!stack1_data
+	[] stack1_is_full & stack1_op -> stack2_op_chan!1; stack2_comm_chan!stack1_data; stack1_comm_chan?stack1_data
+	[] stack1_is_full & ~stack1_op -> stack1_comm_chan!stack1_data, stack1_is_full := 0
+	] ] ||
+	stack2_is_full := 0;
+	*[ stack2_op_chan?stack2_op;
+	[ ~stack2_is_full & stack2_op -> stack2_comm_chan?stack2_data, stack2_is_full := 1
+	[] ~stack2_is_full & ~stack2_op -> stack3_op_chan!0; stack3_comm_chan?stack2_data; stack2_comm_chan!stack2_data
+	[] stack2_is_full & stack2_op -> stack3_op_chan!1; stack3_comm_chan!stack2_data; stack2_comm_chan?stack2_data
+	[] stack2_is_full & ~stack2_op -> stack2_comm_chan!stack2_data, stack2_is_full := 0
+	] ] ||
+	stack3_is_full := 0;
+	*[ stack3_op_chan?stack3_op;
+	[ ~stack3_is_full & stack3_op -> stack3_comm_chan?stack3_data, stack3_is_full := 1
+	[] ~stack3_is_full & ~stack3_op -> stack4_op_chan!0; stack4_comm_chan?stack3_data; stack3_comm_chan!stack3_data
+	[] stack3_is_full & stack3_op -> stack4_op_chan!1; stack4_comm_chan!stack3_data; stack3_comm_chan?stack3_data
+	[] stack3_is_full & ~stack3_op -> stack3_comm_chan!stack3_data, stack3_is_full := 0
+	] ] ||
+	stack4_is_full := 0;
+	*[ stack4_op_chan?stack4_op;
+	[ ~stack4_is_full & stack4_op -> stack4_comm_chan?stack4_data, stack4_is_full := 1
+	[] ~stack4_is_full & ~stack4_op -> stack5_op_chan!0; stack5_comm_chan?stack4_data; stack4_comm_chan!stack4_data
+	[] stack4_is_full & stack4_op -> stack5_op_chan!1; stack5_comm_chan!stack4_data; stack4_comm_chan?stack4_data
+	[] stack4_is_full & ~stack4_op -> stack4_comm_chan!stack4_data, stack4_is_full := 0
+	] ] ||
+	stack5_is_full := 0;
+	*[ stack5_op_chan?stack5_op;
+	[ ~stack5_is_full & stack5_op -> stack5_comm_chan?stack5_data, stack5_is_full := 1
+	[] ~stack5_is_full & ~stack5_op -> stack6_op_chan!0; stack6_comm_chan?stack5_data; stack5_comm_chan!stack5_data
+	[] stack5_is_full & stack5_op -> stack6_op_chan!1; stack6_comm_chan!stack5_data; stack5_comm_chan?stack5_data
+	[] stack5_is_full & ~stack5_op -> stack5_comm_chan!stack5_data, stack5_is_full := 0
+	] ] ||
+	stack6_is_full := 0;
+	*[ stack6_op_chan?stack6_op;
+	[ ~stack6_is_full & stack6_op -> stack6_comm_chan?stack6_data, stack6_is_full := 1
+	[] ~stack6_is_full & ~stack6_op -> stack7_op_chan!0; stack7_comm_chan?stack6_data; stack6_comm_chan!stack6_data
+	[] stack6_is_full & stack6_op -> stack7_op_chan!1; stack7_comm_chan!stack6_data; stack6_comm_chan?stack6_data
+	[] stack6_is_full & ~stack6_op -> stack6_comm_chan!stack6_data, stack6_is_full := 0
+	] ] ||
+	stack7_is_full := 0;
+	*[ stack7_op_chan?stack7_op;
+	[ ~stack7_is_full & stack7_op -> stack7_comm_chan?stack7_data, stack7_is_full := 1
+	[] ~stack7_is_full & ~stack7_op -> stack8_op_chan!0; stack8_comm_chan?stack7_data; stack7_comm_chan!stack7_data
+	[] stack7_is_full & stack7_op -> stack8_op_chan!1; stack8_comm_chan!stack7_data; stack7_comm_chan?stack7_data
+	[] stack7_is_full & ~stack7_op -> stack7_comm_chan!stack7_data, stack7_is_full := 0
+	] ] ||
+	stack8_is_full := 0;
+	*[ stack8_op_chan?stack8_op;
+	[ ~stack8_is_full & stack8_op -> stack8_comm_chan?stack8_data, stack8_is_full := 1
+	[] ~stack8_is_full & ~stack8_op -> stack9_op_chan!0; stack9_comm_chan?stack8_data; stack8_comm_chan!stack8_data
+	[] stack8_is_full & stack8_op -> stack9_op_chan!1; stack9_comm_chan!stack8_data; stack8_comm_chan?stack8_data
+	[] stack8_is_full & ~stack8_op -> stack8_comm_chan!stack8_data, stack8_is_full := 0
+	] ] ||
+	stack9_is_full := 0;
+	*[ stack9_op_chan?stack9_op;
+	[ ~stack9_is_full & stack9_op -> stack9_comm_chan?stack9_data, stack9_is_full := 1
+	[] ~stack9_is_full & ~stack9_op -> stack10_op_chan!0; stack10_comm_chan?stack9_data; stack9_comm_chan!stack9_data
+	[] stack9_is_full & stack9_op -> stack10_op_chan!1; stack10_comm_chan!stack9_data; stack9_comm_chan?stack9_data
+	[] stack9_is_full & ~stack9_op -> stack9_comm_chan!stack9_data, stack9_is_full := 0
+	] ] ||
+	*[ stack10_op_chan?stack10_op;
+	[ stack10_op -> stack10_comm_chan?stack10_data
+	[] ~stack10_op -> stack10_comm_chan!stack10_data
+	] ]
 }
