@@ -60,6 +60,44 @@ assert out.t 0
 assert out.f 0
 cycle
 mode run
+set go_r 0
+set v0[0].t 0
+set v0[0].f 0
+set v0[1].t 0
+set v0[1].f 0
+set v0[2].t 0
+set v0[2].f 0
+set v0[3].t 0
+set v0[3].f 0
+set v0[4].t 0
+set v0[4].f 0
+set v0[5].t 0
+set v0[5].f 0
+set v0[6].t 0
+set v0[6].f 0
+set v0[7].t 0
+set v0[7].f 0
+cycle
+
+assert go_r 0
+assert v0[0].t 0
+assert v0[0].f 0
+assert v0[1].t 0
+assert v0[1].f 0
+assert v0[2].t 0
+assert v0[2].f 0
+assert v0[3].t 0
+assert v0[3].f 0
+assert v0[4].t 0
+assert v0[4].f 0
+assert v0[5].t 0
+assert v0[5].f 0
+assert v0[6].t 0
+assert v0[6].f 0
+assert v0[7].t 0
+assert v0[7].f 0
+assert out.t 0
+assert out.f 0
 set go_r 1
 set v0[0].t 0
 set v0[0].f 1
