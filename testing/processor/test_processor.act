@@ -1,0 +1,9 @@
+import "fnguards_processor.act";
+import "lab_syn.act";
+
+a1of1 go;
+aN1of2<12> chan_IN;
+aN1of2<12> chan_OUT;
+aN1of2<12> chan_PC;
+
+toplevel p(go, chan_IN, chan_OUT, chan_PC);

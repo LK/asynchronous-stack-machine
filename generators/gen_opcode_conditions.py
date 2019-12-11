@@ -30,7 +30,7 @@ for name, code in OPCODES.items():
   print('\tprs {')
   print('\t\tgo_r => _gor-')
   print('\t\t' + ' & '.join([gen_guard_condition(i, t, True) for i, t in enumerate(truths)]) + ' & ~_gor -> out.t+')
-  print('\t\t' + ' | '.join([gen_guard_condition(i, not t, True) for i, t in enumerate(truths)]) + ' & ~_gor -> out.f+')
+  print('\t\t(' + ' | '.join([gen_guard_condition(i, not t, True) for i, t in enumerate(truths)]) + ') & ~_gor -> out.f+')
   print('\t\t_gor -> out.t-')
   print('\t\t_gor -> out.f-')
   print('\t}')
@@ -38,7 +38,7 @@ for name, code in OPCODES.items():
   print()
 
 print('defproc bundled_is_branch_1(bool go_r; dualrail v0[4]; dualrail out) {')
-print('\tbool_gor;')
+print('\tbool _gor;')
 print('\tprs {')
 print('\t\tgo_r => _gor-')
 print('\t\t~v0[3].f & ~_gor -> out.t+')

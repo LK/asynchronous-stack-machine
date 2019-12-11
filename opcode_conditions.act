@@ -3,7 +3,7 @@ defproc bundled_is_halt_1(bool go_r; dualrail v0[4]; dualrail out) {
 	prs {
 		go_r => _gor-
 		~v0[0].t & ~v0[1].t & ~v0[2].t & ~v0[3].t & ~_gor -> out.t+
-		~v0[0].f | ~v0[1].f | ~v0[2].f | ~v0[3].f & ~_gor -> out.f+
+		(~v0[0].f | ~v0[1].f | ~v0[2].f | ~v0[3].f) & ~_gor -> out.f+
 		_gor -> out.t-
 		_gor -> out.f-
 	}
@@ -14,7 +14,7 @@ defproc bundled_is_pushc_1(bool go_r; dualrail v0[4]; dualrail out) {
 	prs {
 		go_r => _gor-
 		~v0[0].t & ~v0[1].t & ~v0[2].t & ~v0[3].f & ~_gor -> out.t+
-		~v0[0].f | ~v0[1].f | ~v0[2].f | ~v0[3].t & ~_gor -> out.f+
+		(~v0[0].f | ~v0[1].f | ~v0[2].f | ~v0[3].t) & ~_gor -> out.f+
 		_gor -> out.t-
 		_gor -> out.f-
 	}
@@ -25,7 +25,7 @@ defproc bundled_is_pop_1(bool go_r; dualrail v0[4]; dualrail out) {
 	prs {
 		go_r => _gor-
 		~v0[0].t & ~v0[1].t & ~v0[2].f & ~v0[3].t & ~_gor -> out.t+
-		~v0[0].f | ~v0[1].f | ~v0[2].t | ~v0[3].f & ~_gor -> out.f+
+		(~v0[0].f | ~v0[1].f | ~v0[2].t | ~v0[3].f) & ~_gor -> out.f+
 		_gor -> out.t-
 		_gor -> out.f-
 	}
@@ -36,7 +36,7 @@ defproc bundled_is_popout_1(bool go_r; dualrail v0[4]; dualrail out) {
 	prs {
 		go_r => _gor-
 		~v0[0].t & ~v0[1].t & ~v0[2].f & ~v0[3].f & ~_gor -> out.t+
-		~v0[0].f | ~v0[1].f | ~v0[2].t | ~v0[3].t & ~_gor -> out.f+
+		(~v0[0].f | ~v0[1].f | ~v0[2].t | ~v0[3].t) & ~_gor -> out.f+
 		_gor -> out.t-
 		_gor -> out.f-
 	}
@@ -47,7 +47,7 @@ defproc bundled_is_pushreg_1(bool go_r; dualrail v0[4]; dualrail out) {
 	prs {
 		go_r => _gor-
 		~v0[0].t & ~v0[1].f & ~v0[2].t & ~v0[3].t & ~_gor -> out.t+
-		~v0[0].f | ~v0[1].t | ~v0[2].f | ~v0[3].f & ~_gor -> out.f+
+		(~v0[0].f | ~v0[1].t | ~v0[2].f | ~v0[3].f) & ~_gor -> out.f+
 		_gor -> out.t-
 		_gor -> out.f-
 	}
@@ -58,7 +58,7 @@ defproc bundled_is_popreg_1(bool go_r; dualrail v0[4]; dualrail out) {
 	prs {
 		go_r => _gor-
 		~v0[0].t & ~v0[1].f & ~v0[2].t & ~v0[3].f & ~_gor -> out.t+
-		~v0[0].f | ~v0[1].t | ~v0[2].f | ~v0[3].t & ~_gor -> out.f+
+		(~v0[0].f | ~v0[1].t | ~v0[2].f | ~v0[3].t) & ~_gor -> out.f+
 		_gor -> out.t-
 		_gor -> out.f-
 	}
@@ -69,7 +69,7 @@ defproc bundled_is_add_1(bool go_r; dualrail v0[4]; dualrail out) {
 	prs {
 		go_r => _gor-
 		~v0[0].t & ~v0[1].f & ~v0[2].f & ~v0[3].t & ~_gor -> out.t+
-		~v0[0].f | ~v0[1].t | ~v0[2].t | ~v0[3].f & ~_gor -> out.f+
+		(~v0[0].f | ~v0[1].t | ~v0[2].t | ~v0[3].f) & ~_gor -> out.f+
 		_gor -> out.t-
 		_gor -> out.f-
 	}
@@ -80,7 +80,7 @@ defproc bundled_is_sub_1(bool go_r; dualrail v0[4]; dualrail out) {
 	prs {
 		go_r => _gor-
 		~v0[0].t & ~v0[1].f & ~v0[2].f & ~v0[3].f & ~_gor -> out.t+
-		~v0[0].f | ~v0[1].t | ~v0[2].t | ~v0[3].t & ~_gor -> out.f+
+		(~v0[0].f | ~v0[1].t | ~v0[2].t | ~v0[3].t) & ~_gor -> out.f+
 		_gor -> out.t-
 		_gor -> out.f-
 	}
@@ -91,7 +91,7 @@ defproc bundled_is_jmp_1(bool go_r; dualrail v0[4]; dualrail out) {
 	prs {
 		go_r => _gor-
 		~v0[0].f & ~v0[1].t & ~v0[2].t & ~v0[3].t & ~_gor -> out.t+
-		~v0[0].t | ~v0[1].f | ~v0[2].f | ~v0[3].f & ~_gor -> out.f+
+		(~v0[0].t | ~v0[1].f | ~v0[2].f | ~v0[3].f) & ~_gor -> out.f+
 		_gor -> out.t-
 		_gor -> out.f-
 	}
@@ -102,7 +102,7 @@ defproc bundled_is_brz_1(bool go_r; dualrail v0[4]; dualrail out) {
 	prs {
 		go_r => _gor-
 		~v0[0].f & ~v0[1].t & ~v0[2].t & ~v0[3].f & ~_gor -> out.t+
-		~v0[0].t | ~v0[1].f | ~v0[2].f | ~v0[3].t & ~_gor -> out.f+
+		(~v0[0].t | ~v0[1].f | ~v0[2].f | ~v0[3].t) & ~_gor -> out.f+
 		_gor -> out.t-
 		_gor -> out.f-
 	}
@@ -113,7 +113,7 @@ defproc bundled_is_brlz_1(bool go_r; dualrail v0[4]; dualrail out) {
 	prs {
 		go_r => _gor-
 		~v0[0].f & ~v0[1].t & ~v0[2].f & ~v0[3].t & ~_gor -> out.t+
-		~v0[0].t | ~v0[1].f | ~v0[2].t | ~v0[3].f & ~_gor -> out.f+
+		(~v0[0].t | ~v0[1].f | ~v0[2].t | ~v0[3].f) & ~_gor -> out.f+
 		_gor -> out.t-
 		_gor -> out.f-
 	}
@@ -129,3 +129,4 @@ defproc bundled_is_branch_1(bool go_r; dualrail v0[4]; dualrail out) {
 		_gor -> out.f-
 	}
 }
+
