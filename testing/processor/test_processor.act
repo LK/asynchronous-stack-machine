@@ -6,4 +6,4 @@ aN1of2<12> chan_IN;
 aN1of2<12> chan_OUT;
 aN1of2<12> chan_PC;
 
-toplevel p(go, chan_IN, chan_OUT, chan_PC);
+toplevel p(go, chan_IN, chan_PC, chan_OUT);
