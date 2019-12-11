@@ -1,0 +1,185 @@
+initialize
+random
+watch _Reset
+watch in1[0].t
+watch in1[0].f
+watch in1[1].t
+watch in1[1].f
+watch in1[2].t
+watch in1[2].f
+watch in1[3].t
+watch in1[3].f
+watch in2[0].t
+watch in2[0].f
+watch in2[1].t
+watch in2[1].f
+watch in2[2].t
+watch in2[2].f
+watch in2[3].t
+watch in2[3].f
+watch in2[4].t
+watch in2[4].f
+watch in2[5].t
+watch in2[5].f
+watch in2[6].t
+watch in2[6].f
+watch in2[7].t
+watch in2[7].f
+watch out[0].t
+watch out[0].f
+watch out[1].t
+watch out[1].f
+watch out[2].t
+watch out[2].f
+watch out[3].t
+watch out[3].f
+watch out[4].t
+watch out[4].f
+watch out[5].t
+watch out[5].f
+watch out[6].t
+watch out[6].f
+watch out[7].t
+watch out[7].f
+watch out[8].t
+watch out[8].f
+watch out[9].t
+watch out[9].f
+watch out[10].t
+watch out[10].f
+watch out[11].t
+watch out[11].f
+watch go_r
+
+mode reset
+set _Reset 0
+set in1[0].t 0
+set in1[0].f 0
+set in1[1].t 0
+set in1[1].f 0
+set in1[2].t 0
+set in1[2].f 0
+set in1[3].t 0
+set in1[3].f 0
+set in2[0].t 0
+set in2[0].f 0
+set in2[1].t 0
+set in2[1].f 0
+set in2[2].t 0
+set in2[2].f 0
+set in2[3].t 0
+set in2[3].f 0
+set in2[4].t 0
+set in2[4].f 0
+set in2[5].t 0
+set in2[5].f 0
+set in2[6].t 0
+set in2[6].f 0
+set in2[7].t 0
+set in2[7].f 0
+set go_r 0
+cycle
+assert in1[0].t 0
+assert in1[0].f 0
+assert in1[1].t 0
+assert in1[1].f 0
+assert in1[2].t 0
+assert in1[2].f 0
+assert in1[3].t 0
+assert in1[3].f 0
+assert in2[0].t 0
+assert in2[0].f 0
+assert in2[1].t 0
+assert in2[1].f 0
+assert in2[2].t 0
+assert in2[2].f 0
+assert in2[3].t 0
+assert in2[3].f 0
+assert in2[4].t 0
+assert in2[4].f 0
+assert in2[5].t 0
+assert in2[5].f 0
+assert in2[6].t 0
+assert in2[6].f 0
+assert in2[7].t 0
+assert in2[7].f 0
+assert out[0].t 0
+assert out[0].f 0
+assert out[1].t 0
+assert out[1].f 0
+assert out[2].t 0
+assert out[2].f 0
+assert out[3].t 0
+assert out[3].f 0
+assert out[4].t 0
+assert out[4].f 0
+assert out[5].t 0
+assert out[5].f 0
+assert out[6].t 0
+assert out[6].f 0
+assert out[7].t 0
+assert out[7].f 0
+assert out[8].t 0
+assert out[8].f 0
+assert out[9].t 0
+assert out[9].f 0
+assert out[10].t 0
+assert out[10].f 0
+assert out[11].t 0
+assert out[11].f 0
+assert go_r 0
+set _Reset 1
+cycle
+mode run
+set in1[0].t 1
+set in1[0].f 0
+set in1[1].t 1
+set in1[1].f 0
+set in1[2].t 1
+set in1[2].f 0
+set in1[3].t 1
+set in1[3].f 0
+set in2[0].t 0
+set in2[0].f 1
+set in2[1].t 0
+set in2[1].f 1
+set in2[2].t 0
+set in2[2].f 1
+set in2[3].t 0
+set in2[3].f 1
+set in2[4].t 0
+set in2[4].f 1
+set in2[5].t 0
+set in2[5].f 1
+set in2[6].t 0
+set in2[6].f 1
+set in2[7].t 0
+set in2[7].f 1
+set go_r 1
+cycle
+
+assert out[0].t 1
+assert out[0].f 0
+assert out[1].t 1
+assert out[1].f 0
+assert out[2].t 1
+assert out[2].f 0
+assert out[3].t 1
+assert out[3].f 0
+assert out[4].t 0
+assert out[4].f 1
+assert out[5].t 0
+assert out[5].f 1
+assert out[6].t 0
+assert out[6].f 1
+assert out[7].t 0
+assert out[7].f 1
+assert out[8].t 0
+assert out[8].f 1
+assert out[9].t 0
+assert out[9].f 1
+assert out[10].t 0
+assert out[10].f 1
+assert out[11].t 0
+assert out[11].f 1
+assert go_r 1

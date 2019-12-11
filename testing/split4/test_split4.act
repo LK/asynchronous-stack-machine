@@ -1,7 +1,0 @@
-import "functions.act";
-
-dualrail in[12];
-dualrail out[4];
-bool go_r;
-
-bundled_split_4 s (go_r, in, out);

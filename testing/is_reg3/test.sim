@@ -1,0 +1,23 @@
+| units: 30 tech: scmos format: MIT
+p r/go_r Vdd r/_gor 2 5
+p r/_gor Vdd r/n#6 2 5
+p r/_gor Vdd r/n#10 2 5
+p r/out/d[1] Vdd r/n#13 4 5
+p GND Vdd r/n#14 8 3
+p r/out/d[0] Vdd r/n#16 4 5
+p GND Vdd r/n#17 8 3
+n r/go_r GND r/_gor 2 3
+n r/_gor GND r/out/d[1] 2 3
+n r/_gor GND r/out/d[0] 2 3
+n r/out/d[1] GND r/n#13 4 3
+n Vdd GND r/n#15 70 3
+n r/out/d[0] GND r/n#16 4 3
+n Vdd GND r/n#18 46 3
+p r/v0[1]/d[0] r/n#5 r/out/d[1] 2 5
+p r/n#13 r/n#14 r/out/d[1] 2 3
+n r/n#13 r/n#15 r/out/d[1] 2 3
+p r/v0[0]/d[0] r/n#6 r/n#5 2 5
+p r/v0[0]/d[1] r/n#10 r/out/d[0] 2 5
+p r/v0[1]/d[1] r/n#10 r/out/d[0] 2 5
+p r/n#16 r/n#17 r/out/d[0] 2 3
+n r/n#16 r/n#18 r/out/d[0] 2 3

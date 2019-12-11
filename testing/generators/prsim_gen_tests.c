@@ -84,7 +84,7 @@ int read_file(FILE * f, var * vars, int * len_vars, int * max_len_vars)
       {
         vars[i_vars].len_var_array *= 10;
         vars[i_vars].len_var_array += line[i] - '0';
-        printf("===> size=%d\n", vars[i_vars].len_var_array);
+        // printf("===> size=%d\n", vars[i_vars].len_var_array);
         i++;
         j++;
         if (i >= len)
@@ -131,7 +131,7 @@ int read_file(FILE * f, var * vars, int * len_vars, int * max_len_vars)
       while (k < vars[i_vars].len_var_array)
       {
         // skip unusable characters
-        while (i < len && line[i] != '0' && line[i] != '1' && line[i] != 'n' && line[i] != '\0') {
+        while (i < len && line[i] != '0' && line[i] != '1' && line[i] != 'n' && line[i] != 'r' && line[i] != '\0') {
           // printf("--> -- skip %c\n", line[i]);
           i++;
         }
@@ -145,7 +145,11 @@ int read_file(FILE * f, var * vars, int * len_vars, int * max_len_vars)
         }
 
         // otherwise add value to array
-        if (line[i] == 'n')
+        if (line[i] == 'r')
+        {
+          vars[i_vars].values[vars[i_vars].len_values][k] = -2;
+        }
+        else if (line[i] == 'n')
         {
           vars[i_vars].values[vars[i_vars].len_values][k] = -1;
         }
@@ -157,7 +161,7 @@ int read_file(FILE * f, var * vars, int * len_vars, int * max_len_vars)
         // printf("----> adding %d\n", vars[i_vars].values[vars[i_vars].len_values][k]);
 
         // detect
-        if (vars[i_vars].values[vars[i_vars].len_values][k] < -1 || vars[i_vars].values[vars[i_vars].len_values][k] > 1)
+        if (vars[i_vars].values[vars[i_vars].len_values][k] < -2 || vars[i_vars].values[vars[i_vars].len_values][k] > 1)
         {
           fprintf(stderr, "ERROR: invalid variable value %d from %c\n", vars[i_vars].values[vars[i_vars].len_values][k], line[i]);
           return -1;
@@ -236,6 +240,26 @@ void print_dualrail(FILE* f, char * prefix, char * varname, int arr_index, int t
   }
 }
 
+void print_irsim_var(FILE * f, char * prefix, char * varname, char * postfix, int arr_index, int val)
+{
+  if (val >=0 && arr_index >= 0)   // set array index value
+  {
+    fprintf(f, "%s%s\\[%d\\]%s %d\n", prefix, varname, arr_index, postfix, val);
+  }
+  else if (val >=0)              // set non-array variable value
+  {
+    fprintf(f, "%s%s%s %d\n", prefix, varname, postfix, val);
+  }
+  else if (arr_index >=0)                     // array, non-value
+  {
+    fprintf(f, "%s%s\\[%d\\]%s ", prefix, varname, arr_index, postfix);
+  }
+  else                                        // non-array, non-value
+  {
+    fprintf(f, "%s%s%s ", prefix, varname, postfix);
+  }
+}
+
 void print_prsim_test(FILE * f, var * vars, int len_vars, bool random, bool break_on_warn, bool reset, bool _reset)
 {
   int v, a, l;
@@ -281,12 +305,18 @@ void print_prsim_test(FILE * f, var * vars, int len_vars, bool random, bool brea
 
   // Reset
   fprintf(f, "mode reset\n");
-  fprintf(f, "set Reset 1\n");
-  fprintf(f, "set _Reset 0\n");
+  if (reset)
+  {
+    fprintf(f, "set Reset 1\n");
+  }
+  if (_reset)
+  {
+    fprintf(f, "set _Reset 0\n");
+  }
 
   for (v=0; v<len_vars; v++)                              // each var
   {
-    if (vars[v].len_values > 0 && vars[v].values[0][0] >= 0)    // only reset vars that are set to a val
+    if (vars[v].len_values > 0 && (vars[v].values[0][0] == -2 || vars[v].values[0][0] >= 0))    // only reset vars that are set to a val
     {
 
       for (a=0; a<vars[v].len_var_array; a++)               // each index of var array
@@ -329,8 +359,15 @@ void print_prsim_test(FILE * f, var * vars, int len_vars, bool random, bool brea
       }
     }
   }
-  fprintf(f, "set Reset 0\n");
-  fprintf(f, "set _Reset 1\n");
+
+  if (reset)
+  {
+    fprintf(f, "set Reset 0\n");
+  }
+  if (_reset)
+  {
+    fprintf(f, "set _Reset 1\n");
+  }
   fprintf(f, "cycle\n");
   fprintf(f, "mode run\n");
 
@@ -349,20 +386,26 @@ void print_prsim_test(FILE * f, var * vars, int len_vars, bool random, bool brea
         for (a=0; a<vars[v].len_var_array; a++)               // each index of var array
         {
           int arr_index = (vars[v].len_var_array == 1) ? -1 : a;
-
-          if (vars[v].values[l][a] >= 0)                       // skip 'd', don't set values
-          {
-            switch (vars[v].type) {
-              case BOOL:
+          switch (vars[v].type) {
+            case BOOL:
+              if (vars[v].values[l][a] >= 0)                    // skip "n", don't assert values
+              {
                 print_bool(f, "set", vars[v].varname, arr_index, vars[v].values[l][a]);
-                break;
-              case DUALRAIL:
+              }
+              break;
+            case DUALRAIL:
+              if (vars[v].values[l][a] >= 0)                    // skip "n", don't assert values
+              {
                 print_dualrail(f, "set", vars[v].varname, arr_index, vars[v].values[l][a], 1-vars[v].values[l][a]);
-                break;
-              default:
-                // do nothing
-                printf("Encountered unknown type\n");
-            }
+              }
+              else if (vars[v].values[l][a] == -2)            // 'r' means reset dualrail
+              {
+                print_dualrail(f, "set", vars[v].varname, arr_index, 0, 0);
+              }
+              break;
+            default:
+              // do nothing
+              printf("Encountered unknown type\n");
           }
         }
       }
@@ -376,20 +419,26 @@ void print_prsim_test(FILE * f, var * vars, int len_vars, bool random, bool brea
         for (a=0; a<vars[v].len_var_array; a++)               // each index of var array
         {
           int arr_index = (vars[v].len_var_array == 1) ? -1 : a;
-
-          if (vars[v].values[l+1][a] >= 0)                    // skip "d", don't assert values
-          {
-            switch (vars[v].type) {
-              case BOOL:
+          switch (vars[v].type) {
+            case BOOL:
+              if (vars[v].values[l+1][a] >= 0)                    // skip "n", don't assert values
+              {
                 print_bool(f, "assert", vars[v].varname, arr_index, vars[v].values[l+1][a]);
-                break;
-              case DUALRAIL:
+              }
+              break;
+            case DUALRAIL:
+              if (vars[v].values[l+1][a] >= 0)                    // skip "n", don't assert values
+              {
                 print_dualrail(f, "assert", vars[v].varname, arr_index, vars[v].values[l+1][a], 1-vars[v].values[l+1][a]);
-                break;
-              default:
-                // do nothing
-                printf("Encountered unknown type\n");
-            }
+              }
+              else if (vars[v].values[l+1][a] == -2)            // 'r' means reset dualrail
+              {
+                print_dualrail(f, "assert", vars[v].varname, arr_index, 0, 0);
+              }
+              break;
+            default:
+              // do nothing
+              printf("Encountered unknown type\n");
           }
         }
       }
@@ -397,11 +446,322 @@ void print_prsim_test(FILE * f, var * vars, int len_vars, bool random, bool brea
   }
 }
 
+void print_irsim_test(FILE * f, var * vars, int len_vars, bool reset, bool _reset)
+{
+  int i, l, v, a;
+
+  // Declare Vars to Graph
+  fprintf(f, "ana GND! Vdd! ");
+  if (reset)
+  {
+    fprintf(f, "Reset ");
+  }
+  if (_reset)
+  {
+    fprintf(f, "_Reset ");
+  }
+  for (v=0; v<len_vars; v++)                              // each var
+  {
+    for (a=0; a<vars[v].len_var_array; a++)               // each index of var array
+    {
+      int arr_index = (vars[v].len_var_array == 1) ? -1 : a;
+      switch (vars[v].type) {
+        case BOOL:
+          print_irsim_var(f, "", vars[v].varname, "", arr_index, -1);
+          break;
+        case DUALRAIL:
+          print_irsim_var(f, "", vars[v].varname, "/t", arr_index, -1);
+          print_irsim_var(f, "", vars[v].varname, "/f", arr_index, -1);
+          break;
+        default:
+          // do nothing
+          printf("Encountered unknown type\n");
+      }
+    }
+  }
+
+  // Set GND & Vdd, and set on/off Reset
+  fprintf(f, "\n");
+  fprintf(f, "h Vdd!\nl GND!\n");
+  if (reset)
+  {
+    fprintf(f, "h Reset\n");
+    fprintf(f, "s\n");
+    fprintf(f, "l Reset ");
+  }
+  if (_reset)
+  {
+    fprintf(f, "l _Reset\n");
+    fprintf(f, "s\n");
+    fprintf(f, "h Reset\n");
+  }
+  fprintf(f, "s\n");
+
+  int max_cycles = vars[vars->num_cycles].len_values;
+  int highs[max_cycles * 12][2]; // FIX CONSTANT LATER
+  int lows[max_cycles * 12][2]; // FIX CONSTANT LATER
+  int resets[max_cycles * 12][2]; // FIX CONSTANT LATER
+  int len_highs;
+  int len_lows;
+  int len_resets;
+
+  // Set Values, Cycle, & Assert
+  for (l=0; l<max_cycles; l+=2)   // highest num of set/out value
+  {
+    len_highs = 0;
+    len_lows = 0;
+    len_resets = 0;
+    for (v=0; v<len_vars; v++)                              // each var
+    {
+      printf("---S v=%s: t=%d len=%d\n", vars[v].varname, vars[v].type, vars[v].len_values);
+
+      // printf("v=%s l=%d max=%d\n", vars[v].varname, l, vars[v].len_values);
+      if (l < vars[v].len_values)
+      {
+        // printf("---> Setting %s\n", vars[v].varname);
+        for (a=0; a<vars[v].len_var_array; a++)               // each index of var array
+        {
+          printf("---S --- l=%d a=%d vals[%d][%d]=%d\n", l, a, l, a, vars[v].values[l][a]);
+          if (vars[v].type == DUALRAIL && (vars[v].values[l][a] == 1 || vars[v].values[l][a] == 0))
+          {
+            highs[len_highs][0] = v;
+            highs[len_highs][1] = a;
+            len_highs++;
+            lows[len_lows][0] = v;
+            lows[len_lows][1] = a;
+            len_lows++;
+          }
+          else if (vars[v].type == BOOL && vars[v].values[l][a] == 0)
+          {
+            lows[len_lows][0] = v;
+            lows[len_lows][1] = a;
+            len_lows++;
+          }
+          else if (vars[v].type == BOOL && vars[v].values[l][a] == 1)
+          {
+            highs[len_highs][0] = v;
+            highs[len_highs][1] = a;
+            len_highs++;
+          }
+          else if (vars[v].values[l][a] == -2)
+          {
+            resets[len_resets][0] = v;
+            resets[len_resets][1] = a;
+            len_resets++;
+          }
+        }
+      }
+    }
+
+    printf("SET #highs=%d, #lows=%d, #resets=%d\n", len_highs, len_lows, len_resets);
+
+    // Print out HIGH values
+    if (len_highs > 0)
+      fprintf(f, "h ");
+
+    for (i=0; i<len_highs; i++)
+    {
+      v = highs[i][0];
+      a = highs[i][1];
+      int arr_index = (vars[v].len_var_array == 1) ? -1 : a;
+      switch (vars[v].type) {
+        case BOOL:
+          print_irsim_var(f, "", vars[v].varname, "", arr_index, -1);
+          break;
+        case DUALRAIL:
+          print_irsim_var(f, "", vars[v].varname,  ((vars[v].values[l][a] == 1) ? "/t" : "/f"), arr_index, -1);
+          break;
+        default:
+          // do nothing
+          printf("Encountered unknown type\n");
+      }
+    }
+    fprintf(f, "\n");
+
+    // Print out LOW values (ncluding resets)
+    if (len_lows > 0 || len_resets > 0)
+      fprintf(f, "l ");
+
+    for (i=0; i<len_lows; i++)
+    {
+      v = lows[i][0];
+      a = lows[i][1];
+      int arr_index = (vars[v].len_var_array == 1) ? -1 : a;
+      switch (vars[v].type) {
+        case BOOL:
+          print_irsim_var(f, "", vars[v].varname, "", arr_index, -1);
+          break;
+        case DUALRAIL:
+          print_irsim_var(f, "", vars[v].varname, ((vars[v].values[l][a] == 0) ? "/t" : "/f"), arr_index, -1);
+          break;
+        default:
+          // do nothing
+          printf("Encountered unknown type\n");
+      }
+    }
+    for (i=0; i<len_resets; i++)
+    {
+      v = resets[i][0];
+      a = resets[i][1];
+      int arr_index = (vars[v].len_var_array == 1) ? -1 : a;
+      switch (vars[v].type) {
+        case BOOL:
+          print_irsim_var(f, "", vars[v].varname, "", arr_index, -1);
+          break;
+        case DUALRAIL:
+          print_irsim_var(f, "", vars[v].varname, "/t", arr_index, -1);
+          print_irsim_var(f, "", vars[v].varname, "/f", arr_index, -1);
+          break;
+        default:
+          // do nothing
+          printf("Encountered unknown type\n");
+      }
+    }
+    fprintf(f, "\n");
+
+    // STEP in simulation
+    fprintf(f, "s\n");
+
+    //  Check outputs
+    len_highs = 0;
+    len_lows = 0;
+    len_resets = 0;
+
+    for (v=0; v<len_vars; v++)                              // each var
+    {
+      printf("---A v=%s: t=%d len=%d\n", vars[v].varname, vars[v].type, vars[v].len_values);
+
+      // printf("v=%s l=%d max=%d\n", vars[v].varname, l, vars[v].len_values);
+      if (l+1 < vars[v].len_values)
+      {
+        // printf("---> Setting %s\n", vars[v].varname);
+        for (a=0; a<vars[v].len_var_array; a++)               // each index of var array
+        {
+          printf("---A --- l+1=%d a=%d vals[%d][%d]=%d\n", l+1, a, l+1, a, vars[v].values[l+1][a]);
+
+
+          if (vars[v].type == DUALRAIL && (vars[v].values[l+1][a] == 1 || vars[v].values[l+1][a] == 0))
+          {
+            highs[len_highs][0] = v;
+            highs[len_highs][1] = a;
+            len_highs++;
+            lows[len_lows][0] = v;
+            lows[len_lows][1] = a;
+            len_lows++;
+          }
+          else if (vars[v].type == BOOL && vars[v].values[l+1][a] == 0)
+          {
+            lows[len_lows][0] = v;
+            lows[len_lows][1] = a;
+            len_lows++;
+          }
+          else if (vars[v].type == BOOL && vars[v].values[l+1][a] == 1)
+          {
+            highs[len_highs][0] = v;
+            highs[len_highs][1] = a;
+            len_highs++;
+          }
+          else if (vars[v].values[l+1][a] == -2)
+          {
+            resets[len_resets][0] = v;
+            resets[len_resets][1] = a;
+            len_resets++;
+          }
+        }
+      }
+    }
+
+    printf("ASSERT #highs=%d, #lows=%d, #resets=%d\n", len_highs, len_lows, len_resets);
+
+    // Assert HIGH values
+    for (i=0; i<len_highs; i++)
+    {
+      v = highs[i][0];
+      a = highs[i][1];
+      int arr_index = (vars[v].len_var_array == 1) ? -1 : a;
+      switch (vars[v].type) {
+        case BOOL:
+          print_irsim_var(f, "assert ", vars[v].varname, "", arr_index, 1);
+          break;
+        case DUALRAIL:
+          print_irsim_var(f, "assert ", vars[v].varname, ((vars[v].values[l+1][a] == 1) ? "/t" : "/f"), arr_index, 1);
+          break;
+        default:
+          // do nothing
+          printf("Encountered unknown type\n");
+      }
+    }
+
+    // Assert LOW values
+    for (i=0; i<len_lows; i++)
+    {
+      v = lows[i][0];
+      a = lows[i][1];
+      int arr_index = (vars[v].len_var_array == 1) ? -1 : a;
+      switch (vars[v].type) {
+        case BOOL:
+          print_irsim_var(f, "assert ", vars[v].varname, "", arr_index, 0);
+          break;
+        case DUALRAIL:
+          print_irsim_var(f, "assert ", vars[v].varname, ((vars[v].values[l+1][a] == 0) ? "/t" : "/f"), arr_index, 0);
+          break;
+        default:
+          // do nothing
+          printf("Encountered unknown type\n");
+      }
+    }
+    for (i=0; i<len_resets; i++)
+    {
+      v = resets[i][0];
+      a = resets[i][1];
+      int arr_index = (vars[v].len_var_array == 1) ? -1 : a;
+      switch (vars[v].type) {
+        case BOOL:
+          print_irsim_var(f, "assert ", vars[v].varname, "", arr_index,0);
+          break;
+        case DUALRAIL:
+          print_irsim_var(f, "assert ", vars[v].varname, "/t", arr_index,0);
+          print_irsim_var(f, "assert ", vars[v].varname, "/f", arr_index,0);
+          break;
+        default:
+          // do nothing
+          printf("Encountered unknown type\n");
+      }
+    }
+    fprintf(f, "\n");
+
+          /*
+          int arr_index = (vars[v].len_var_array == 1) ? -1 : a;
+          switch (vars[v].type) {
+            case BOOL:
+              if (vars[v].values[l+1][a] >= 0)                    // skip "n", don't assert values
+              {
+                print_irsim_var(f, vars[v].varname, arr_index, vars[v].values[l][a]);
+              }
+              break;
+            case DUALRAIL:
+              if (vars[v].values[l][a] >= 0)                    // skip "n", don't assert values
+              {
+                print_irsim_dualrail(f, vars[v].varname, arr_index, vars[v].values[l][a], 1-vars[v].values[l][a]);
+              }
+              else if (vars[v].values[l][a] == -2)            // 'r' means reset dualrail
+              {
+                print_irsim_dualrail(f, vars[v].varname, arr_index, 0, 0);
+              }
+              break;
+            default:
+              // do nothing
+              printf("Encountered unknown type\n");
+          }
+          */
+  }
+}
+
 void print_vars(var * vars, int len_vars)
 {
   for (int i=0; i<len_vars; i++)
   {
-    printf("%s = type %d, array size %d, num vals %d:\t= { ", vars[i].varname, vars[i].type, vars[i].len_var_array, vars[i].len_values);
+    printf("%s = type %d, array size %d, num vals %d:\n= { ", vars[i].varname, vars[i].type, vars[i].len_var_array, vars[i].len_values);
     for (int l=0; l<vars[i].len_values; l++)
     {
       printf("[");
@@ -429,7 +789,7 @@ int main (int argc, char * argv[])
   FILE * out = fopen(argv[2], "w");
   if (in == NULL || out == NULL)
   {
-    fprintf(stderr, "ERROR: cannot open %s", (in == NULL ? argv[1] : argv[2]));
+    fprintf(stderr, "ERROR: cannot open %s\n", (in == NULL ? argv[1] : argv[2]));
     return 0;
   }
 
@@ -438,6 +798,8 @@ int main (int argc, char * argv[])
   bool bow = false;
   bool reset = false;
   bool _reset = false;
+  bool irsim = false;
+  bool prsim = false;
 
   for (int i=3; i<argc; i++)
   {
@@ -456,6 +818,14 @@ int main (int argc, char * argv[])
     else if (strcmp(argv[i], "--_reset") == 0)
     {
       _reset = true;
+    }
+    else if (strcmp(argv[i], "--irsim") == 0)
+    {
+      irsim = true;
+    }
+    else if (strcmp(argv[i], "--prsim") == 0)
+    {
+      prsim = true;
     }
   }
 
@@ -481,8 +851,18 @@ int main (int argc, char * argv[])
   print_vars(vars, len_vars);
 
   // print out prsim file
-  print_prsim_test(out, vars, len_vars, random, bow, reset, _reset);
+  if (prsim)
+  {
+    print_prsim_test(out, vars, len_vars, random, bow, reset, _reset);
+    printf("\n... Done: prsim test written to %s\n", argv[2]);
+  }
 
+  // print out irsim file
+  if (irsim)
+  {
+    print_irsim_test(out, vars, len_vars, reset, _reset);
+    printf("\n... Done: irsim test written to %s\n", argv[2]);
+  }
   return 1;
 }
 

@@ -1,0 +1,3 @@
+bool go_r 0,0, 1,1, 0,0, 1,1, 0,0, 1,1, 0,0, 1,1
+dualrail v0[8] rrrrrrrr,rrrrrrrr, 00001100,nnnnnnnn, rrrrrrrr, rrrrrrrr, 10011000,nnnnnnnn, rrrrrrrr, rrrrrrrr, 01011000,nnnnnnnn, rrrrrrrr, rrrrrrrr, 11000011,nnnnnnnn
+dualrail out n,r, n, 0, n, r, n, 0, n, r, n, 0, n, r, n, 1

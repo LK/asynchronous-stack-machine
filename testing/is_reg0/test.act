@@ -1,0 +1,7 @@
+import "functions.act";
+
+bool go_r;
+dualrail v0[8];
+dualrail out;
+
+bundled_is_reg0_1 r (go_r, v0, out);

@@ -1,0 +1,4 @@
+dualrail in1[4] 1111, nnnn
+dualrail in2[8] 00000000, nnnnnnnn
+dualrail out[12] nnnnnnnnnnnn, 111100000000
+bool go_r 1,1 

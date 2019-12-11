@@ -1,0 +1,107 @@
+ana GND! Vdd! _Reset in\[0\]/t in\[0\]/f in\[1\]/t in\[1\]/f in\[2\]/t in\[2\]/f in\[3\]/t in\[3\]/f in\[4\]/t in\[4\]/f in\[5\]/t in\[5\]/f in\[6\]/t in\[6\]/f in\[7\]/t in\[7\]/f in\[8\]/t in\[8\]/f in\[9\]/t in\[9\]/f in\[10\]/t in\[10\]/f in\[11\]/t in\[11\]/f out\[0\]/t out\[0\]/f out\[1\]/t out\[1\]/f out\[2\]/t out\[2\]/f out\[3\]/t out\[3\]/f go_r 
+h Vdd!
+l GND!
+l _Reset
+s
+h Reset
+s
+
+l go_r in\[0\]/t in\[0\]/f in\[1\]/t in\[1\]/f in\[2\]/t in\[2\]/f in\[3\]/t in\[3\]/f in\[4\]/t in\[4\]/f in\[5\]/t in\[5\]/f in\[6\]/t in\[6\]/f in\[7\]/t in\[7\]/f in\[8\]/t in\[8\]/f in\[9\]/t in\[9\]/f in\[10\]/t in\[10\]/f in\[11\]/t in\[11\]/f 
+s
+assert go_r 0
+assert in\[0\]/t 0
+assert in\[0\]/f 0
+assert in\[1\]/t 0
+assert in\[1\]/f 0
+assert in\[2\]/t 0
+assert in\[2\]/f 0
+assert in\[3\]/t 0
+assert in\[3\]/f 0
+assert in\[4\]/t 0
+assert in\[4\]/f 0
+assert in\[5\]/t 0
+assert in\[5\]/f 0
+assert in\[6\]/t 0
+assert in\[6\]/f 0
+assert in\[7\]/t 0
+assert in\[7\]/f 0
+assert in\[8\]/t 0
+assert in\[8\]/f 0
+assert in\[9\]/t 0
+assert in\[9\]/f 0
+assert in\[10\]/t 0
+assert in\[10\]/f 0
+assert in\[11\]/t 0
+assert in\[11\]/f 0
+assert out\[0\]/t 0
+assert out\[0\]/f 0
+assert out\[1\]/t 0
+assert out\[1\]/f 0
+assert out\[2\]/t 0
+assert out\[2\]/f 0
+assert out\[3\]/t 0
+assert out\[3\]/f 0
+
+h in\[0\]/t in\[1\]/t in\[2\]/t in\[3\]/f in\[4\]/f in\[5\]/f in\[6\]/f in\[7\]/f in\[8\]/f in\[9\]/f in\[10\]/f in\[11\]/f go_r 
+l in\[0\]/f in\[1\]/f in\[2\]/f in\[3\]/t in\[4\]/t in\[5\]/t in\[6\]/t in\[7\]/t in\[8\]/t in\[9\]/t in\[10\]/t in\[11\]/t 
+s
+assert out\[0\]/t 1
+assert out\[1\]/t 1
+assert out\[2\]/t 1
+assert out\[3\]/f 1
+assert go_r 1
+assert out\[0\]/f 0
+assert out\[1\]/f 0
+assert out\[2\]/f 0
+assert out\[3\]/t 0
+
+
+l go_r in\[0\]/t in\[0\]/f in\[1\]/t in\[1\]/f in\[2\]/t in\[2\]/f in\[3\]/t in\[3\]/f in\[4\]/t in\[4\]/f in\[5\]/t in\[5\]/f in\[6\]/t in\[6\]/f in\[7\]/t in\[7\]/f in\[8\]/t in\[8\]/f in\[9\]/t in\[9\]/f in\[10\]/t in\[10\]/f in\[11\]/t in\[11\]/f 
+s
+assert go_r 0
+assert in\[0\]/t 0
+assert in\[0\]/f 0
+assert in\[1\]/t 0
+assert in\[1\]/f 0
+assert in\[2\]/t 0
+assert in\[2\]/f 0
+assert in\[3\]/t 0
+assert in\[3\]/f 0
+assert in\[4\]/t 0
+assert in\[4\]/f 0
+assert in\[5\]/t 0
+assert in\[5\]/f 0
+assert in\[6\]/t 0
+assert in\[6\]/f 0
+assert in\[7\]/t 0
+assert in\[7\]/f 0
+assert in\[8\]/t 0
+assert in\[8\]/f 0
+assert in\[9\]/t 0
+assert in\[9\]/f 0
+assert in\[10\]/t 0
+assert in\[10\]/f 0
+assert in\[11\]/t 0
+assert in\[11\]/f 0
+assert out\[0\]/t 0
+assert out\[0\]/f 0
+assert out\[1\]/t 0
+assert out\[1\]/f 0
+assert out\[2\]/t 0
+assert out\[2\]/f 0
+assert out\[3\]/t 0
+assert out\[3\]/f 0
+
+h in\[0\]/f in\[1\]/f in\[2\]/f in\[3\]/t in\[4\]/t in\[5\]/t in\[6\]/t in\[7\]/t in\[8\]/t in\[9\]/t in\[10\]/t in\[11\]/t go_r 
+l in\[0\]/t in\[1\]/t in\[2\]/t in\[3\]/f in\[4\]/f in\[5\]/f in\[6\]/f in\[7\]/f in\[8\]/f in\[9\]/f in\[10\]/f in\[11\]/f 
+s
+assert out\[0\]/f 1
+assert out\[1\]/f 1
+assert out\[2\]/f 1
+assert out\[3\]/t 1
+assert go_r 1
+assert out\[0\]/t 0
+assert out\[1\]/t 0
+assert out\[2\]/t 0
+assert out\[3\]/f 0
+
