@@ -112,7 +112,7 @@ chp {
       [ is_branch_1(fetch_op) = 1 -> FEX!(temp); FEX!(pc_index); FEX?(pc_index)
       [] else -> pc_index := pcincrement_12(pc_index); FEX!(temp); FEX?(temp)
       ]
-  ] ||
+  ]/* ||
   *[ FEX?exec_temp; exec_op := split_4(exec_temp); exec_data := split_8(exec_temp);
     [ is_pushc_1(exec_op) = 1 -> stack0_op_chan!1; stack0_comm_chan!exec_data
     [] is_pop_1(exec_op) = 1 -> stack0_op_chan!0; stack0_comm_chan?exec_data
@@ -215,5 +215,5 @@ chp {
 	*[ stack10_op_chan?stack10_op;
 	[ stack10_op -> stack10_comm_chan?stack10_data
 	[] ~stack10_op -> stack10_comm_chan!stack10_data
-	] ]
+	] ] */
 }

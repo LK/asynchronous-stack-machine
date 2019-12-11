@@ -1,0 +1,112 @@
+/* opcodes
+    0000 = HALT
+    0001 = PUSHC
+    0010 = POP
+    0011 = POPOUT
+    0100 = PUSHREG
+    0101 = POPREG
+    0110 = ADD
+    0111 = SUB
+    1000 = JMP
+    1001 = BRZ
+    1010 = BRLZ
+*/
+
+vars {
+  /* Off-chip interface */
+  chan<12> PC;
+  chan<12> IN;
+  chan<12> OUT;
+
+  /* FETCH */
+  chan<12> FEX;
+  int<4> fetch_op;
+  int<8> fetch_data;
+  int<12> temp;
+  int<12> pc_index;
+
+  /* EXECUTE */
+  int<4> exec_op;
+  int<8> exec_data;
+  int<8> exec_dump;
+  int<12> exec_temp;
+  int<12> exec_pc;
+
+  /* STACK */
+  int<1> stack0_is_full;
+	int<1> stack0_op;
+	int<8> stack0_data;
+	chan<1> stack0_op_chan;
+	chan<8> stack0_comm_chan;
+
+	int<1> stack1_is_full;
+	int<1> stack1_op;
+	int<8> stack1_data;
+	chan<1> stack1_op_chan;
+	chan<8> stack1_comm_chan;
+
+	int<1> stack2_is_full;
+	int<1> stack2_op;
+	int<8> stack2_data;
+	chan<1> stack2_op_chan;
+	chan<8> stack2_comm_chan;
+
+	int<1> stack3_is_full;
+	int<1> stack3_op;
+	int<8> stack3_data;
+	chan<1> stack3_op_chan;
+	chan<8> stack3_comm_chan;
+
+	int<1> stack4_is_full;
+	int<1> stack4_op;
+	int<8> stack4_data;
+	chan<1> stack4_op_chan;
+	chan<8> stack4_comm_chan;
+
+	int<1> stack5_is_full;
+	int<1> stack5_op;
+	int<8> stack5_data;
+	chan<1> stack5_op_chan;
+	chan<8> stack5_comm_chan;
+
+	int<1> stack6_is_full;
+	int<1> stack6_op;
+	int<8> stack6_data;
+	chan<1> stack6_op_chan;
+	chan<8> stack6_comm_chan;
+
+	int<1> stack7_is_full;
+	int<1> stack7_op;
+	int<8> stack7_data;
+	chan<1> stack7_op_chan;
+	chan<8> stack7_comm_chan;
+
+	int<1> stack8_is_full;
+	int<1> stack8_op;
+	int<8> stack8_data;
+	chan<1> stack8_op_chan;
+	chan<8> stack8_comm_chan;
+
+	int<1> stack9_is_full;
+	int<1> stack9_op;
+	int<8> stack9_data;
+	chan<1> stack9_op_chan;
+	chan<8> stack9_comm_chan;
+
+	int<1> stack10_is_full;
+	int<1> stack10_op;
+	int<8> stack10_data;
+	chan<1> stack10_op_chan;
+	chan<8> stack10_comm_chan;
+
+  /* REGS */
+  int<8> reg0;
+  int<8> reg1;
+  int<8> reg2;
+  int<8> reg3;
+}
+
+
+chp {
+  *[ PC!(pc_index); IN?(temp) ]
+}
