@@ -84,7 +84,7 @@ int read_file(FILE * f, var * vars, int * len_vars, int * max_len_vars)
       {
         vars[i_vars].len_var_array *= 10;
         vars[i_vars].len_var_array += line[i] - '0';
-        printf("===> size=%d\n", vars[i_vars].len_var_array);
+        // printf("===> size=%d\n", vars[i_vars].len_var_array);
         i++;
         j++;
         if (i >= len)
@@ -131,7 +131,7 @@ int read_file(FILE * f, var * vars, int * len_vars, int * max_len_vars)
       while (k < vars[i_vars].len_var_array)
       {
         // skip unusable characters
-        while (i < len && line[i] != '0' && line[i] != '1' && line[i] != 'n' && line[i] != '\0') {
+        while (i < len && line[i] != '0' && line[i] != '1' && line[i] != 'n' && line[i] != 'r' && line[i] != '\0') {
           // printf("--> -- skip %c\n", line[i]);
           i++;
         }
@@ -145,7 +145,11 @@ int read_file(FILE * f, var * vars, int * len_vars, int * max_len_vars)
         }
 
         // otherwise add value to array
-        if (line[i] == 'n')
+        if (line[i] == 'r')
+        {
+          vars[i_vars].values[vars[i_vars].len_values][k] = -2;
+        }
+        else if (line[i] == 'n')
         {
           vars[i_vars].values[vars[i_vars].len_values][k] = -1;
         }
@@ -157,7 +161,7 @@ int read_file(FILE * f, var * vars, int * len_vars, int * max_len_vars)
         // printf("----> adding %d\n", vars[i_vars].values[vars[i_vars].len_values][k]);
 
         // detect
-        if (vars[i_vars].values[vars[i_vars].len_values][k] < -1 || vars[i_vars].values[vars[i_vars].len_values][k] > 1)
+        if (vars[i_vars].values[vars[i_vars].len_values][k] < -2 || vars[i_vars].values[vars[i_vars].len_values][k] > 1)
         {
           fprintf(stderr, "ERROR: invalid variable value %d from %c\n", vars[i_vars].values[vars[i_vars].len_values][k], line[i]);
           return -1;
@@ -281,8 +285,14 @@ void print_prsim_test(FILE * f, var * vars, int len_vars, bool random, bool brea
 
   // Reset
   fprintf(f, "mode reset\n");
-  fprintf(f, "set Reset 1\n");
-  fprintf(f, "set _Reset 0\n");
+  if (reset)
+  {
+    fprintf(f, "set Reset 1\n");
+  }
+  if (_reset)
+  {
+    fprintf(f, "set _Reset 0\n");
+  }
 
   for (v=0; v<len_vars; v++)                              // each var
   {
@@ -329,8 +339,15 @@ void print_prsim_test(FILE * f, var * vars, int len_vars, bool random, bool brea
       }
     }
   }
-  fprintf(f, "set Reset 0\n");
-  fprintf(f, "set _Reset 1\n");
+
+  if (reset)
+  {
+    fprintf(f, "set Reset 0\n");
+  }
+  if (_reset)
+  {
+    fprintf(f, "set _Reset 1\n");
+  }
   fprintf(f, "cycle\n");
   fprintf(f, "mode run\n");
 
@@ -349,20 +366,26 @@ void print_prsim_test(FILE * f, var * vars, int len_vars, bool random, bool brea
         for (a=0; a<vars[v].len_var_array; a++)               // each index of var array
         {
           int arr_index = (vars[v].len_var_array == 1) ? -1 : a;
-
-          if (vars[v].values[l][a] >= 0)                       // skip 'd', don't set values
-          {
-            switch (vars[v].type) {
-              case BOOL:
+          switch (vars[v].type) {
+            case BOOL:
+              if (vars[v].values[l][a] >= 0)                    // skip "n", don't assert values
+              {
                 print_bool(f, "set", vars[v].varname, arr_index, vars[v].values[l][a]);
-                break;
-              case DUALRAIL:
+              }
+              break;
+            case DUALRAIL:
+              if (vars[v].values[l][a] >= 0)                    // skip "n", don't assert values
+              {
                 print_dualrail(f, "set", vars[v].varname, arr_index, vars[v].values[l][a], 1-vars[v].values[l][a]);
-                break;
-              default:
-                // do nothing
-                printf("Encountered unknown type\n");
-            }
+              }
+              else if (vars[v].values[l][a] == -2)            // 'r' means reset dualrail
+              {
+                print_dualrail(f, "set", vars[v].varname, arr_index, 0, 0);
+              }
+              break;
+            default:
+              // do nothing
+              printf("Encountered unknown type\n");
           }
         }
       }
@@ -376,20 +399,26 @@ void print_prsim_test(FILE * f, var * vars, int len_vars, bool random, bool brea
         for (a=0; a<vars[v].len_var_array; a++)               // each index of var array
         {
           int arr_index = (vars[v].len_var_array == 1) ? -1 : a;
-
-          if (vars[v].values[l+1][a] >= 0)                    // skip "d", don't assert values
-          {
-            switch (vars[v].type) {
-              case BOOL:
+          switch (vars[v].type) {
+            case BOOL:
+              if (vars[v].values[l+1][a] >= 0)                    // skip "n", don't assert values
+              {
                 print_bool(f, "assert", vars[v].varname, arr_index, vars[v].values[l+1][a]);
-                break;
-              case DUALRAIL:
+              }
+              break;
+            case DUALRAIL:
+              if (vars[v].values[l+1][a] >= 0)                    // skip "n", don't assert values
+              {
                 print_dualrail(f, "assert", vars[v].varname, arr_index, vars[v].values[l+1][a], 1-vars[v].values[l+1][a]);
-                break;
-              default:
-                // do nothing
-                printf("Encountered unknown type\n");
-            }
+              }
+              else if (vars[v].values[l+1][a] == -2)            // 'r' means reset dualrail
+              {
+                print_dualrail(f, "assert", vars[v].varname, arr_index, 0, 0);
+              }
+              break;
+            default:
+              // do nothing
+              printf("Encountered unknown type\n");
           }
         }
       }
@@ -401,7 +430,7 @@ void print_vars(var * vars, int len_vars)
 {
   for (int i=0; i<len_vars; i++)
   {
-    printf("%s = type %d, array size %d, num vals %d:\t= { ", vars[i].varname, vars[i].type, vars[i].len_var_array, vars[i].len_values);
+    printf("%s = type %d, array size %d, num vals %d:\n= { ", vars[i].varname, vars[i].type, vars[i].len_var_array, vars[i].len_values);
     for (int l=0; l<vars[i].len_values; l++)
     {
       printf("[");

@@ -1,0 +1,5 @@
+bool go_r 1,1, 0,0, 1,1, 0,0, 1,1,
+bool f.d.out n
+dualrail v0[8] 11110000, nnnnnnnn, rrrrrrrr, rrrrrrrr, 11111111, nnnnnnnn, rrrrrrrr, rrrrrrrr, 11000001, nnnnnnnn,
+dualrail v1[8] 10000000, nnnnnnnn, rrrrrrrr, rrrrrrrr, 10000001, nnnnnnnn, rrrrrrrr, rrrrrrrr, 11111100, nnnnnnnn,
+dualrail out[8] nnnnnnnn, 00001000, nnnnnnnn, rrrrrrrr, nnnnnnnn, 00000001, nnnnnnnn, rrrrrrrr, nnnnnnnn, 01000011,

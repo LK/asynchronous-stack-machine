@@ -1,3 +1,0 @@
-dualrail in[12] 000000000000, nnnnnnnnnnnn
-dualrail out[8] nnnnnnnn, 00000000
-bool go_r 1,1
