@@ -110,7 +110,7 @@ defproc bundled_is_zero_1(bool go_r; dualrail v0[12]; dualrail out) {
   prs {
     go_r => _gor-
     ~_gor & ((&i:12: ~v0[i].t)) -> out.t+
-    ~_gor & ((|i:12: ~v0[0].f)) -> out.f+
+    ~_gor & ((|i:12: ~v0[i].f)) -> out.f+
     _gor -> out.t-
     _gor -> out.f-
   }

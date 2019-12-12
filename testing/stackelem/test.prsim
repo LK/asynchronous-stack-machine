@@ -1,0 +1,479 @@
+initialize
+random
+watch Reset
+watch _Reset
+watch test_op.t
+watch test_op.f
+watch test_data[0].t
+watch test_data[0].f
+watch test_data[1].t
+watch test_data[1].f
+watch test_data[2].t
+watch test_data[2].f
+watch test_data[3].t
+watch test_data[3].f
+watch test_data[4].t
+watch test_data[4].f
+watch test_data[5].t
+watch test_data[5].f
+watch test_data[6].t
+watch test_data[6].f
+watch test_data[7].t
+watch test_data[7].f
+watch ctrl.t
+watch ctrl.f
+watch t.var_stack9_is_full.v.t
+watch t.var_stack9_is_full.v.f
+watch t.var_stack10_is_full.v.t
+watch t.var_stack10_is_full.v.f
+watch t.var_stack9_data[0].v.t
+watch t.var_stack9_data[0].v.f
+watch t.var_stack9_data[1].v.t
+watch t.var_stack9_data[1].v.f
+watch t.var_stack9_data[2].v.t
+watch t.var_stack9_data[2].v.f
+watch t.var_stack9_data[3].v.t
+watch t.var_stack9_data[3].v.f
+watch t.var_stack9_data[4].v.t
+watch t.var_stack9_data[4].v.f
+watch t.var_stack9_data[5].v.t
+watch t.var_stack9_data[5].v.f
+watch t.var_stack9_data[6].v.t
+watch t.var_stack9_data[6].v.f
+watch t.var_stack9_data[7].v.t
+watch t.var_stack9_data[7].v.f
+watch t.var_stack10_data[0].v.t
+watch t.var_stack10_data[0].v.f
+watch t.var_stack10_data[1].v.t
+watch t.var_stack10_data[1].v.f
+watch t.var_stack10_data[2].v.t
+watch t.var_stack10_data[2].v.f
+watch t.var_stack10_data[3].v.t
+watch t.var_stack10_data[3].v.f
+watch t.var_stack10_data[4].v.t
+watch t.var_stack10_data[4].v.f
+watch t.var_stack10_data[5].v.t
+watch t.var_stack10_data[5].v.f
+watch t.var_stack10_data[6].v.t
+watch t.var_stack10_data[6].v.f
+watch t.var_stack10_data[7].v.t
+watch t.var_stack10_data[7].v.f
+watch go.r
+watch go.a
+watch t.chan_stack9_comm_chan.d[0].t
+watch t.chan_stack9_comm_chan.d[0].f
+watch t.chan_stack9_comm_chan.d[1].t
+watch t.chan_stack9_comm_chan.d[1].f
+watch t.chan_stack9_comm_chan.d[2].t
+watch t.chan_stack9_comm_chan.d[2].f
+watch t.chan_stack9_comm_chan.d[3].t
+watch t.chan_stack9_comm_chan.d[3].f
+watch t.chan_stack9_comm_chan.d[4].t
+watch t.chan_stack9_comm_chan.d[4].f
+watch t.chan_stack9_comm_chan.d[5].t
+watch t.chan_stack9_comm_chan.d[5].f
+watch t.chan_stack9_comm_chan.d[6].t
+watch t.chan_stack9_comm_chan.d[6].f
+watch t.chan_stack9_comm_chan.d[7].t
+watch t.chan_stack9_comm_chan.d[7].f
+watch t.chan_stack10_comm_chan.d[0].t
+watch t.chan_stack10_comm_chan.d[0].f
+watch t.chan_stack10_comm_chan.d[1].t
+watch t.chan_stack10_comm_chan.d[1].f
+watch t.chan_stack10_comm_chan.d[2].t
+watch t.chan_stack10_comm_chan.d[2].f
+watch t.chan_stack10_comm_chan.d[3].t
+watch t.chan_stack10_comm_chan.d[3].f
+watch t.chan_stack10_comm_chan.d[4].t
+watch t.chan_stack10_comm_chan.d[4].f
+watch t.chan_stack10_comm_chan.d[5].t
+watch t.chan_stack10_comm_chan.d[5].f
+watch t.chan_stack10_comm_chan.d[6].t
+watch t.chan_stack10_comm_chan.d[6].f
+watch t.chan_stack10_comm_chan.d[7].t
+watch t.chan_stack10_comm_chan.d[7].f
+set_principal test_op.t
+set_principal test_op.f
+set_principal test_data[0].t
+set_principal test_data[0].f
+set_principal test_data[1].t
+set_principal test_data[1].f
+set_principal test_data[2].t
+set_principal test_data[2].f
+set_principal test_data[3].t
+set_principal test_data[3].f
+set_principal test_data[4].t
+set_principal test_data[4].f
+set_principal test_data[5].t
+set_principal test_data[5].f
+set_principal test_data[6].t
+set_principal test_data[6].f
+set_principal test_data[7].t
+set_principal test_data[7].f
+set_principal ctrl.t
+set_principal ctrl.f
+set_principal t.var_stack9_is_full.v.t
+set_principal t.var_stack9_is_full.v.f
+set_principal t.var_stack10_is_full.v.t
+set_principal t.var_stack10_is_full.v.f
+set_principal t.var_stack9_data[0].v.t
+set_principal t.var_stack9_data[0].v.f
+set_principal t.var_stack9_data[1].v.t
+set_principal t.var_stack9_data[1].v.f
+set_principal t.var_stack9_data[2].v.t
+set_principal t.var_stack9_data[2].v.f
+set_principal t.var_stack9_data[3].v.t
+set_principal t.var_stack9_data[3].v.f
+set_principal t.var_stack9_data[4].v.t
+set_principal t.var_stack9_data[4].v.f
+set_principal t.var_stack9_data[5].v.t
+set_principal t.var_stack9_data[5].v.f
+set_principal t.var_stack9_data[6].v.t
+set_principal t.var_stack9_data[6].v.f
+set_principal t.var_stack9_data[7].v.t
+set_principal t.var_stack9_data[7].v.f
+set_principal t.var_stack10_data[0].v.t
+set_principal t.var_stack10_data[0].v.f
+set_principal t.var_stack10_data[1].v.t
+set_principal t.var_stack10_data[1].v.f
+set_principal t.var_stack10_data[2].v.t
+set_principal t.var_stack10_data[2].v.f
+set_principal t.var_stack10_data[3].v.t
+set_principal t.var_stack10_data[3].v.f
+set_principal t.var_stack10_data[4].v.t
+set_principal t.var_stack10_data[4].v.f
+set_principal t.var_stack10_data[5].v.t
+set_principal t.var_stack10_data[5].v.f
+set_principal t.var_stack10_data[6].v.t
+set_principal t.var_stack10_data[6].v.f
+set_principal t.var_stack10_data[7].v.t
+set_principal t.var_stack10_data[7].v.f
+set_principal go.r
+set_principal go.a
+set_principal t.chan_stack9_comm_chan.d[0].t
+set_principal t.chan_stack9_comm_chan.d[0].f
+set_principal t.chan_stack9_comm_chan.d[1].t
+set_principal t.chan_stack9_comm_chan.d[1].f
+set_principal t.chan_stack9_comm_chan.d[2].t
+set_principal t.chan_stack9_comm_chan.d[2].f
+set_principal t.chan_stack9_comm_chan.d[3].t
+set_principal t.chan_stack9_comm_chan.d[3].f
+set_principal t.chan_stack9_comm_chan.d[4].t
+set_principal t.chan_stack9_comm_chan.d[4].f
+set_principal t.chan_stack9_comm_chan.d[5].t
+set_principal t.chan_stack9_comm_chan.d[5].f
+set_principal t.chan_stack9_comm_chan.d[6].t
+set_principal t.chan_stack9_comm_chan.d[6].f
+set_principal t.chan_stack9_comm_chan.d[7].t
+set_principal t.chan_stack9_comm_chan.d[7].f
+set_principal t.chan_stack10_comm_chan.d[0].t
+set_principal t.chan_stack10_comm_chan.d[0].f
+set_principal t.chan_stack10_comm_chan.d[1].t
+set_principal t.chan_stack10_comm_chan.d[1].f
+set_principal t.chan_stack10_comm_chan.d[2].t
+set_principal t.chan_stack10_comm_chan.d[2].f
+set_principal t.chan_stack10_comm_chan.d[3].t
+set_principal t.chan_stack10_comm_chan.d[3].f
+set_principal t.chan_stack10_comm_chan.d[4].t
+set_principal t.chan_stack10_comm_chan.d[4].f
+set_principal t.chan_stack10_comm_chan.d[5].t
+set_principal t.chan_stack10_comm_chan.d[5].f
+set_principal t.chan_stack10_comm_chan.d[6].t
+set_principal t.chan_stack10_comm_chan.d[6].f
+set_principal t.chan_stack10_comm_chan.d[7].t
+set_principal t.chan_stack10_comm_chan.d[7].f
+
+mode reset
+set Reset 1
+set _Reset 0
+set test_op.t 0
+set test_op.f 0
+set test_data[0].t 0
+set test_data[0].f 0
+set test_data[1].t 0
+set test_data[1].f 0
+set test_data[2].t 0
+set test_data[2].f 0
+set test_data[3].t 0
+set test_data[3].f 0
+set test_data[4].t 0
+set test_data[4].f 0
+set test_data[5].t 0
+set test_data[5].f 0
+set test_data[6].t 0
+set test_data[6].f 0
+set test_data[7].t 0
+set test_data[7].f 0
+set ctrl.t 0
+set ctrl.f 0
+set go.r 0
+cycle
+assert test_op.t 0
+assert test_op.f 0
+assert test_data[0].t 0
+assert test_data[0].f 0
+assert test_data[1].t 0
+assert test_data[1].f 0
+assert test_data[2].t 0
+assert test_data[2].f 0
+assert test_data[3].t 0
+assert test_data[3].f 0
+assert test_data[4].t 0
+assert test_data[4].f 0
+assert test_data[5].t 0
+assert test_data[5].f 0
+assert test_data[6].t 0
+assert test_data[6].f 0
+assert test_data[7].t 0
+assert test_data[7].f 0
+assert ctrl.t 0
+assert ctrl.f 0
+set Reset 0
+set _Reset 1
+cycle
+mode run
+set test_op.t 0
+set test_op.f 0
+set test_data[0].t 0
+set test_data[0].f 0
+set test_data[1].t 0
+set test_data[1].f 0
+set test_data[2].t 0
+set test_data[2].f 0
+set test_data[3].t 0
+set test_data[3].f 0
+set test_data[4].t 0
+set test_data[4].f 0
+set test_data[5].t 0
+set test_data[5].f 0
+set test_data[6].t 0
+set test_data[6].f 0
+set test_data[7].t 0
+set test_data[7].f 0
+set ctrl.t 0
+set ctrl.f 0
+set go.r 0
+cycle
+
+assert test_op.t 0
+assert test_op.f 0
+assert test_data[0].t 0
+assert test_data[0].f 0
+assert test_data[1].t 0
+assert test_data[1].f 0
+assert test_data[2].t 0
+assert test_data[2].f 0
+assert test_data[3].t 0
+assert test_data[3].f 0
+assert test_data[4].t 0
+assert test_data[4].f 0
+assert test_data[5].t 0
+assert test_data[5].f 0
+assert test_data[6].t 0
+assert test_data[6].f 0
+assert test_data[7].t 0
+assert test_data[7].f 0
+assert ctrl.t 0
+assert ctrl.f 0
+assert t.var_stack9_is_full.v.t 0
+assert t.var_stack9_is_full.v.f 1
+assert t.var_stack10_is_full.v.t 0
+assert t.var_stack10_is_full.v.f 1
+assert t.var_stack9_data[0].v.t 0
+assert t.var_stack9_data[0].v.f 1
+assert t.var_stack9_data[1].v.t 0
+assert t.var_stack9_data[1].v.f 1
+assert t.var_stack9_data[2].v.t 0
+assert t.var_stack9_data[2].v.f 1
+assert t.var_stack9_data[3].v.t 0
+assert t.var_stack9_data[3].v.f 1
+assert t.var_stack9_data[4].v.t 0
+assert t.var_stack9_data[4].v.f 1
+assert t.var_stack9_data[5].v.t 0
+assert t.var_stack9_data[5].v.f 1
+assert t.var_stack9_data[6].v.t 0
+assert t.var_stack9_data[6].v.f 1
+assert t.var_stack9_data[7].v.t 0
+assert t.var_stack9_data[7].v.f 1
+assert t.var_stack10_data[0].v.t 0
+assert t.var_stack10_data[0].v.f 1
+assert t.var_stack10_data[1].v.t 0
+assert t.var_stack10_data[1].v.f 1
+assert t.var_stack10_data[2].v.t 0
+assert t.var_stack10_data[2].v.f 1
+assert t.var_stack10_data[3].v.t 0
+assert t.var_stack10_data[3].v.f 1
+assert t.var_stack10_data[4].v.t 0
+assert t.var_stack10_data[4].v.f 1
+assert t.var_stack10_data[5].v.t 0
+assert t.var_stack10_data[5].v.f 1
+assert t.var_stack10_data[6].v.t 0
+assert t.var_stack10_data[6].v.f 1
+assert t.var_stack10_data[7].v.t 0
+assert t.var_stack10_data[7].v.f 1
+assert go.r 0
+assert go.a 0
+assert t.chan_stack9_comm_chan.d[0].t 0
+assert t.chan_stack9_comm_chan.d[0].f 0
+assert t.chan_stack9_comm_chan.d[1].t 0
+assert t.chan_stack9_comm_chan.d[1].f 0
+assert t.chan_stack9_comm_chan.d[2].t 0
+assert t.chan_stack9_comm_chan.d[2].f 0
+assert t.chan_stack9_comm_chan.d[3].t 0
+assert t.chan_stack9_comm_chan.d[3].f 0
+assert t.chan_stack9_comm_chan.d[4].t 0
+assert t.chan_stack9_comm_chan.d[4].f 0
+assert t.chan_stack9_comm_chan.d[5].t 0
+assert t.chan_stack9_comm_chan.d[5].f 0
+assert t.chan_stack9_comm_chan.d[6].t 0
+assert t.chan_stack9_comm_chan.d[6].f 0
+assert t.chan_stack9_comm_chan.d[7].t 0
+assert t.chan_stack9_comm_chan.d[7].f 0
+assert t.chan_stack10_comm_chan.d[0].t 0
+assert t.chan_stack10_comm_chan.d[0].f 0
+assert t.chan_stack10_comm_chan.d[1].t 0
+assert t.chan_stack10_comm_chan.d[1].f 0
+assert t.chan_stack10_comm_chan.d[2].t 0
+assert t.chan_stack10_comm_chan.d[2].f 0
+assert t.chan_stack10_comm_chan.d[3].t 0
+assert t.chan_stack10_comm_chan.d[3].f 0
+assert t.chan_stack10_comm_chan.d[4].t 0
+assert t.chan_stack10_comm_chan.d[4].f 0
+assert t.chan_stack10_comm_chan.d[5].t 0
+assert t.chan_stack10_comm_chan.d[5].f 0
+assert t.chan_stack10_comm_chan.d[6].t 0
+assert t.chan_stack10_comm_chan.d[6].f 0
+assert t.chan_stack10_comm_chan.d[7].t 0
+assert t.chan_stack10_comm_chan.d[7].f 0
+set test_op.t 1
+set test_op.f 0
+set test_data[0].t 0
+set test_data[0].f 1
+set test_data[1].t 0
+set test_data[1].f 1
+set test_data[2].t 0
+set test_data[2].f 1
+set test_data[3].t 0
+set test_data[3].f 1
+set test_data[4].t 0
+set test_data[4].f 1
+set test_data[5].t 0
+set test_data[5].f 1
+set test_data[6].t 0
+set test_data[6].f 1
+set test_data[7].t 1
+set test_data[7].f 0
+set ctrl.t 1
+set ctrl.f 0
+cycle
+
+assert test_op.t 1
+assert test_op.f 0
+assert test_data[0].t 0
+assert test_data[0].f 1
+assert test_data[1].t 0
+assert test_data[1].f 1
+assert test_data[2].t 0
+assert test_data[2].f 1
+assert test_data[3].t 0
+assert test_data[3].f 1
+assert test_data[4].t 0
+assert test_data[4].f 1
+assert test_data[5].t 0
+assert test_data[5].f 1
+assert test_data[6].t 0
+assert test_data[6].f 1
+assert test_data[7].t 1
+assert test_data[7].f 0
+assert ctrl.t 1
+assert ctrl.f 0
+assert t.var_stack9_is_full.v.t 0
+assert t.var_stack9_is_full.v.f 1
+assert t.var_stack10_is_full.v.t 0
+assert t.var_stack10_is_full.v.f 1
+assert t.var_stack9_data[0].v.t 0
+assert t.var_stack9_data[0].v.f 1
+assert t.var_stack9_data[1].v.t 0
+assert t.var_stack9_data[1].v.f 1
+assert t.var_stack9_data[2].v.t 0
+assert t.var_stack9_data[2].v.f 1
+assert t.var_stack9_data[3].v.t 0
+assert t.var_stack9_data[3].v.f 1
+assert t.var_stack9_data[4].v.t 0
+assert t.var_stack9_data[4].v.f 1
+assert t.var_stack9_data[5].v.t 0
+assert t.var_stack9_data[5].v.f 1
+assert t.var_stack9_data[6].v.t 0
+assert t.var_stack9_data[6].v.f 1
+assert t.var_stack9_data[7].v.t 0
+assert t.var_stack9_data[7].v.f 1
+assert t.var_stack10_data[0].v.t 0
+assert t.var_stack10_data[0].v.f 1
+assert t.var_stack10_data[1].v.t 0
+assert t.var_stack10_data[1].v.f 1
+assert t.var_stack10_data[2].v.t 0
+assert t.var_stack10_data[2].v.f 1
+assert t.var_stack10_data[3].v.t 0
+assert t.var_stack10_data[3].v.f 1
+assert t.var_stack10_data[4].v.t 0
+assert t.var_stack10_data[4].v.f 1
+assert t.var_stack10_data[5].v.t 0
+assert t.var_stack10_data[5].v.f 1
+assert t.var_stack10_data[6].v.t 0
+assert t.var_stack10_data[6].v.f 1
+assert t.var_stack10_data[7].v.t 0
+assert t.var_stack10_data[7].v.f 1
+set go.r 1
+cycle
+
+assert ctrl.t 1
+assert ctrl.f 0
+assert t.var_stack9_is_full.v.t 1
+assert t.var_stack9_is_full.v.f 0
+assert t.var_stack10_is_full.v.t 0
+assert t.var_stack10_is_full.v.f 1
+assert t.var_stack9_data[0].v.t 0
+assert t.var_stack9_data[0].v.f 1
+assert t.var_stack9_data[1].v.t 0
+assert t.var_stack9_data[1].v.f 1
+assert t.var_stack9_data[2].v.t 0
+assert t.var_stack9_data[2].v.f 1
+assert t.var_stack9_data[3].v.t 0
+assert t.var_stack9_data[3].v.f 1
+assert t.var_stack9_data[4].v.t 0
+assert t.var_stack9_data[4].v.f 1
+assert t.var_stack9_data[5].v.t 0
+assert t.var_stack9_data[5].v.f 1
+assert t.var_stack9_data[6].v.t 0
+assert t.var_stack9_data[6].v.f 1
+assert t.var_stack9_data[7].v.t 1
+assert t.var_stack9_data[7].v.f 0
+assert t.var_stack10_data[0].v.t 0
+assert t.var_stack10_data[0].v.f 1
+assert t.var_stack10_data[1].v.t 0
+assert t.var_stack10_data[1].v.f 1
+assert t.var_stack10_data[2].v.t 0
+assert t.var_stack10_data[2].v.f 1
+assert t.var_stack10_data[3].v.t 0
+assert t.var_stack10_data[3].v.f 1
+assert t.var_stack10_data[4].v.t 0
+assert t.var_stack10_data[4].v.f 1
+assert t.var_stack10_data[5].v.t 0
+assert t.var_stack10_data[5].v.f 1
+assert t.var_stack10_data[6].v.t 0
+assert t.var_stack10_data[6].v.f 1
+assert t.var_stack10_data[7].v.t 0
+assert t.var_stack10_data[7].v.f 1
+assert go.r 1
+cycle
+
+assert t.var_stack9_is_full.v.t 1
+assert t.var_stack9_is_full.v.f 0
+assert t.var_stack10_is_full.v.t 0
+assert t.var_stack10_is_full.v.f 1
+cycle
+
+assert t.var_stack9_is_full.v.t 1
+assert t.var_stack9_is_full.v.f 0
+assert t.var_stack10_is_full.v.t 0
+assert t.var_stack10_is_full.v.f 1

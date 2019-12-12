@@ -1,0 +1,8 @@
+import "testing/stackelem/act_from_chp.act";
+
+dualrail test_op;
+dualrail test_data[8];
+dualrail ctrl;
+a1of1 go;
+
+toplevel t(go, ctrl, test_op, test_data);

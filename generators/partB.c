@@ -713,7 +713,7 @@ int main (int argc, char **argv)
   c = read_chp (argv[1]);
 
   /* check that variables are used properly */
-  // check_types (c);
+  check_types (c);
 
   /* print the CHP program please */
   __chp = c;

@@ -8,6 +8,7 @@
 
 #define BOOL 0
 #define DUALRAIL 1
+#define SYN_VAR 2
 
 typedef struct _var {
   int type;         // 0=bool, 1=dualrail,
@@ -28,7 +29,7 @@ int read_file(FILE * f, var * vars, int * len_vars, int * max_len_vars)
   {
     printf("%s", line);
 
-    if (len < 10 || (line[0] != 'b' && line[0] != 'd')) // only handles bools & dualrails
+    if (len < 10 || (line[0] != 'b' && line[0] != 'd' && line[0] != 's')) // only handles bools & dualrails
     {
       fprintf(stderr, "ERROR: invalid line: %s\n", line);
       return -1;
@@ -47,7 +48,7 @@ int read_file(FILE * f, var * vars, int * len_vars, int * max_len_vars)
     }
 
     // determine type
-    vars[i_vars].type = (line[0] == 'd') ? DUALRAIL : BOOL;
+    vars[i_vars].type = (line[0] == 'd') ? DUALRAIL : ((line[0] == 'b') ? BOOL : SYN_VAR);
 
     // parse line
     i = 0;
@@ -69,7 +70,7 @@ int read_file(FILE * f, var * vars, int * len_vars, int * max_len_vars)
       j++;
     }
     vars[i_vars].varname[j] = '\0';
-    // printf("--> Varname == %s\n", vars[i_vars].varname);
+    printf("--> Varname == %s\n", vars[i_vars].varname);
 
     while (line[i] == ' ') { i++; };
     // printf("--> lett is now @ %d = %c\n", i, line[i]);
@@ -176,7 +177,7 @@ int read_file(FILE * f, var * vars, int * len_vars, int * max_len_vars)
       }
 
       vars[i_vars].len_values++;
-      // printf("----> len_values = %d\n", vars[i_vars].len_values);
+      printf("----> len_values = %d\n", vars[i_vars].len_values);
       k=0;
     }
 
@@ -184,6 +185,7 @@ int read_file(FILE * f, var * vars, int * len_vars, int * max_len_vars)
     if (vars[i_vars].len_values > vars[vars->num_cycles].len_values)
     {
       vars->num_cycles = i_vars;
+      printf("----> num_cycles = %d\n", vars[i_vars].num_cycles);
     }
 
     // move on to next variable
@@ -216,27 +218,27 @@ void print_bool(FILE* f, char * prefix, char * varname, int arr_index, int val)
   }
 }
 
-void print_dualrail(FILE* f, char * prefix, char * varname, int arr_index, int tval, int fval)
+void print_dualrail(FILE* f, char * prefix, char * varname, int arr_index, char * postfix, int tval, int fval)
 {
   if (tval >=0 && fval >=0 && arr_index >= 0)   // set array index value
   {
-    fprintf(f, "%s %s[%d].t %d\n", prefix, varname, arr_index, tval);
-    fprintf(f, "%s %s[%d].f %d\n", prefix, varname, arr_index, fval);
+    fprintf(f, "%s %s[%d]%s.t %d\n", prefix, varname, arr_index, postfix, tval);
+    fprintf(f, "%s %s[%d]%s.f %d\n", prefix, varname, arr_index, postfix, fval);
   }
   else if (tval >=0 && fval >=0)              // set non-array variable value
   {
-    fprintf(f, "%s %s.t %d\n", prefix, varname, tval);
-    fprintf(f, "%s %s.f %d\n", prefix, varname, fval);
+    fprintf(f, "%s %s%s.t %d\n", prefix, varname, postfix, tval);
+    fprintf(f, "%s %s%s.f %d\n", prefix, varname, postfix, fval);
   }
   else if (arr_index >=0)                     // array, non-value
   {
-    fprintf(f, "%s %s[%d].t\n", prefix, varname, arr_index);
-    fprintf(f, "%s %s[%d].f\n", prefix, varname, arr_index);
+    fprintf(f, "%s %s[%d]%s.t\n", prefix, varname, arr_index, postfix);
+    fprintf(f, "%s %s[%d]%s.f\n", prefix, varname, arr_index, postfix);
   }
   else                                        // non-array, non-value
   {
-    fprintf(f, "%s %s.t\n", prefix, varname);
-    fprintf(f, "%s %s.f\n", prefix, varname);
+    fprintf(f, "%s %s%s.t\n", prefix, varname, postfix);
+    fprintf(f, "%s %s%s.f\n", prefix, varname, postfix);
   }
 }
 
@@ -293,12 +295,39 @@ void print_prsim_test(FILE * f, var * vars, int len_vars, bool random, bool brea
           print_bool(f, "watch", vars[v].varname, arr_index, -1);
           break;
         case DUALRAIL:
-          print_dualrail(f, "watch", vars[v].varname, arr_index, -1, -1);
+          print_dualrail(f, "watch", vars[v].varname, arr_index, "", -1, -1);
+          break;
+        case SYN_VAR:
+          print_dualrail(f, "watch", vars[v].varname, arr_index, ".v", -1, -1);
           break;
         default:
           printf("Encountered unknown type\n");
           // do nothing
       }
+    }
+  }
+
+  // Set Principal
+  for (v=0; v<len_vars; v++)                // each var
+  {
+    for (a=0; a<vars[v].len_var_array; a++) // each index of var array
+    {
+      int arr_index = (vars[v].len_var_array == 1) ? -1 : a;
+      switch (vars[v].type) {
+        case BOOL:
+          print_bool(f, "set_principal", vars[v].varname, arr_index, -1);
+          break;
+        case DUALRAIL:
+          print_dualrail(f, "set_principal", vars[v].varname, arr_index, "", -1, -1);
+          break;
+        case SYN_VAR:
+          print_dualrail(f, "set_principal", vars[v].varname, arr_index, ".v", -1, -1);
+          break;
+        default:
+          printf("Encountered unknown type\n");
+          // do nothing
+      }
+
     }
   }
   fprintf(f, "\n");
@@ -328,7 +357,10 @@ void print_prsim_test(FILE * f, var * vars, int len_vars, bool random, bool brea
             print_bool(f, "set", vars[v].varname, arr_index, 0);
             break;
           case DUALRAIL:
-            print_dualrail(f, "set", vars[v].varname, arr_index, 0, 0);
+            print_dualrail(f, "set", vars[v].varname, arr_index, "", 0, 0);
+            break;
+          case SYN_VAR:
+            print_dualrail(f, "set", vars[v].varname, arr_index, ".v", 0, 0);
             break;
           default:
             // do nothing
@@ -342,20 +374,26 @@ void print_prsim_test(FILE * f, var * vars, int len_vars, bool random, bool brea
   // End Reset
   for (v=0; v<len_vars; v++)                              // each var
   {
-    for (a=0; a<vars[v].len_var_array; a++)               // each index of var array
+    if (vars[v].len_values > 0 && vars[v].values[0][0] == -2)    // only reset vars that are set to a val
     {
-      int arr_index = (vars[v].len_var_array == 1) ? -1 : a;
+      for (a=0; a<vars[v].len_var_array; a++)               // each index of var array
+      {
+        int arr_index = (vars[v].len_var_array == 1) ? -1 : a;
 
-      switch (vars[v].type) {
-        case BOOL:
-          print_bool(f, "assert", vars[v].varname, arr_index, 0);
-          break;
-        case DUALRAIL:
-          print_dualrail(f, "assert", vars[v].varname, arr_index, 0, 0);
-          break;
-        default:
-          // do nothing
-          printf("Encountered unknown type\n");
+        switch (vars[v].type) {
+          case BOOL:
+            print_bool(f, "assert", vars[v].varname, arr_index, 0);
+            break;
+          case DUALRAIL:
+            print_dualrail(f, "assert", vars[v].varname, arr_index, "", 0, 0);
+            break;
+          case SYN_VAR:
+            print_dualrail(f, "assert", vars[v].varname, arr_index, ".v", 0, 0);
+            break;
+          default:
+            // do nothing
+            printf("Encountered unknown type\n");
+        }
       }
     }
   }
@@ -396,11 +434,21 @@ void print_prsim_test(FILE * f, var * vars, int len_vars, bool random, bool brea
             case DUALRAIL:
               if (vars[v].values[l][a] >= 0)                    // skip "n", don't assert values
               {
-                print_dualrail(f, "set", vars[v].varname, arr_index, vars[v].values[l][a], 1-vars[v].values[l][a]);
+                print_dualrail(f, "set", vars[v].varname, arr_index, "", vars[v].values[l][a], 1-vars[v].values[l][a]);
               }
               else if (vars[v].values[l][a] == -2)            // 'r' means reset dualrail
               {
-                print_dualrail(f, "set", vars[v].varname, arr_index, 0, 0);
+                print_dualrail(f, "set", vars[v].varname, arr_index, "", 0, 0);
+              }
+              break;
+            case SYN_VAR:
+              if (vars[v].values[l][a] >= 0)                    // skip "n", don't assert values
+              {
+                print_dualrail(f, "set", vars[v].varname, arr_index, ".v", vars[v].values[l][a], 1-vars[v].values[l][a]);
+              }
+              else if (vars[v].values[l][a] == -2)            // 'r' means reset dualrail
+              {
+                print_dualrail(f, "set", vars[v].varname, arr_index, ".v", 0, 0);
               }
               break;
             default:
@@ -429,11 +477,21 @@ void print_prsim_test(FILE * f, var * vars, int len_vars, bool random, bool brea
             case DUALRAIL:
               if (vars[v].values[l+1][a] >= 0)                    // skip "n", don't assert values
               {
-                print_dualrail(f, "assert", vars[v].varname, arr_index, vars[v].values[l+1][a], 1-vars[v].values[l+1][a]);
+                print_dualrail(f, "assert", vars[v].varname, arr_index, "", vars[v].values[l+1][a], 1-vars[v].values[l+1][a]);
               }
               else if (vars[v].values[l+1][a] == -2)            // 'r' means reset dualrail
               {
-                print_dualrail(f, "assert", vars[v].varname, arr_index, 0, 0);
+                print_dualrail(f, "assert", vars[v].varname, arr_index, "", 0, 0);
+              }
+              break;
+            case SYN_VAR:
+              if (vars[v].values[l+1][a] >= 0)                    // skip "n", don't assert values
+              {
+                print_dualrail(f, "assert", vars[v].varname, arr_index, ".v", vars[v].values[l+1][a], 1-vars[v].values[l+1][a]);
+              }
+              else if (vars[v].values[l+1][a] == -2)            // 'r' means reset dualrail
+              {
+                print_dualrail(f, "assert", vars[v].varname, arr_index, ".v", 0, 0);
               }
               break;
             default:
@@ -830,8 +888,15 @@ int main (int argc, char * argv[])
   }
 
   int len_vars = 0;
-  int max_len_vars = 10;
+  int max_len_vars = 12;
   var * vars = (var *) malloc(sizeof(var) * max_len_vars);
+  for (int i=0; i<max_len_vars; i++)
+  {
+    vars[i].len_values = 0;
+    vars[i].len_var_array = 0;
+    vars[i].num_cycles = 0;
+  }
+
   if (vars == NULL)
   {
     fprintf(stderr, "ERROR: could not malloc vars array\n");
