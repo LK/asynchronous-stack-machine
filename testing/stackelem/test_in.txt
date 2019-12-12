@@ -1,11 +1,11 @@
 dualrail test_op r,r, 1,1,
 dualrail test_data[8] rrrrrrrr,rrrrrrrr, 00000001,00000001
-dualrail ctrl r,r, 1,1, n,0
-syn_var t.var_stack9_is_full n,0, n,0, n,1, n,1, n,1
-syn_var t.var_stack10_is_full n,0, n,0, n,0, n,0, n,0
-syn_var t.var_stack9_data[8] nnnnnnnn,00000000, nnnnnnnn,00000000, nnnnnnnn,00000001
-syn_var t.var_stack10_data[8] nnnnnnnn,00000000, nnnnnnnn,00000000, nnnnnnnn,00000000,
+dualrail ctrl r,r, 1,1,
 bool go.r 0,0, n,n, 1,1 n,n
-bool go.a n,0
+bool go.a n,n
+syn_var t.var_ctrl2 n
+syn_var t.var_stack9_is_full n,0, n,0,
+syn_var t.var_stack9_data[8] nnnnnnnn,00000000, ,
+syn_var t.var_stack9_op n
+bool t.chan_stack9_comm_chan.a n
 dualrail t.chan_stack9_comm_chan.d[8] nnnnnnnn,rrrrrrrr,
-dualrail t.chan_stack10_comm_chan.d[8] nnnnnnnn,rrrrrrrr,
