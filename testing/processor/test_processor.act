@@ -1,4 +1,4 @@
-import "fnguards_processor.act";
+import "nofex_processor.act";
 import "lab_syn.act";
 
 a1of1 go;
