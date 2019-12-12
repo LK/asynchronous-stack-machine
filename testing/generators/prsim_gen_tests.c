@@ -504,6 +504,23 @@ void print_prsim_test(FILE * f, var * vars, int len_vars, bool random, bool brea
   }
 }
 
+void convert_varnames_to_irsim(var * vars, int len_vars) {
+  for (int v=0; v<len_vars; v++)
+  {
+    int c = 0;
+    while (vars[v].varname[c] != '\0')
+    {
+      if (vars[v].varname[c] == '.')
+      {
+        vars[v].varname[c] = '/';
+      }
+      c++;
+    }
+    printf("=== vars[%d].varname=%s\n", v, vars[v].varname);
+  }
+}
+
+
 void print_irsim_test(FILE * f, var * vars, int len_vars, bool reset, bool _reset)
 {
   int i, l, v, a;
@@ -544,16 +561,23 @@ void print_irsim_test(FILE * f, var * vars, int len_vars, bool reset, bool _rese
   if (reset)
   {
     fprintf(f, "h Reset\n");
-    fprintf(f, "s\n");
-    fprintf(f, "l Reset ");
   }
   if (_reset)
   {
     fprintf(f, "l _Reset\n");
-    fprintf(f, "s\n");
-    fprintf(f, "h Reset\n");
   }
-  fprintf(f, "s\n");
+  if (reset || _reset)
+  {
+    fprintf(f, "s\n");
+  }
+  if (reset)
+  {
+    fprintf(f, "l Reset\n");
+  }
+  if (_reset)
+  {
+    fprintf(f, "h _Reset\n");
+  }
 
   int max_cycles = vars[vars->num_cycles].len_values;
   int highs[max_cycles * 12][2]; // FIX CONSTANT LATER
@@ -925,6 +949,7 @@ int main (int argc, char * argv[])
   // print out irsim file
   if (irsim)
   {
+    convert_varnames_to_irsim(vars, len_vars);
     print_irsim_test(out, vars, len_vars, reset, _reset);
     printf("\n... Done: irsim test written to %s\n", argv[2]);
   }
