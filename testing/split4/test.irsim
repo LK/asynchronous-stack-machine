@@ -3,8 +3,7 @@ h Vdd!
 l GND!
 l _Reset
 s
-h Reset
-s
+h _Reset
 
 l go_r in\[0\]/t in\[0\]/f in\[1\]/t in\[1\]/f in\[2\]/t in\[2\]/f in\[3\]/t in\[3\]/f in\[4\]/t in\[4\]/f in\[5\]/t in\[5\]/f in\[6\]/t in\[6\]/f in\[7\]/t in\[7\]/f in\[8\]/t in\[8\]/f in\[9\]/t in\[9\]/f in\[10\]/t in\[10\]/f in\[11\]/t in\[11\]/f 
 s

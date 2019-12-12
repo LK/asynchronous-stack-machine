@@ -41,7 +41,7 @@ defproc bundled_cmp_1 (bool go_r; dualrail c[4]; dualrail out)
 defproc bundled_stackadd_8 (bool go_r; dualrail v0[8]; dualrail v1[8]; dualrail out[8])
 {
    /* combinational logic */
-   delay<62> d;
+   delay<65> d;
    bool _dout;
    d.in = go_r;
 
@@ -50,13 +50,16 @@ defproc bundled_stackadd_8 (bool go_r; dualrail v0[8]; dualrail v1[8]; dualrail 
    add8 a (,,cin,, cout);
    (; i : 8 : a.a[i] = v0[i].t; a.b[i] = v1[i].t; )
 
-   bool _aout[8];
+   bool _aout[8], _gor;
    prs {
       Reset -> cin-
       d.out => _dout-
+      go_r => _gor-
       (i:8: a.out[i] => _aout[i]-
-            ~_dout & ~_aout[i] => out[i].t+
-            ~_dout & ~a.out[i] => out[i].f+
+            ~_dout & ~_aout[i] -> out[i].t+
+            ~_dout & ~a.out[i] -> out[i].f+
+            _gor -> out[i].t-
+            _gor -> out[i].f-
       )
    }
 }
@@ -64,19 +67,22 @@ defproc bundled_stackadd_8 (bool go_r; dualrail v0[8]; dualrail v1[8]; dualrail 
 defproc bundled_stacksub_8 (bool go_r; dualrail v0[8]; dualrail v1[8]; dualrail out[8])
 {
    /* combinational logic */
-   delay<62> d;
+   delay<65> d;
    d.in = go_r;
    bool cout, cin, _dout;
    add8 s (,, cin,, cout);
    (; i : 8 : s.a[i] = v0[i].t; s.b[i] = v1[i].f; )
 
-   bool _sout[8];
+   bool _sout[8], _gor;
    prs {
       ~_Reset -> cin+
       d.out => _dout-
+      go_r => _gor-
       (i:8: s.out[i] => _sout[i]-
-	    ~_dout & ~_sout[i] => out[i].t+
-	    ~_dout & ~s.out[i] => out[i].f+
+      	    ~_dout & ~_sout[i] => out[i].t+
+      	    ~_dout & ~s.out[i] => out[i].f+
+            _gor -> out[i].t-
+            _gor -> out[i].f-
       )
    }
 }

@@ -1,5 +1,6 @@
 initialize
 random
+watch Reset
 watch _Reset
 watch in[0].t
 watch in[0].f
@@ -34,8 +35,42 @@ watch out[2].f
 watch out[3].t
 watch out[3].f
 watch go_r
+set_principal in[0].t
+set_principal in[0].f
+set_principal in[1].t
+set_principal in[1].f
+set_principal in[2].t
+set_principal in[2].f
+set_principal in[3].t
+set_principal in[3].f
+set_principal in[4].t
+set_principal in[4].f
+set_principal in[5].t
+set_principal in[5].f
+set_principal in[6].t
+set_principal in[6].f
+set_principal in[7].t
+set_principal in[7].f
+set_principal in[8].t
+set_principal in[8].f
+set_principal in[9].t
+set_principal in[9].f
+set_principal in[10].t
+set_principal in[10].f
+set_principal in[11].t
+set_principal in[11].f
+set_principal out[0].t
+set_principal out[0].f
+set_principal out[1].t
+set_principal out[1].f
+set_principal out[2].t
+set_principal out[2].f
+set_principal out[3].t
+set_principal out[3].f
+set_principal go_r
 
 mode reset
+set Reset 1
 set _Reset 0
 set in[0].t 0
 set in[0].f 0
@@ -87,15 +122,7 @@ assert in[10].t 0
 assert in[10].f 0
 assert in[11].t 0
 assert in[11].f 0
-assert out[0].t 0
-assert out[0].f 0
-assert out[1].t 0
-assert out[1].f 0
-assert out[2].t 0
-assert out[2].f 0
-assert out[3].t 0
-assert out[3].f 0
-assert go_r 0
+set Reset 0
 set _Reset 1
 cycle
 mode run
