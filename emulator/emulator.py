@@ -82,11 +82,13 @@ def run(fname):
         pc = 0
         while pc >= 0:
             assert_state(state, pc)
-            assert_send('chan_PC', 12, pc)
+            assert_send_start('p.chan_PC', 12, pc)
             parts = [x.strip() for x in cmds[pc].split(' ')]
-            assert_recv('chan_IN', 12, encode(parts))
+            assert_recv_start('p.chan_IN', 12, encode(parts))
+            assert_send_end('p.chan_PC', 12)
+            assert_recv_end('p.chan_IN', 12)
             if parts[0] == 'popout':
-                assert_send('chan_OUT', 12, state['stack'][-1])
+                assert_send('p.chan_OUT', 12, state['stack'][-1])
             pc = pc + compute(parts[0], parts[1:], state)
             if not GEN_PRSIM:
                 print(str(state), ' '.join(parts))
@@ -100,6 +102,10 @@ def run(fname):
       print('assert go.a 0')
 
 def assert_send(channame, bitwidth, value):
+  assert_send_start(channame, bitwidth, value)
+  assert_send_end(channame, bitwidth)
+
+def assert_send_start(channame, bitwidth, value):
     if not GEN_PRSIM:
         return
 
@@ -115,6 +121,10 @@ def assert_send(channame, bitwidth, value):
     print(f'set {channame}.a 1')
     print('cycle')
 
+def assert_send_end(channame, bitwidth):
+    if not GEN_PRSIM:
+      return
+
     for i in range(bitwidth):
         print(f'assert {channame}.d[{i}].t 0')
         print(f'assert {channame}.d[{i}].f 0')
@@ -123,6 +133,10 @@ def assert_send(channame, bitwidth, value):
     print('cycle')
 
 def assert_recv(channame, bitwidth, value):
+  assert_recv_start(channame, bitwidth, value)
+  assert_recv_end(channame, bitwidth)
+
+def assert_recv_start(channame, bitwidth, value):
     if not GEN_PRSIM:
         return
 
@@ -137,6 +151,11 @@ def assert_recv(channame, bitwidth, value):
 
     print('cycle')
     print(f'assert {channame}.a 1')
+
+def assert_recv_end(channame, bitwidth):
+    if not GEN_PRSIM:
+      return
+
     for i in range(bitwidth):
         print(f'set {channame}.d[{i}].t 0')
         print(f'set {channame}.d[{i}].f 0')
@@ -220,17 +239,17 @@ def prsim_preamble():
 
     watch_multibit('p.var_pc_index', 12)
 
-    watch_chan('chan_PC', 12)
-    watch_chan('chan_IN', 12)
-    watch_chan('chan_OUT', 12)
+    watch_chan('p.chan_PC', 12)
+    watch_chan('p.chan_IN', 12)
+    watch_chan('p.chan_OUT', 12)
 
     print('mode reset')
     print('set Reset 1')
     print('set _Reset 0')
     print('set go.r 0')
-    print('set chan_PC.a 0')
-    print('set chan_OUT.a 0')
-    clear_chan_data('chan_IN', 12)
+    print('set p.chan_PC.a 0')
+    print('set p.chan_OUT.a 0')
+    clear_chan_data('p.chan_IN', 12)
     print('cycle')
     print('set Reset 0')
     print('set _Reset 1')
