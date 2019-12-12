@@ -71,7 +71,7 @@ def encode(parts):
         print('cannot encode op ' + parts[0])
         sys.exit(1)
 
-    return (op_encoded << 8) | data_encoded
+    return (data_encoded << 4) | op_encoded
 
 def run(fname):
     state = { 'regs': [0] * 4, 'stack': [] }
