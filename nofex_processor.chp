@@ -108,7 +108,6 @@ chp {
     [ is_branch_1(exec_op) = 0 -> pc_index := pcincrement_12(pc_index)
     [] else -> skip
     ];
-
     [ is_pushc_1(exec_op) = 1 -> stack0_op_chan!1; stack0_comm_chan!exec_data
     [] is_pop_1(exec_op) = 1 -> stack0_op_chan!0; stack0_comm_chan?exec_data
     [] is_popout_1(exec_op) = 1 -> stack0_op_chan!0; stack0_comm_chan?exec_data; exec_temp := join_12(exec_op, exec_data); OUT!(exec_temp)

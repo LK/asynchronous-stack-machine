@@ -533,16 +533,19 @@ int print_chp_stmt (chp_lang_t *c)
       a = print_expr ((Expr *)list_value (list_first (c->u.comm.rhs)));
       go_r = base_var;
       ret = chan_count++;
+      b = stmt_count++;
       if (func_bitwidth == -1) {
         func_bitwidth = 1;
       }
       printf (" a1of1 c_%d;\n", ret);
+      printf (" a1of1 recv_r_%d;\n", b);
+      printf (" syn_fullseq fs_%d(c_%d, recv_r_%d);\n", b, ret, b);
 
-      sprintf (buf, "c_%d.r", ret);
+      sprintf (buf, "recv_r_%d.r", b);
       a = print_expr_tmpvar (buf, go_r, a, func_bitwidth);
 
       //printf (" c_%d.r = e_%d.go_r;\n", ret, base_var);
-      printf (" c_%d.a = chan_%s.a;\n", ret, c->u.comm.chan);
+      printf (" recv_r_%d.a = chan_%s.a;\n", b, c->u.comm.chan);
       v = find_symbol (__chp, c->u.comm.chan);
       if (!v) {
         fprintf (stderr, "Channel `%s' not found\n", c->u.comm.chan);
@@ -584,6 +587,7 @@ int print_chp_stmt (chp_lang_t *c)
       ret = chan_count++;
       a = stmt_count++;
       printf (" a1of1 c_%d;\n", ret);
+      printf (" syn_fullseq fs_%d(c_%d,);\n", a, ret);
       v = find_symbol (__chp, c->u.comm.chan);
       if (!v) {
         fprintf (stderr, "Channel `%s' not found\n", c->u.comm.chan);
@@ -599,17 +603,17 @@ int print_chp_stmt (chp_lang_t *c)
         exit (1);
       }
       if (v->bitwidth == 1) {
-        printf (" syn_recv s_%d(c_%d);\n", a, ret);
+        printf (" syn_recv s_%d(fs_%d.r);\n", a, a);
         printf (" s_%d.in = chan_%s;\n", a, c->u.comm.chan);
         printf (" s_%d.v = var_%s.v;\n", a, u->name);
       }
       else {
         printf (" syn_recv s_%d[%d];\n", a, v->bitwidth);
-        printf (" (i:%d: s_%d[i].go.r = c_%d.r;)\n", v->bitwidth, a, ret);
+        printf (" (i:%d: s_%d[i].go.r = fs_%d.r.r;)\n", v->bitwidth, a, a);
         printf (" syn_ctree<%d> ct_%d;\n", v->bitwidth, a);
         printf (" (i:%d: ct_%d.in[i]=s_%d[i].go.a;)\n", v->bitwidth,
         a, a);
-        printf (" ct_%d.out=c_%d.a; c_%d.a=chan_%s.a;\n", a, ret, ret, v->name);
+        printf (" ct_%d.out=fs_%d.r.a; fs_%d.r.a=chan_%s.a;\n", a, a, a, v->name);
         printf (" (i:%d: s_%d[i].in.t = chan_%s.d[i].t;\n          s_%d[i].in.f = chan_%s.d[i].f;\n          s_%d[i].v = var_%s[i].v; )\n", v->bitwidth, a, v->name, a, v->name, a, u->name);
       }
     }
@@ -683,7 +687,9 @@ int print_chp_stmt (chp_lang_t *c)
 void print_chp_structure (Chp *c)
 {
   int i;
-  printf ("import \"lab_syn.act\";\n\n");
+  printf ("import \"lab_syn.act\";\n");
+  printf ("import \"opcode_conditions.act\";\n");
+  printf ("import \"functions.act\";\n\n");
   printf ("defproc toplevel (a1of1 go)\n{\n");
   /* --- your code starts here --- */
 

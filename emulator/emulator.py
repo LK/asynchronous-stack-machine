@@ -82,11 +82,9 @@ def run(fname):
         pc = 0
         while pc >= 0:
             assert_state(state, pc)
-            assert_send_start('p.chan_PC', 12, pc)
+            assert_send('p.chan_PC', 12, pc)
             parts = [x.strip() for x in cmds[pc].split(' ')]
-            assert_recv_start('p.chan_IN', 12, encode(parts))
-            assert_send_end('p.chan_PC', 12)
-            assert_recv_end('p.chan_IN', 12)
+            assert_recv('p.chan_IN', 12, encode(parts))
             if parts[0] == 'popout':
                 assert_send('p.chan_OUT', 12, state['stack'][-1])
             pc = pc + compute(parts[0], parts[1:], state)
