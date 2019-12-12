@@ -16,7 +16,7 @@ OPCODES = {
 def compute_truths_for_code(code):
   truths = [False] * BITWIDTH
   for i in range(BITWIDTH):
-    truths[BITWIDTH-i-1] = (code & (1 << i)) > 0
+    truths[i] = (code & (1 << i)) > 0
   return truths
 
 def gen_guard_condition(bit_idx, truth, inverted):
