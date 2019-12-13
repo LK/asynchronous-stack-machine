@@ -11,7 +11,8 @@ for i in range(num_entries + 1):
     print(f'\tint<1> stack{i}_op;')
     print(f'\tint<{bitwidth}> stack{i}_data;')
     print(f'\tchan<1> stack{i}_op_chan;')
-    print(f'\tchan<{bitwidth}> stack{i}_comm_chan;')
+    print(f'\tchan<{bitwidth}> stack{i}_push_chan;')
+    print(f'\tchan<{bitwidth}> stack{i}_pop_chan;')
     print()
 print('}')
 
@@ -19,17 +20,33 @@ print('chp {')
 
 for i in range(num_entries):
     # 0 = pop, 1 = push
-    print(f'\tstack{i}_is_full := 0;')
-    print(f'\t*[ stack{i}_op_chan?stack{i}_op;')
-    print(f'\t[ ~stack{i}_is_full & stack{i}_op -> stack{i}_comm_chan?stack{i}_data, stack{i}_is_full := 1')
-    print(f'\t[] ~stack{i}_is_full & ~stack{i}_op -> stack{i+1}_op_chan!0; stack{i+1}_comm_chan?stack{i}_data; stack{i}_comm_chan!stack{i}_data')
-    print(f'\t[] stack{i}_is_full & stack{i}_op -> stack{i+1}_op_chan!1; stack{i+1}_comm_chan!stack{i}_data; stack{i}_comm_chan?stack{i}_data')
-    print(f'\t[] stack{i}_is_full & ~stack{i}_op -> stack{i}_comm_chan!stack{i}_data, stack{i}_is_full := 0')
-    print(f'\t] ] ||')
+    print(f'''
+  stack{i}_is_full := 0;
+  *[ stack{i}_op_chan?stack{i}_op;
+    [
+      (~stack{i}_is_full & ~stack{i}_op) | (stack{i}_is_full & stack{i}_op) -> stack{i+1}_op_chan!stack{i}_op
+      [] else -> skip
+    ];
+
+    [
+      (~stack{i}_is_full & ~stack{i}_op) -> stack{i+1}_pop_chan?stack{i}_data
+      [] else -> skip
+    ];
+
+    [ ~stack{i}_is_full & stack{i}_op -> stack{i}_push_chan?stack{i}_data, stack{i}_is_full := 1
+    [] (~stack{i}_is_full & ~stack{i}_op) | (stack{i}_is_full & ~stack{i}_op) -> stack{i}_pop_chan!stack{i}_data
+    [] stack{i}_is_full & stack{i}_op -> stack{i+1}_push_chan!stack{i}_data; stack{i}_push_chan?stack{i}_data
+    ];
+
+    [
+      stack{i}_is_full & ~stack{i}_op -> stack{i}_is_full := 0
+      [] else -> skip
+    ]
+  ] ||''')
 
 print(f'\t*[ stack{num_entries}_op_chan?stack{num_entries}_op;')
-print(f'\t[ stack{num_entries}_op -> stack{num_entries}_comm_chan?stack{num_entries}_data')
-print(f'\t[] ~stack{num_entries}_op -> stack{num_entries}_comm_chan!stack{num_entries}_data')
+print(f'\t[ stack{num_entries}_op -> stack{num_entries}_push_chan?stack{num_entries}_data')
+print(f'\t[] ~stack{num_entries}_op -> stack{num_entries}_pop_chan!stack{num_entries}_data')
 print(f'\t] ]')
 
 print('}')

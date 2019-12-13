@@ -374,21 +374,27 @@ int print_one_gc (chp_gc_t *gc)
     a = print_expr_tmpvar (buf, go_r, a, 1);
 
     b = print_chp_stmt (gc->s);
+    int c = chan_count++;
+    printf(" a1of1 c_%d;\n", c);
+    printf(" syn_fullseq fs_%d(c_%d, c_%d);\n", stmt_count++, c, b);
 
     if (b == -1) {
       /* empty */
       printf (" gc_%d.t = e_%d.out.t;\n", ret, a);
     }
     else {
-      printf (" e_%d.out.t = c_%d.r;\n", a, b);
-      printf (" gc_%d.t = c_%d.a;\n", ret, b);
+      printf (" e_%d.out.t = c_%d.r;\n", a, c);
+      printf (" gc_%d.t = c_%d.a;\n", ret, c);
     }
     printf (" gc_%d.f = e_%d.out.f;\n", ret, a);
   }
   else {
     b = print_chp_stmt (gc->s);
-    printf (" gc_%d.r = c_%d.r;\n", ret, b);
-    printf (" gc_%d.t = c_%d.a;\n", ret, b);
+    int c = chan_count++;
+    printf(" a1of1 c_%d;\n", c);
+    printf(" syn_fullseq fs_%d(c_%d, c_%d);\n", stmt_count++, c, b);
+    printf (" gc_%d.r = c_%d.r;\n", ret, c);
+    printf (" gc_%d.t = c_%d.a;\n", ret, c);
     //printf (" prs { Reset|~Reset -> gc_%d.f- }\n", ret);
     printf (" gc_%d.f = GND;\n", ret);
   }
