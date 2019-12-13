@@ -6,3 +6,5 @@ dualrail ctrl;
 a1of1 go;
 
 toplevel t(go, ctrl, test_op, test_data);
+
+// defproc toplevel (a1of1 go; dualrail var_ctrl, var_test_op; dualrail var_test_data[8]) 

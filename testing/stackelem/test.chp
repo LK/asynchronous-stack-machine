@@ -1,6 +1,7 @@
 vars
 {
   int<1> ctrl;
+  int<1> ctrl2;
   int<1> test_op;
   int<8> test_data;
 
@@ -19,18 +20,27 @@ vars
 
 chp
 {
-  stack9_is_full := 0;
+  (stack9_is_full := 0;
   *[ stack9_op_chan?stack9_op;
-  [ ~stack9_is_full & stack9_op -> stack9_comm_chan?stack9_data, stack9_is_full := 1
-  [] ~stack9_is_full & ~stack9_op -> stack10_op_chan!0; stack10_comm_chan?stack9_data; stack9_comm_chan!stack9_data
-  [] stack9_is_full & stack9_op -> stack10_op_chan!1; stack10_comm_chan!stack9_data; stack9_comm_chan?stack9_data
-  [] stack9_is_full & ~stack9_op -> stack9_comm_chan!stack9_data, stack9_is_full := 0
-  ] ] ||
-  *[ stack10_op_chan?stack10_op;
-  [ stack10_op -> stack10_comm_chan?stack10_data
-  [] ~stack10_op -> stack10_comm_chan!stack10_data
-  ] ]
-
-  ||
-  *[ ctrl -> stack9_op_chan!test_op; ctrl:= 0; stack9_comm_chan!test_data ]
+     [ ~stack9_is_full & stack9_op -> stack9_comm_chan?stack9_data; stack9_is_full := 1
+     [] else -> skip
+     ]
+    ])
+  ,
+  *[ ctrl -> stack9_op_chan!test_op; ctrl:= 0; ctrl2:= 1; stack9_comm_chan!test_data; ctrl2:= 0]
 }
+
+
+
+/* temp removed:
+
+[] ~stack9_is_full & ~stack9_op -> stack10_op_chan!0; stack10_comm_chan?stack9_data; stack9_comm_chan!stack9_data
+[] stack9_is_full & stack9_op -> stack10_op_chan!1; stack10_comm_chan!stack9_data; stack9_comm_chan?stack9_data
+[] stack9_is_full & ~stack9_op -> stack9_comm_chan!stack9_data, stack9_is_full := 0
+] ] ,
+*[ stack10_op_chan?stack10_op;
+[ stack10_op -> stack10_comm_chan?stack10_data
+[] ~stack10_op -> stack10_comm_chan!stack10_data
+] ])
+
+*/
