@@ -155,15 +155,11 @@ chp {
       [] else -> skip
     ];
     [ is_pop_1(exec_op) = 1 -> exec_data := stack_data [] else -> skip ];
-    [ is_popout_1(exec_op) = 1 -> exec_temp := join_12(exec_op, stack_data); OUT!(exec_temp) [] else -> skip ];
-    [ is_popreg_1(exec_op) = 1 -> [
-         is_reg0_1(exec_data) = 1 -> reg0 := stack_data
-        [] is_reg1_1(exec_data) = 1 -> reg1 := stack_data
-        [] is_reg2_1(exec_data) = 1 -> reg2 := stack_data
-        [] is_reg3_1(exec_data) = 1 -> reg3 := stack_data
-      ]
-    [] else -> skip
-    ];  dbg := 1
+    [ is_popout_1(exec_op) = 1 -> exec_temp := join_12(exec_op, stack_data); OUT!(exec_temp) [] else -> skip ] /*;
+    [ is_popreg_1(exec_op) = 1 -> [ is_reg0_1(exec_data) = 1 -> reg0 := stack_data [] else -> skip ] [] else -> skip ];
+    [ is_popreg_1(exec_op) = 1 -> [ is_reg1_1(exec_data) = 1 -> reg1 := stack_data [] else -> skip ] [] else -> skip ];
+    [ is_popreg_1(exec_op) = 1 -> [ is_reg2_1(exec_data) = 1 -> reg2 := stack_data [] else -> skip ] [] else -> skip ];
+    [ is_popreg_1(exec_op) = 1 -> [ is_reg3_1(exec_data) = 1 -> reg3 := stack_data [] else -> skip ] [] else -> skip ] */
   ] ||
   stack0_is_full := 0;
   *[ stack0_op_chan?stack0_op;

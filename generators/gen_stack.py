@@ -33,15 +33,24 @@ for i in range(num_entries):
       [] else -> skip
     ];
 
-    [ ~stack{i}_is_full & stack{i}_op -> stack{i}_push_chan?stack{i}_data, stack{i}_is_full := 1
-    [] (~stack{i}_is_full & ~stack{i}_op) | (stack{i}_is_full & ~stack{i}_op) -> stack{i}_pop_chan!stack{i}_data
-    [] stack{i}_is_full & stack{i}_op -> stack{i+1}_push_chan!stack{i}_data; stack{i}_push_chan?stack{i}_data
+    [ stack{i}_is_full & stack{i}_op -> stack{i+1}_push_chan!stack{i}_data
+    [] else -> skip
+    ];
+
+    [
+      (~stack{i}_is_full & ~stack{i}_op) | (stack{i}_is_full & ~stack{i}_op) -> stack{i}_pop_chan!stack{i}_data
+      [] else -> skip
+    ];
+
+    [ (~stack{i}_is_full & stack{i}_op) | (stack{i}_is_full & stack{i}_op) -> stack{i}_push_chan?stack{i}_data, stack{i}_is_full := 1
+      [] else -> skip
     ];
 
     [
       stack{i}_is_full & ~stack{i}_op -> stack{i}_is_full := 0
       [] else -> skip
     ]
+
   ] ||''')
 
 print(f'\t*[ stack{num_entries}_op_chan?stack{num_entries}_op;')
