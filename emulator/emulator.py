@@ -231,15 +231,33 @@ def prsim_preamble():
         print(f'watch p.var_stack{i}_is_full.v.f')
         print(f'set_principal p.var_stack{i}_is_full.v.t')
         print(f'set_principal p.var_stack{i}_is_full.v.f')
+        print(f'watch p.var_stack{i}_op.v.t')
+        print(f'watch p.var_stack{i}_op.v.f')
+        print(f'set_principal p.var_stack{i}_op.v.t')
+        print(f'set_principal p.var_stack{i}_op.v.f')
+        print(f'watch p.chan_stack{i}_op_chan.a')
+        print(f'watch p.chan_stack{i}_op_chan.t')
+        print(f'watch p.chan_stack{i}_op_chan.f')
+        print(f'set_principal p.chan_stack{i}_op_chan.a')
+        print(f'set_principal p.chan_stack{i}_op_chan.t')
+        print(f'set_principal p.chan_stack{i}_op_chan.f')
+        watch_chan(f'p.chan_stack{i}_push_chan', 8)
+        watch_chan(f'p.chan_stack{i}_pop_chan', 8)
 
     for i in range(4):
         watch_multibit(f'p.var_reg{i}', 8)
 
     watch_multibit('p.var_pc_index', 12)
+    watch_multibit('p.var_exec_data', 8)
 
     watch_chan('p.chan_PC', 12)
     watch_chan('p.chan_IN', 12)
     watch_chan('p.chan_OUT', 12)
+
+    print('watch p.var_dbg.v.t')
+    print('watch p.var_dbg.v.f')
+    print('set_principal p.var_dbg.v.t')
+    print('set_principal p.var_dbg.v.f')
 
     print('mode reset')
     print('set Reset 1')
