@@ -152,10 +152,10 @@ chp {
     [ is_pop_1(exec_op) = 1 -> exec_data := stack_data [] else -> skip ];
     [ is_popout_1(exec_op) = 1 -> exec_temp := join_12(exec_op, stack_data); OUT!(exec_temp) [] else -> skip ];
     [ is_popreg0_1(exec_op, exec_data) = 1 -> reg0 := stack_data
-    [] is_popreg1_1(exec_op, exec_data) = 1 -> reg1 := stack_data
-    [] is_popreg2_1(exec_op, exec_data) = 1 -> reg2 := stack_data
-    [] is_popreg3_1(exec_op, exec_data) = 1 -> reg3 := stack_data
-    [] else -> skip
+      [] is_popreg1_1(exec_op, exec_data) = 1 -> reg1 := stack_data
+      [] is_popreg2_1(exec_op, exec_data) = 1 -> reg2 := stack_data
+      [] is_popreg3_1(exec_op, exec_data) = 1 -> reg3 := stack_data
+      [] else -> skip
     ];  dbg := 1
   ] ||
   stack0_is_full := 0;
