@@ -1,0 +1,8 @@
+vars {
+  int<12> pc;
+  int<12> out;
+  int<8> a;
+}
+chp {
+  *[ out := pcadd_12(pc, a); pc := out ]
+}

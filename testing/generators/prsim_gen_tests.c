@@ -17,6 +17,7 @@ typedef struct _var {
   int ** values;     // list of [set1, out1, set2, out2] ... where sets and outs are arrays of size len_var_array
   int len_values;   // length of list with values (must be even #)
   int num_cycles;
+  bool irsim_ana;   // true if want to show up in analyzer window
 } var;
 
 int read_file(FILE * f, var * vars, int * len_vars, int * max_len_vars)
@@ -69,8 +70,17 @@ int read_file(FILE * f, var * vars, int * len_vars, int * max_len_vars)
       i++;
       j++;
     }
-    vars[i_vars].varname[j] = '\0';
-    printf("--> Varname == %s\n", vars[i_vars].varname);
+    if (vars[i_vars].varname[j-1] == '-')
+    {
+      vars[i_vars].irsim_ana = false;
+      vars[i_vars].varname[j-1] = '\0';
+    }
+    else
+    {
+      vars[i_vars].irsim_ana = true;
+      vars[i_vars].varname[j] = '\0';
+    }
+    printf("--> Varname == %s, ana_window=%d\n", vars[i_vars].varname, vars[i_vars].irsim_ana);
 
     while (line[i] == ' ') { i++; };
     // printf("--> lett is now @ %d = %c\n", i, line[i]);
@@ -177,7 +187,7 @@ int read_file(FILE * f, var * vars, int * len_vars, int * max_len_vars)
       }
 
       vars[i_vars].len_values++;
-      printf("----> len_values = %d\n", vars[i_vars].len_values);
+      // printf("----> len_values = %d\n", vars[i_vars].len_values);
       k=0;
     }
 
@@ -537,20 +547,23 @@ void print_irsim_test(FILE * f, var * vars, int len_vars, bool reset, bool _rese
   }
   for (v=0; v<len_vars; v++)                              // each var
   {
-    for (a=0; a<vars[v].len_var_array; a++)               // each index of var array
+    if (vars[v].irsim_ana)
     {
-      int arr_index = (vars[v].len_var_array == 1) ? -1 : a;
-      switch (vars[v].type) {
-        case BOOL:
-          print_irsim_var(f, "", vars[v].varname, "", arr_index, -1);
-          break;
-        case DUALRAIL:
-          print_irsim_var(f, "", vars[v].varname, "/t", arr_index, -1);
-          print_irsim_var(f, "", vars[v].varname, "/f", arr_index, -1);
-          break;
-        default:
-          // do nothing
-          printf("Encountered unknown type\n");
+      for (a=0; a<vars[v].len_var_array; a++)               // each index of var array
+      {
+        int arr_index = (vars[v].len_var_array == 1) ? -1 : a;
+        switch (vars[v].type) {
+          case BOOL:
+            print_irsim_var(f, "", vars[v].varname, "", arr_index, -1);
+            break;
+          case DUALRAIL:
+            print_irsim_var(f, "", vars[v].varname, "/t", arr_index, -1);
+            print_irsim_var(f, "", vars[v].varname, "/f", arr_index, -1);
+            break;
+          default:
+            // do nothing
+            printf("Encountered unknown type\n");
+        }
       }
     }
   }
@@ -595,7 +608,7 @@ void print_irsim_test(FILE * f, var * vars, int len_vars, bool reset, bool _rese
     len_resets = 0;
     for (v=0; v<len_vars; v++)                              // each var
     {
-      printf("---S v=%s: t=%d len=%d\n", vars[v].varname, vars[v].type, vars[v].len_values);
+      // printf("---S v=%s: t=%d len=%d\n", vars[v].varname, vars[v].type, vars[v].len_values);
 
       // printf("v=%s l=%d max=%d\n", vars[v].varname, l, vars[v].len_values);
       if (l < vars[v].len_values)
@@ -603,7 +616,7 @@ void print_irsim_test(FILE * f, var * vars, int len_vars, bool reset, bool _rese
         // printf("---> Setting %s\n", vars[v].varname);
         for (a=0; a<vars[v].len_var_array; a++)               // each index of var array
         {
-          printf("---S --- l=%d a=%d vals[%d][%d]=%d\n", l, a, l, a, vars[v].values[l][a]);
+          // printf("---S --- l=%d a=%d vals[%d][%d]=%d\n", l, a, l, a, vars[v].values[l][a]);
           if (vars[v].type == DUALRAIL && (vars[v].values[l][a] == 1 || vars[v].values[l][a] == 0))
           {
             highs[len_highs][0] = v;
@@ -711,7 +724,7 @@ void print_irsim_test(FILE * f, var * vars, int len_vars, bool reset, bool _rese
 
     for (v=0; v<len_vars; v++)                              // each var
     {
-      printf("---A v=%s: t=%d len=%d\n", vars[v].varname, vars[v].type, vars[v].len_values);
+      // printf("---A v=%s: t=%d len=%d\n", vars[v].varname, vars[v].type, vars[v].len_values);
 
       // printf("v=%s l=%d max=%d\n", vars[v].varname, l, vars[v].len_values);
       if (l+1 < vars[v].len_values)
@@ -719,8 +732,7 @@ void print_irsim_test(FILE * f, var * vars, int len_vars, bool reset, bool _rese
         // printf("---> Setting %s\n", vars[v].varname);
         for (a=0; a<vars[v].len_var_array; a++)               // each index of var array
         {
-          printf("---A --- l+1=%d a=%d vals[%d][%d]=%d\n", l+1, a, l+1, a, vars[v].values[l+1][a]);
-
+          // printf("---A --- l+1=%d a=%d vals[%d][%d]=%d\n", l+1, a, l+1, a, vars[v].values[l+1][a]);
 
           if (vars[v].type == DUALRAIL && (vars[v].values[l+1][a] == 1 || vars[v].values[l+1][a] == 0))
           {

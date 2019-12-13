@@ -1,0 +1,150 @@
+initialize
+random
+watch Reset
+watch _Reset
+watch t.go.r
+watch t.var_pc.go_r
+watch t.var_pc[0].v.t
+watch t.var_pc[0].v.f
+watch t.var_pc[1].v.t
+watch t.var_pc[1].v.f
+watch t.var_pc[2].v.t
+watch t.var_pc[2].v.f
+watch t.var_pc[3].v.t
+watch t.var_pc[3].v.f
+watch t.var_pc[4].v.t
+watch t.var_pc[4].v.f
+watch t.var_pc[5].v.t
+watch t.var_pc[5].v.f
+watch t.var_pc[6].v.t
+watch t.var_pc[6].v.f
+watch t.var_pc[7].v.t
+watch t.var_pc[7].v.f
+watch t.var_pc[8].v.t
+watch t.var_pc[8].v.f
+watch t.var_pc[9].v.t
+watch t.var_pc[9].v.f
+watch t.var_pc[10].v.t
+watch t.var_pc[10].v.f
+watch t.var_pc[11].v.t
+watch t.var_pc[11].v.f
+watch t.var_a.go_r
+watch t.var_a[0].v.t
+watch t.var_a[0].v.f
+watch t.var_a[1].v.t
+watch t.var_a[1].v.f
+watch t.var_a[2].v.t
+watch t.var_a[2].v.f
+watch t.var_a[3].v.t
+watch t.var_a[3].v.f
+watch t.var_a[4].v.t
+watch t.var_a[4].v.f
+watch t.var_a[5].v.t
+watch t.var_a[5].v.f
+watch t.var_a[6].v.t
+watch t.var_a[6].v.f
+watch t.var_a[7].v.t
+watch t.var_a[7].v.f
+watch t.e_1.d.out
+set_principal t.go.r
+set_principal t.var_pc.go_r
+set_principal t.var_pc[0].v.t
+set_principal t.var_pc[0].v.f
+set_principal t.var_pc[1].v.t
+set_principal t.var_pc[1].v.f
+set_principal t.var_pc[2].v.t
+set_principal t.var_pc[2].v.f
+set_principal t.var_pc[3].v.t
+set_principal t.var_pc[3].v.f
+set_principal t.var_pc[4].v.t
+set_principal t.var_pc[4].v.f
+set_principal t.var_pc[5].v.t
+set_principal t.var_pc[5].v.f
+set_principal t.var_pc[6].v.t
+set_principal t.var_pc[6].v.f
+set_principal t.var_pc[7].v.t
+set_principal t.var_pc[7].v.f
+set_principal t.var_pc[8].v.t
+set_principal t.var_pc[8].v.f
+set_principal t.var_pc[9].v.t
+set_principal t.var_pc[9].v.f
+set_principal t.var_pc[10].v.t
+set_principal t.var_pc[10].v.f
+set_principal t.var_pc[11].v.t
+set_principal t.var_pc[11].v.f
+set_principal t.var_a.go_r
+set_principal t.var_a[0].v.t
+set_principal t.var_a[0].v.f
+set_principal t.var_a[1].v.t
+set_principal t.var_a[1].v.f
+set_principal t.var_a[2].v.t
+set_principal t.var_a[2].v.f
+set_principal t.var_a[3].v.t
+set_principal t.var_a[3].v.f
+set_principal t.var_a[4].v.t
+set_principal t.var_a[4].v.f
+set_principal t.var_a[5].v.t
+set_principal t.var_a[5].v.f
+set_principal t.var_a[6].v.t
+set_principal t.var_a[6].v.f
+set_principal t.var_a[7].v.t
+set_principal t.var_a[7].v.f
+set_principal t.e_1.d.out
+
+mode reset
+set Reset 1
+set _Reset 0
+set t.go.r 0
+cycle
+set Reset 0
+set _Reset 1
+cycle
+mode run
+set t.go.r 0
+cycle
+
+assert t.go.r 0
+assert t.var_pc[0].v.t 0
+assert t.var_pc[0].v.f 1
+assert t.var_pc[1].v.t 0
+assert t.var_pc[1].v.f 1
+assert t.var_pc[2].v.t 0
+assert t.var_pc[2].v.f 1
+assert t.var_pc[3].v.t 0
+assert t.var_pc[3].v.f 1
+assert t.var_pc[4].v.t 0
+assert t.var_pc[4].v.f 1
+assert t.var_pc[5].v.t 0
+assert t.var_pc[5].v.f 1
+assert t.var_pc[6].v.t 0
+assert t.var_pc[6].v.f 1
+assert t.var_pc[7].v.t 0
+assert t.var_pc[7].v.f 1
+assert t.var_pc[8].v.t 0
+assert t.var_pc[8].v.f 1
+assert t.var_pc[9].v.t 0
+assert t.var_pc[9].v.f 1
+assert t.var_pc[10].v.t 0
+assert t.var_pc[10].v.f 1
+assert t.var_pc[11].v.t 0
+assert t.var_pc[11].v.f 1
+assert t.var_a[0].v.t 1
+assert t.var_a[0].v.f 0
+assert t.var_a[1].v.t 1
+assert t.var_a[1].v.f 0
+assert t.var_a[2].v.t 1
+assert t.var_a[2].v.f 0
+assert t.var_a[3].v.t 1
+assert t.var_a[3].v.f 0
+assert t.var_a[4].v.t 1
+assert t.var_a[4].v.f 0
+assert t.var_a[5].v.t 1
+assert t.var_a[5].v.f 0
+assert t.var_a[6].v.t 1
+assert t.var_a[6].v.f 0
+assert t.var_a[7].v.t 1
+assert t.var_a[7].v.f 0
+set t.go.r 1
+cycle
+
+assert t.go.r 1

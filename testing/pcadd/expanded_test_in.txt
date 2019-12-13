@@ -1,0 +1,5 @@
+bool go_r 0,0 1,1, 0,0 1,1, 0,0 1,1
+dualrail pc[12] rrrrrrrrrrrr,rrrrrrrrrrrr, 000000000000,nnnnnnnnnnnn, rrrrrrrrrrrr,rrrrrrrrrrrr, 101010101110,nnnnnnnnnnnn, rrrrrrrrrrrr,rrrrrrrrrrrr, 101010101100,nnnnnnnnnnnn
+dualrail d[8] rrrrrrrr,rrrrrrrr 00000001,nnnnnnnn, rrrrrrrr,rrrrrrrr 11010101,nnnnnnnn, rrrrrrrr,rrrrrrrr 11010101,nnnnnnnn
+bool f.d.out n
+dualrail out[12] nnnnnnnnnnnn,rrrrrrrrrrrr, nnnnnnnnnnnn,000000010000, nnnnnnnnnnnn,rrrrrrrrrrrr, nnnnnnnnnnnn,000000000001, nnnnnnnnnnnn,rrrrrrrrrrrr, nnnnnnnnnnnn,000000000010

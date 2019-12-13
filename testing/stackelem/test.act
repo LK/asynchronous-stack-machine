@@ -2,9 +2,8 @@ import "testing/stackelem/act_from_chp.act";
 
 dualrail test_op;
 dualrail test_data[8];
-dualrail ctrl;
 a1of1 go;
 
-toplevel t(go, ctrl, test_op, test_data);
+toplevel t(go, test_op, test_data);
 
-// defproc toplevel (a1of1 go; dualrail var_ctrl, var_test_op; dualrail var_test_data[8]) 
+// defproc toplevel (a1of1 go; dualrail var_test_op; dualrail var_test_data[8])

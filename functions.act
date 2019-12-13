@@ -56,10 +56,8 @@ defproc bundled_stackadd_8 (bool go_r; dualrail v0[8]; dualrail v1[8]; dualrail 
       d.out => _dout-
       go_r => _gor-
       (i:8: a.out[i] => _aout[i]-
-            ~_dout & ~_aout[i] -> out[i].t+
-            ~_dout & ~a.out[i] -> out[i].f+
-            _gor -> out[i].t-
-            _gor -> out[i].f-
+            ~_dout & ~_aout[i] => out[i].t+
+            ~_dout & ~a.out[i] => out[i].f+
       )
    }
 }
@@ -81,8 +79,6 @@ defproc bundled_stacksub_8 (bool go_r; dualrail v0[8]; dualrail v1[8]; dualrail 
       (i:8: s.out[i] => _sout[i]-
       	    ~_dout & ~_sout[i] => out[i].t+
       	    ~_dout & ~s.out[i] => out[i].f+
-            _gor -> out[i].t-
-            _gor -> out[i].f-
       )
    }
 }
@@ -202,48 +198,34 @@ defproc bundled_pcincrement_12 (bool go_r; dualrail v0[12]; dualrail out[12])
 defproc bundled_pcadd_12 (bool go_r; dualrail v0[12]; dualrail v1[8]; dualrail out[12])
 {
    /* combinational logic */
-   delay<100> d;
+   delay<200> d;
    bool _dout;
    d.in = go_r;
 
    bool cout, cin;
-   /*bool msbs[4];*/
-   bool y8, y9, y10, y11;
+   bool zeroes[4];
    add12 a (,,cin,, cout);
    (i:12: a.a[i] = v0[i].t; )
    (i:8: a.b[i] = v1[i].t; )
-   /*(i:8..11: a.b[i] = msbs[i]; )*/
-   a.b[8] = y8;
-   a.b[9] = y9;
-   a.b[10] = y10;
-   a.b[11] = y11;
+   (i:4: a.b[i+8] = zeroes[i]; )
 
    bool _aout[12];
    prs {
       Reset -> cin-
-      Reset -> y8-
-      Reset -> y9-
-      Reset -> y10-
-      Reset -> y11-
+      (i:4: Reset -> zeroes[i]-)
       d.out => _dout-
       (i:12: a.out[i] => _aout[i]-
             ~_dout & ~_aout[i] => out[i].t+
             ~_dout & ~a.out[i] => out[i].f+
       )
    }
-   /*       (i:8..11: Reset -> msbs[i]-) */
 }
 
 /* INPUT is [ opcode,4 ][ data,8 ] ==> OUTPUT is [ opcode,4 ] */
 defproc bundled_split_4(bool go_r; dualrail v0[12]; dualrail out[4])
 {
-  // syn_expr_vararray<4> va (go_r, ,out);
-  // (i:4: va.v[i] = v0[i];)
-  syn_expr_var va[4];
-  (i:4: va[i].v = v0[i];
-        va[i].go_r = go_r;
-        va[i].out = out[i];
-  )
+  syn_expr_vararray<4> va (go_r, ,out);
+  (i:4: va.v[i] = v0[i];)
 }
 
 /* INPUT is [ opcode,4 ][ data,8 ] ==> OUTPUT is [ data,8 ] */
