@@ -696,6 +696,7 @@ void print_chp_structure (Chp *c)
   printf ("import \"lab_syn.act\";\n");
   printf ("import \"opcode_conditions.act\";\n");
   printf ("import \"functions.act\";\n\n");
+  printf ("import \"combined_functions.act\";\n\n");
   printf ("defproc toplevel (a1of1 go)\n{\n");
   /* --- your code starts here --- */
 

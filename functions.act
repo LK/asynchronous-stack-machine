@@ -83,23 +83,23 @@ defproc bundled_stacksub_8 (bool go_r; dualrail v0[8]; dualrail v1[8]; dualrail 
    }
 }
 
-defproc bundled_is_zero_1(bool go_r; dualrail v0[12]; dualrail out) {
+defproc bundled_is_zero_1(bool go_r; dualrail v0[8]; dualrail out) {
   bool _gor;
   prs {
     go_r => _gor-
-    ~_gor & ((&i:12: ~v0[i].t)) -> out.t+
-    ~_gor & ((|i:12: ~v0[i].f)) -> out.f+
+    ~_gor & ((&i:8: ~v0[i].t)) -> out.t+
+    ~_gor & ((|i:8: ~v0[i].f)) -> out.f+
     _gor -> out.t-
     _gor -> out.f-
   }
 }
 
-defproc bundled_is_less_than_zero_1(bool go_r; dualrail v0[12]; dualrail out) {
+defproc bundled_is_less_than_zero_1(bool go_r; dualrail v0[8]; dualrail out) {
   bool _gor;
   prs {
     go_r => _gor-
-    ~_gor & ~v0[11].f -> out.t+
-    ~_gor & ~v0[11].t -> out.f+
+    ~_gor & ~v0[7].f -> out.t+
+    ~_gor & ~v0[7].t -> out.f+
     _gor -> out.t-
     _gor -> out.f-
   }
