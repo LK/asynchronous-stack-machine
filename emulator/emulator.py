@@ -40,7 +40,7 @@ def encode(parts):
     op_encoded = 0
     data_encoded = 0
     if parts[0] == 'halt':
-        op_encoded = 0b0000
+        op_encoded = 0b1111
     elif parts[0] == 'pushc':
         op_encoded = 0b0001
         data_encoded = int(parts[1])
@@ -87,12 +87,17 @@ def run(fname):
             assert_recv('p.chan_IN', 12, encode(parts))
             if parts[0] == 'popout':
                 assert_send('p.chan_OUT', 12, state['stack'][-1])
-            pc = pc + compute(parts[0], parts[1:], state)
+            incr = compute(parts[0], parts[1:], state)
+            if pc + incr < 0:
+              break
+            pc = pc + incr
             if not GEN_PRSIM:
                 print(str(state), ' '.join(parts))
 
     if not GEN_PRSIM:
         print(state)
+    else:
+        assert_state(state, pc)
 
 def assert_send(channame, bitwidth, value):
   assert_send_start(channame, bitwidth, value)

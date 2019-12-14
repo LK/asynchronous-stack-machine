@@ -1,6 +1,6 @@
 BITWIDTH = 4
 OPCODES = {
-  'halt':       0b0000,
+  'halt':       0b1111,
   'pushc':      0b0001,
   'pop':        0b0010,
   'popout':     0b0011,
