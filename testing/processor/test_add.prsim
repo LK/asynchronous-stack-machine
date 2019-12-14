@@ -1,5 +1,4 @@
 initialize
-break-on-warn
 watch Reset
 watch _Reset
 watch go.r
