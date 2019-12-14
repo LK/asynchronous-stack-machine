@@ -71,6 +71,9 @@ def encode(parts):
         print('cannot encode op ' + parts[0])
         sys.exit(1)
 
+    if data_encoded < 0:
+      data_encoded = 2**8 + data_encoded
+
     return (data_encoded << 4) | op_encoded
 
 def run(fname):
