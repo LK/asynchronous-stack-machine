@@ -55,11 +55,9 @@ defproc bundled_stackadd_8 (bool go_r; dualrail v0[8]; dualrail v1[8]; dualrail 
       Reset -> cin-
       d.out => _dout-
       go_r => _gor-
-      (i:8: a.out[i] => _aout[i]-
-            ~_dout & ~_aout[i] -> out[i].t+
-            ~_dout & ~a.out[i] -> out[i].f+
-            _gor -> out[i].t-
-            _gor -> out[i].f-
+      (i:8: [unstab=1] a.out[i] => _aout[i]-
+            ~_dout & ~_aout[i] => out[i].t+
+            ~_dout & ~a.out[i] => out[i].f+
       )
    }
 }
@@ -78,56 +76,30 @@ defproc bundled_stacksub_8 (bool go_r; dualrail v0[8]; dualrail v1[8]; dualrail 
       ~_Reset -> cin+
       d.out => _dout-
       go_r => _gor-
-      (i:8: s.out[i] => _sout[i]-
+      (i:8: [unstab=1] s.out[i] => _sout[i]-
       	    ~_dout & ~_sout[i] => out[i].t+
       	    ~_dout & ~s.out[i] => out[i].f+
-            _gor -> out[i].t-
-            _gor -> out[i].f-
       )
    }
 }
 
-defproc bundled_fblock_8 (bool go_r; dualrail c[4]; dualrail x[8], y[8]; dualrail out[8])
-{
-   /* combinational logic */
-   delay<2> d;
-   bool _dout;
-   d.in = go_r;
-   fblock8 fblock;
-   (; i : 8 : fblock.a[i] = x[i].t; fblock.b[i] = y[i].t;)
-   fblock.g0 = c[0].t;
-   fblock.g1 = c[1].t;
-   fblock.g2 = c[2].t;
-   fblock.g3 = c[3].t;
-
-   bool _out[8];
-
-   prs {
-      d.out => _dout-
-      (i:8: ~_dout & ~fblock.out[i] => out[i].f+
-            ~fblock.out[i] => _out[i]+
-            ~_dout & ~_out[i] => out[i].t+
-      )
-   }
-}
-
-defproc bundled_is_zero_1(bool go_r; dualrail v0[12]; dualrail out) {
+defproc bundled_is_zero_1(bool go_r; dualrail v0[8]; dualrail out) {
   bool _gor;
   prs {
     go_r => _gor-
-    ~_gor & ((&i:12: ~v0[i].t)) -> out.t+
-    ~_gor & ((|i:12: ~v0[i].f)) -> out.f+
+    ~_gor & ((&i:8: ~v0[i].t)) -> out.t+
+    ~_gor & ((|i:8: ~v0[i].f)) -> out.f+
     _gor -> out.t-
     _gor -> out.f-
   }
 }
 
-defproc bundled_is_less_than_zero_1(bool go_r; dualrail v0[12]; dualrail out) {
+defproc bundled_is_less_than_zero_1(bool go_r; dualrail v0[8]; dualrail out) {
   bool _gor;
   prs {
     go_r => _gor-
-    ~_gor & ~v0[11].f -> out.t+
-    ~_gor & ~v0[11].t -> out.f+
+    ~_gor & ~v0[7].f -> out.t+
+    ~_gor & ~v0[7].t -> out.f+
     _gor -> out.t-
     _gor -> out.f-
   }
@@ -192,7 +164,7 @@ defproc bundled_pcincrement_12 (bool go_r; dualrail v0[12]; dualrail out[12])
       ~_Reset -> cin+
       d.out => _dout-
       (i:12: Reset -> zero[i]-)
-      (i:12: s.out[i] => _sout[i]-
+      (i:12: [unstab=1] s.out[i] => _sout[i]-
 	       ~_dout & ~_sout[i] => out[i].t+
 	       ~_dout & ~s.out[i] => out[i].f+
       )
@@ -202,48 +174,36 @@ defproc bundled_pcincrement_12 (bool go_r; dualrail v0[12]; dualrail out[12])
 defproc bundled_pcadd_12 (bool go_r; dualrail v0[12]; dualrail v1[8]; dualrail out[12])
 {
    /* combinational logic */
-   delay<100> d;
+   delay<200> d;
    bool _dout;
    d.in = go_r;
 
    bool cout, cin;
-   /*bool msbs[4];*/
-   bool y8, y9, y10, y11;
+   bool zeroes[4];
    add12 a (,,cin,, cout);
    (i:12: a.a[i] = v0[i].t; )
    (i:8: a.b[i] = v1[i].t; )
-   /*(i:8..11: a.b[i] = msbs[i]; )*/
-   a.b[8] = y8;
-   a.b[9] = y9;
-   a.b[10] = y10;
-   a.b[11] = y11;
+   (i:4: a.b[i+8] = zeroes[i]; )
 
    bool _aout[12];
    prs {
       Reset -> cin-
-      Reset -> y8-
-      Reset -> y9-
-      Reset -> y10-
-      Reset -> y11-
+      (i:4: Reset -> zeroes[i]-)
       d.out => _dout-
-      (i:12: a.out[i] => _aout[i]-
-            ~_dout & ~_aout[i] => out[i].t+
-            ~_dout & ~a.out[i] => out[i].f+
+      (i:12: [unstab=1] a.out[i] => _aout[i]-
+            ~_dout & ~_aout[i] -> out[i].t+
+            _dout -> out[i].t-
+            ~_dout & ~a.out[i] -> out[i].f+
+            _dout -> out[i].f-
       )
    }
-   /*       (i:8..11: Reset -> msbs[i]-) */
 }
 
 /* INPUT is [ opcode,4 ][ data,8 ] ==> OUTPUT is [ opcode,4 ] */
 defproc bundled_split_4(bool go_r; dualrail v0[12]; dualrail out[4])
 {
-  // syn_expr_vararray<4> va (go_r, ,out);
-  // (i:4: va.v[i] = v0[i];)
-  syn_expr_var va[4];
-  (i:4: va[i].v = v0[i];
-        va[i].go_r = go_r;
-        va[i].out = out[i];
-  )
+  syn_expr_vararray<4> va (go_r, ,out);
+  (i:4: va.v[i] = v0[i];)
 }
 
 /* INPUT is [ opcode,4 ][ data,8 ] ==> OUTPUT is [ data,8 ] */

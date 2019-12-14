@@ -5,4 +5,4 @@ dualrail d[8];
 dualrail out[12];
 bool go_r;
 
-bundled_pcadd_12 p(go_r, pc, d, out);
+bundled_pcadd_12 f(go_r, pc, d, out);

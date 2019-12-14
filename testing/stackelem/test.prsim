@@ -20,8 +20,6 @@ watch test_data[6].t
 watch test_data[6].f
 watch test_data[7].t
 watch test_data[7].f
-watch ctrl.t
-watch ctrl.f
 watch go.r
 watch go.a
 watch t.var_ctrl2.v.t
@@ -81,8 +79,6 @@ set_principal test_data[6].t
 set_principal test_data[6].f
 set_principal test_data[7].t
 set_principal test_data[7].f
-set_principal ctrl.t
-set_principal ctrl.f
 set_principal go.r
 set_principal go.a
 set_principal t.var_ctrl2.v.t
@@ -146,8 +142,6 @@ set test_data[6].t 0
 set test_data[6].f 0
 set test_data[7].t 0
 set test_data[7].f 0
-set ctrl.t 0
-set ctrl.f 0
 set go.r 0
 cycle
 assert test_op.t 0
@@ -168,8 +162,6 @@ assert test_data[6].t 0
 assert test_data[6].f 0
 assert test_data[7].t 0
 assert test_data[7].f 0
-assert ctrl.t 0
-assert ctrl.f 0
 set Reset 0
 set _Reset 1
 cycle
@@ -192,8 +184,6 @@ set test_data[6].t 0
 set test_data[6].f 0
 set test_data[7].t 0
 set test_data[7].f 0
-set ctrl.t 0
-set ctrl.f 0
 set go.r 0
 cycle
 
@@ -215,8 +205,6 @@ assert test_data[6].t 0
 assert test_data[6].f 0
 assert test_data[7].t 0
 assert test_data[7].f 0
-assert ctrl.t 0
-assert ctrl.f 0
 assert go.r 0
 assert t.var_stack9_is_full.v.t 0
 assert t.var_stack9_is_full.v.f 1
@@ -270,8 +258,6 @@ set test_data[6].t 0
 set test_data[6].f 1
 set test_data[7].t 1
 set test_data[7].f 0
-set ctrl.t 1
-set ctrl.f 0
 cycle
 
 assert test_op.t 1
@@ -292,8 +278,6 @@ assert test_data[6].t 0
 assert test_data[6].f 1
 assert test_data[7].t 1
 assert test_data[7].f 0
-assert ctrl.t 1
-assert ctrl.f 0
 assert t.var_stack9_is_full.v.t 0
 assert t.var_stack9_is_full.v.f 1
 set go.r 1
