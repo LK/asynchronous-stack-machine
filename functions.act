@@ -217,12 +217,12 @@ defproc bundled_split_8(bool go_r; dualrail v0[12]; dualrail out[8])
 defproc bundled_join_12(bool go_r; dualrail v0[4], v1[8]; dualrail out[12])
 {
   syn_expr_var va[12];
-  (i:4: va[i].v = v0[i];
+  (i:4: va[i+8].v = v0[i];
+        va[i+8].go_r = go_r;
+        va[i+8].out = out[i+8];
+  )
+  (i:8: va[i].v = v1[i];
         va[i].go_r = go_r;
         va[i].out = out[i];
-  )
-  (i:8: va[i+4].v = v1[i];
-        va[i+4].go_r = go_r;
-        va[i+4].out = out[i+4];
   )
 }

@@ -12,8 +12,9 @@ def compute(op, args, state):
     elif op == 'pop':
         state['stack'].pop()
     elif op == 'popout':
+        t = state['stack'].pop()
         if not GEN_PRSIM:
-            print(state['stack'].pop())
+            print(t)
     elif op == 'pushreg':
         state['stack'].append(state['regs'][int(args[0])])
     elif op == 'popreg':
@@ -89,7 +90,7 @@ def run(fname):
             parts = [x.strip() for x in cmds[pc].split(' ')]
             assert_recv('p.chan_IN', 12, encode(parts))
             if parts[0] == 'popout':
-                assert_send('p.chan_OUT', 12, state['stack'][-1])
+                assert_send('p.chan_OUT', 8, state['stack'][-1])
             incr = compute(parts[0], parts[1:], state)
             if pc + incr < 0:
               break
