@@ -144,7 +144,7 @@ chp {
       [] is_pushreg3_1(exec_op, exec_data) = 1 -> stack_op := 1, stack_data := reg3
       [] is_popreg_1(exec_op) = 1 -> stack_op := 0
       [] is_add_1(exec_op) = 1 -> stack1_data := stackadd_8(stack0_data, stack1_data); stack_op := 0
-      [] is_sub_1(exec_op) = 1 -> stack1_data := stacksub_8(stack0_data, stack1_data); stack_op := 0
+      [] is_sub_1(exec_op) = 1 -> stack1_data := stacksub_8(stack1_data, stack0_data); stack_op := 0
       [] is_jmp_1(exec_op) = 1 -> pc_index := pcadd_12(pc_index, exec_data), stack_should_perform := 0
       [] is_brz_true_1(exec_op, stack0_data) = 1 -> stack_should_perform := 0, pc_index := pcadd_12(exec_pc, exec_data)
       [] is_brz_false_1(exec_op, stack0_data) = 1 -> stack_should_perform := 0, pc_index := pcincrement_12(exec_pc)

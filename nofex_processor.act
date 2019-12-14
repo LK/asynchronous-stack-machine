@@ -930,8 +930,8 @@ defproc toplevel (a1of1 go)
  a1of1 c_50;
 /* assign */
  bundled_stacksub_8 e_87;
- (i:8: e_87.v0[i] = var_stack0_data[i].v;)
- (i:8: e_87.v1[i] = var_stack1_data[i].v;)
+ (i:8: e_87.v0[i] = var_stack1_data[i].v;)
+ (i:8: e_87.v1[i] = var_stack0_data[i].v;)
  a1of1 c_51;
  syn_fullseq s_80;
  c_51.r = s_80.go.r;
