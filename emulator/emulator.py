@@ -93,11 +93,6 @@ def run(fname):
 
     if not GEN_PRSIM:
         print(state)
-    else:
-      print('assert go.a 1')
-      print('set go.r 0')
-      print('cycle')
-      print('assert go.a 0')
 
 def assert_send(channame, bitwidth, value):
   assert_send_start(channame, bitwidth, value)
@@ -182,7 +177,7 @@ def assert_state(state, pc):
         else:
             print(f'assert p.var_stack{i}_is_full.v.t 1')
             print(f'assert p.var_stack{i}_is_full.v.f 0')
-            assert_multibit(f'p.var_stack{i}_data', 8, state['stack'][i])
+            assert_multibit(f'p.var_stack{i}_data', 8, state['stack'][-(i+1)])
 
     for i in range(4):
         assert_multibit(f'p.var_reg{i}', 8, state['regs'][i])
@@ -241,6 +236,12 @@ def prsim_preamble():
         print(f'set_principal p.chan_stack{i}_op_chan.a')
         print(f'set_principal p.chan_stack{i}_op_chan.t')
         print(f'set_principal p.chan_stack{i}_op_chan.f')
+        print(f'watch p.chan_stack{i}_full_chan.a')
+        print(f'watch p.chan_stack{i}_full_chan.t')
+        print(f'watch p.chan_stack{i}_full_chan.f')
+        print(f'set_principal p.chan_stack{i}_full_chan.a')
+        print(f'set_principal p.chan_stack{i}_full_chan.t')
+        print(f'set_principal p.chan_stack{i}_full_chan.f')
         watch_chan(f'p.chan_stack{i}_push_chan', 8)
         watch_chan(f'p.chan_stack{i}_pop_chan', 8)
 
@@ -266,6 +267,11 @@ def prsim_preamble():
     print('set p.chan_PC.a 0')
     print('set p.chan_OUT.a 0')
     clear_chan_data('p.chan_IN', 12)
+    clear_chan_data('p.chan_stack10_pop_chan', 8)
+    print('set p.chan_stack10_push_chan.a 0')
+    print('set p.chan_stack10_op_chan.a 0')
+    print('set p.chan_stack10_full_chan.t 0')
+    print('set p.chan_stack10_full_chan.f 0')
     print('cycle')
     print('set Reset 0')
     print('set _Reset 1')

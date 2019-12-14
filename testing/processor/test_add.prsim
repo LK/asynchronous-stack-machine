@@ -1,4 +1,5 @@
 initialize
+break-on-warn
 watch Reset
 watch _Reset
 watch go.r
@@ -53,6 +54,12 @@ watch p.chan_stack0_op_chan.f
 set_principal p.chan_stack0_op_chan.a
 set_principal p.chan_stack0_op_chan.t
 set_principal p.chan_stack0_op_chan.f
+watch p.chan_stack0_full_chan.a
+watch p.chan_stack0_full_chan.t
+watch p.chan_stack0_full_chan.f
+set_principal p.chan_stack0_full_chan.a
+set_principal p.chan_stack0_full_chan.t
+set_principal p.chan_stack0_full_chan.f
 watch p.chan_stack0_push_chan.d[0].t
 watch p.chan_stack0_push_chan.d[0].f
 set_principal p.chan_stack0_push_chan.d[0].t
@@ -167,6 +174,12 @@ watch p.chan_stack1_op_chan.f
 set_principal p.chan_stack1_op_chan.a
 set_principal p.chan_stack1_op_chan.t
 set_principal p.chan_stack1_op_chan.f
+watch p.chan_stack1_full_chan.a
+watch p.chan_stack1_full_chan.t
+watch p.chan_stack1_full_chan.f
+set_principal p.chan_stack1_full_chan.a
+set_principal p.chan_stack1_full_chan.t
+set_principal p.chan_stack1_full_chan.f
 watch p.chan_stack1_push_chan.d[0].t
 watch p.chan_stack1_push_chan.d[0].f
 set_principal p.chan_stack1_push_chan.d[0].t
@@ -281,6 +294,12 @@ watch p.chan_stack2_op_chan.f
 set_principal p.chan_stack2_op_chan.a
 set_principal p.chan_stack2_op_chan.t
 set_principal p.chan_stack2_op_chan.f
+watch p.chan_stack2_full_chan.a
+watch p.chan_stack2_full_chan.t
+watch p.chan_stack2_full_chan.f
+set_principal p.chan_stack2_full_chan.a
+set_principal p.chan_stack2_full_chan.t
+set_principal p.chan_stack2_full_chan.f
 watch p.chan_stack2_push_chan.d[0].t
 watch p.chan_stack2_push_chan.d[0].f
 set_principal p.chan_stack2_push_chan.d[0].t
@@ -395,6 +414,12 @@ watch p.chan_stack3_op_chan.f
 set_principal p.chan_stack3_op_chan.a
 set_principal p.chan_stack3_op_chan.t
 set_principal p.chan_stack3_op_chan.f
+watch p.chan_stack3_full_chan.a
+watch p.chan_stack3_full_chan.t
+watch p.chan_stack3_full_chan.f
+set_principal p.chan_stack3_full_chan.a
+set_principal p.chan_stack3_full_chan.t
+set_principal p.chan_stack3_full_chan.f
 watch p.chan_stack3_push_chan.d[0].t
 watch p.chan_stack3_push_chan.d[0].f
 set_principal p.chan_stack3_push_chan.d[0].t
@@ -509,6 +534,12 @@ watch p.chan_stack4_op_chan.f
 set_principal p.chan_stack4_op_chan.a
 set_principal p.chan_stack4_op_chan.t
 set_principal p.chan_stack4_op_chan.f
+watch p.chan_stack4_full_chan.a
+watch p.chan_stack4_full_chan.t
+watch p.chan_stack4_full_chan.f
+set_principal p.chan_stack4_full_chan.a
+set_principal p.chan_stack4_full_chan.t
+set_principal p.chan_stack4_full_chan.f
 watch p.chan_stack4_push_chan.d[0].t
 watch p.chan_stack4_push_chan.d[0].f
 set_principal p.chan_stack4_push_chan.d[0].t
@@ -623,6 +654,12 @@ watch p.chan_stack5_op_chan.f
 set_principal p.chan_stack5_op_chan.a
 set_principal p.chan_stack5_op_chan.t
 set_principal p.chan_stack5_op_chan.f
+watch p.chan_stack5_full_chan.a
+watch p.chan_stack5_full_chan.t
+watch p.chan_stack5_full_chan.f
+set_principal p.chan_stack5_full_chan.a
+set_principal p.chan_stack5_full_chan.t
+set_principal p.chan_stack5_full_chan.f
 watch p.chan_stack5_push_chan.d[0].t
 watch p.chan_stack5_push_chan.d[0].f
 set_principal p.chan_stack5_push_chan.d[0].t
@@ -737,6 +774,12 @@ watch p.chan_stack6_op_chan.f
 set_principal p.chan_stack6_op_chan.a
 set_principal p.chan_stack6_op_chan.t
 set_principal p.chan_stack6_op_chan.f
+watch p.chan_stack6_full_chan.a
+watch p.chan_stack6_full_chan.t
+watch p.chan_stack6_full_chan.f
+set_principal p.chan_stack6_full_chan.a
+set_principal p.chan_stack6_full_chan.t
+set_principal p.chan_stack6_full_chan.f
 watch p.chan_stack6_push_chan.d[0].t
 watch p.chan_stack6_push_chan.d[0].f
 set_principal p.chan_stack6_push_chan.d[0].t
@@ -851,6 +894,12 @@ watch p.chan_stack7_op_chan.f
 set_principal p.chan_stack7_op_chan.a
 set_principal p.chan_stack7_op_chan.t
 set_principal p.chan_stack7_op_chan.f
+watch p.chan_stack7_full_chan.a
+watch p.chan_stack7_full_chan.t
+watch p.chan_stack7_full_chan.f
+set_principal p.chan_stack7_full_chan.a
+set_principal p.chan_stack7_full_chan.t
+set_principal p.chan_stack7_full_chan.f
 watch p.chan_stack7_push_chan.d[0].t
 watch p.chan_stack7_push_chan.d[0].f
 set_principal p.chan_stack7_push_chan.d[0].t
@@ -965,6 +1014,12 @@ watch p.chan_stack8_op_chan.f
 set_principal p.chan_stack8_op_chan.a
 set_principal p.chan_stack8_op_chan.t
 set_principal p.chan_stack8_op_chan.f
+watch p.chan_stack8_full_chan.a
+watch p.chan_stack8_full_chan.t
+watch p.chan_stack8_full_chan.f
+set_principal p.chan_stack8_full_chan.a
+set_principal p.chan_stack8_full_chan.t
+set_principal p.chan_stack8_full_chan.f
 watch p.chan_stack8_push_chan.d[0].t
 watch p.chan_stack8_push_chan.d[0].f
 set_principal p.chan_stack8_push_chan.d[0].t
@@ -1079,6 +1134,12 @@ watch p.chan_stack9_op_chan.f
 set_principal p.chan_stack9_op_chan.a
 set_principal p.chan_stack9_op_chan.t
 set_principal p.chan_stack9_op_chan.f
+watch p.chan_stack9_full_chan.a
+watch p.chan_stack9_full_chan.t
+watch p.chan_stack9_full_chan.f
+set_principal p.chan_stack9_full_chan.a
+set_principal p.chan_stack9_full_chan.t
+set_principal p.chan_stack9_full_chan.f
 watch p.chan_stack9_push_chan.d[0].t
 watch p.chan_stack9_push_chan.d[0].f
 set_principal p.chan_stack9_push_chan.d[0].t
@@ -1539,6 +1600,26 @@ set p.chan_IN.d[10].t 0
 set p.chan_IN.d[10].f 0
 set p.chan_IN.d[11].t 0
 set p.chan_IN.d[11].f 0
+set p.chan_stack10_pop_chan.d[0].t 0
+set p.chan_stack10_pop_chan.d[0].f 0
+set p.chan_stack10_pop_chan.d[1].t 0
+set p.chan_stack10_pop_chan.d[1].f 0
+set p.chan_stack10_pop_chan.d[2].t 0
+set p.chan_stack10_pop_chan.d[2].f 0
+set p.chan_stack10_pop_chan.d[3].t 0
+set p.chan_stack10_pop_chan.d[3].f 0
+set p.chan_stack10_pop_chan.d[4].t 0
+set p.chan_stack10_pop_chan.d[4].f 0
+set p.chan_stack10_pop_chan.d[5].t 0
+set p.chan_stack10_pop_chan.d[5].f 0
+set p.chan_stack10_pop_chan.d[6].t 0
+set p.chan_stack10_pop_chan.d[6].f 0
+set p.chan_stack10_pop_chan.d[7].t 0
+set p.chan_stack10_pop_chan.d[7].f 0
+set p.chan_stack10_push_chan.a 0
+set p.chan_stack10_op_chan.a 0
+set p.chan_stack10_full_chan.t 0
+set p.chan_stack10_full_chan.f 0
 cycle
 set Reset 0
 set _Reset 1
@@ -1988,10 +2069,10 @@ cycle
 assert p.chan_IN.a 0
 assert p.var_stack0_is_full.v.t 1
 assert p.var_stack0_is_full.v.f 0
-assert p.var_stack0_data[0].v.t 1
-assert p.var_stack0_data[0].v.f 0
-assert p.var_stack0_data[1].v.t 0
-assert p.var_stack0_data[1].v.f 1
+assert p.var_stack0_data[0].v.t 0
+assert p.var_stack0_data[0].v.f 1
+assert p.var_stack0_data[1].v.t 1
+assert p.var_stack0_data[1].v.f 0
 assert p.var_stack0_data[2].v.t 0
 assert p.var_stack0_data[2].v.f 1
 assert p.var_stack0_data[3].v.t 0
@@ -2006,10 +2087,10 @@ assert p.var_stack0_data[7].v.t 0
 assert p.var_stack0_data[7].v.f 1
 assert p.var_stack1_is_full.v.t 1
 assert p.var_stack1_is_full.v.f 0
-assert p.var_stack1_data[0].v.t 0
-assert p.var_stack1_data[0].v.f 1
-assert p.var_stack1_data[1].v.t 1
-assert p.var_stack1_data[1].v.f 0
+assert p.var_stack1_data[0].v.t 1
+assert p.var_stack1_data[0].v.f 0
+assert p.var_stack1_data[1].v.t 0
+assert p.var_stack1_data[1].v.f 1
 assert p.var_stack1_data[2].v.t 0
 assert p.var_stack1_data[2].v.f 1
 assert p.var_stack1_data[3].v.t 0
@@ -2458,7 +2539,3 @@ set p.chan_IN.d[11].t 0
 set p.chan_IN.d[11].f 0
 cycle
 assert p.chan_IN.a 0
-assert go.a 1
-set go.r 0
-cycle
-assert go.a 0
