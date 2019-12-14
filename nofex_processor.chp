@@ -138,10 +138,10 @@ chp {
       [] is_add_1(exec_op) = 1 -> stack1_data := stackadd_8(stack0_data, stack1_data); stack_op := 0
       [] is_sub_1(exec_op) = 1 -> stack1_data := stacksub_8(stack0_data, stack1_data); stack_op := 0
       [] is_jmp_1(exec_op) = 1 -> pc_index := pcadd_12(pc_index, exec_data), stack_should_perform := 0
-      [] is_brz_true_1(exec_op, stack0data) = 1 -> stack_should_perform := 0, pc_index := pcadd_12(exec_pc, exec_data)
-      [] is_brz_false_1(exec_op, stack0data) = 1 -> stack_should_perform := 0, pc_index := pcincrement_12(exec_pc)
-      [] is_brlz_true_1(exec_op, stack0data) = 1 -> stack_should_perform := 0, pc_index := pcadd_12(exec_pc, exec_data)
-      [] is_brlz_false_1(exec_op, stack0data) = 1 -> pc_index := pcincrement_12(exec_pc)
+      [] is_brz_true_1(exec_op, stack0_data) = 1 -> stack_should_perform := 0, pc_index := pcadd_12(exec_pc, exec_data)
+      [] is_brz_false_1(exec_op, stack0_data) = 1 -> stack_should_perform := 0, pc_index := pcincrement_12(exec_pc)
+      [] is_brlz_true_1(exec_op, stack0_data) = 1 -> stack_should_perform := 0, pc_index := pcadd_12(exec_pc, exec_data)
+      [] is_brlz_false_1(exec_op, stack0_data) = 1 -> pc_index := pcincrement_12(exec_pc)
       [] else -> skip
     ];
     [ stack_should_perform -> stack0_op_chan!stack_op ];
@@ -151,12 +151,10 @@ chp {
     ];
     [ is_pop_1(exec_op) = 1 -> exec_data := stack_data [] else -> skip ];
     [ is_popout_1(exec_op) = 1 -> exec_temp := join_12(exec_op, stack_data); OUT!(exec_temp) [] else -> skip ];
-    [ is_popreg0_1(exec_op, exec_data) = 1 -> reg0 := stack_data
-      [] is_popreg1_1(exec_op, exec_data) = 1 -> reg1 := stack_data
-      [] is_popreg2_1(exec_op, exec_data) = 1 -> reg2 := stack_data
-      [] is_popreg3_1(exec_op, exec_data) = 1 -> reg3 := stack_data
-      [] else -> skip
-    ]
+    [ is_popreg0_1(exec_op, exec_data) = 1 -> reg0 := stack_data [] else -> skip ];
+    [ is_popreg1_1(exec_op, exec_data) = 1 -> reg1 := stack_data [] else -> skip ];
+    [ is_popreg2_1(exec_op, exec_data) = 1 -> reg2 := stack_data [] else -> skip ];
+    [ is_popreg3_1(exec_op, exec_data) = 1 -> reg3 := stack_data [] else -> skip ]
   ] ||
   stack0_is_full := 0;
   *[ stack0_op_chan?stack0_op;
