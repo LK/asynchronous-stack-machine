@@ -1,0 +1,6 @@
+bool go_r 0,0, 0,0, 1,1, 0,0, 0,0, 1,1, 0,0, 0,0, 1,1, 0,0, 0,0, 1,1,
+bool f.f1._gor n
+bool f.f2._gor n
+dualrail op[4] rrrr,rrrr, 0101,0101, nnnn,nnnn, rrrr,rrrr, 0101,0101, nnnn,nnnn, rrrr,rrrr, 0001,0001, nnnn,nnnn, rrrr,rrrr, 1101,1101, nnnn,nnnn
+dualrail data[8] rrrrrrrr,rrrrrrrr, 00000001,00000001, nnnnnnnn,nnnnnnnn, rrrrrrrr,rrrrrrrr, 01010100,01010100, nnnnnnnn,nnnnnnnn, rrrrrrrr,rrrrrrrr, 00000001,00000001, nnnnnnnn,nnnnnnnn, rrrrrrrr,rrrrrrrr, 01010100,01010100, nnnnnnnn,nnnnnnnn
+dualrail out n,r, n,n, n,0, n,r, n,n n,1 n,r, n,n, n,0, n,r, n,n n,0

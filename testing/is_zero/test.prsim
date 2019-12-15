@@ -1,5 +1,6 @@
 initialize
 random
+watch Reset
 watch go_r
 watch v0[0].t
 watch v0[0].f
@@ -27,8 +28,36 @@ watch v0[11].t
 watch v0[11].f
 watch out.t
 watch out.f
+set_principal go_r
+set_principal v0[0].t
+set_principal v0[0].f
+set_principal v0[1].t
+set_principal v0[1].f
+set_principal v0[2].t
+set_principal v0[2].f
+set_principal v0[3].t
+set_principal v0[3].f
+set_principal v0[4].t
+set_principal v0[4].f
+set_principal v0[5].t
+set_principal v0[5].f
+set_principal v0[6].t
+set_principal v0[6].f
+set_principal v0[7].t
+set_principal v0[7].f
+set_principal v0[8].t
+set_principal v0[8].f
+set_principal v0[9].t
+set_principal v0[9].f
+set_principal v0[10].t
+set_principal v0[10].f
+set_principal v0[11].t
+set_principal v0[11].f
+set_principal out.t
+set_principal out.f
 
 mode reset
+set Reset 1
 set go_r 0
 set v0[0].t 0
 set v0[0].f 0
@@ -55,7 +84,6 @@ set v0[10].f 0
 set v0[11].t 0
 set v0[11].f 0
 cycle
-assert go_r 0
 assert v0[0].t 0
 assert v0[0].f 0
 assert v0[1].t 0
@@ -80,8 +108,7 @@ assert v0[10].t 0
 assert v0[10].f 0
 assert v0[11].t 0
 assert v0[11].f 0
-assert out.t 0
-assert out.f 0
+set Reset 0
 cycle
 mode run
 set go_r 0

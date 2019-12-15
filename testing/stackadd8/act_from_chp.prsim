@@ -1,0 +1,176 @@
+initialize
+random
+watch Reset
+watch _Reset
+watch t.go.r
+watch t.var_abc.go.r
+watch t.var_abc[0].v.t
+watch t.var_abc[0].v.f
+watch t.var_abc[1].v.t
+watch t.var_abc[1].v.f
+watch t.var_abc[2].v.t
+watch t.var_abc[2].v.f
+watch t.var_abc[3].v.t
+watch t.var_abc[3].v.f
+watch t.var_abc[4].v.t
+watch t.var_abc[4].v.f
+watch t.var_abc[5].v.t
+watch t.var_abc[5].v.f
+watch t.var_abc[6].v.t
+watch t.var_abc[6].v.f
+watch t.var_abc[7].v.t
+watch t.var_abc[7].v.f
+watch t.var_out.go.r
+watch t.var_out[0].v.t
+watch t.var_out[0].v.f
+watch t.var_out[1].v.t
+watch t.var_out[1].v.f
+watch t.var_out[2].v.t
+watch t.var_out[2].v.f
+watch t.var_out[3].v.t
+watch t.var_out[3].v.f
+watch t.var_out[4].v.t
+watch t.var_out[4].v.f
+watch t.var_out[5].v.t
+watch t.var_out[5].v.f
+watch t.var_out[6].v.t
+watch t.var_out[6].v.f
+watch t.var_out[7].v.t
+watch t.var_out[7].v.f
+watch t.var_temp.go.r
+watch t.var_temp[0].v.t
+watch t.var_temp[0].v.f
+watch t.var_temp[1].v.t
+watch t.var_temp[1].v.f
+watch t.var_temp[2].v.t
+watch t.var_temp[2].v.f
+watch t.var_temp[3].v.t
+watch t.var_temp[3].v.f
+watch t.var_temp[4].v.t
+watch t.var_temp[4].v.f
+watch t.var_temp[5].v.t
+watch t.var_temp[5].v.f
+watch t.var_temp[6].v.t
+watch t.var_temp[6].v.f
+watch t.var_temp[7].v.t
+watch t.var_temp[7].v.f
+watch t.e_1.d.out
+set_principal t.go.r
+set_principal t.var_abc.go.r
+set_principal t.var_abc[0].v.t
+set_principal t.var_abc[0].v.f
+set_principal t.var_abc[1].v.t
+set_principal t.var_abc[1].v.f
+set_principal t.var_abc[2].v.t
+set_principal t.var_abc[2].v.f
+set_principal t.var_abc[3].v.t
+set_principal t.var_abc[3].v.f
+set_principal t.var_abc[4].v.t
+set_principal t.var_abc[4].v.f
+set_principal t.var_abc[5].v.t
+set_principal t.var_abc[5].v.f
+set_principal t.var_abc[6].v.t
+set_principal t.var_abc[6].v.f
+set_principal t.var_abc[7].v.t
+set_principal t.var_abc[7].v.f
+set_principal t.var_out.go.r
+set_principal t.var_out[0].v.t
+set_principal t.var_out[0].v.f
+set_principal t.var_out[1].v.t
+set_principal t.var_out[1].v.f
+set_principal t.var_out[2].v.t
+set_principal t.var_out[2].v.f
+set_principal t.var_out[3].v.t
+set_principal t.var_out[3].v.f
+set_principal t.var_out[4].v.t
+set_principal t.var_out[4].v.f
+set_principal t.var_out[5].v.t
+set_principal t.var_out[5].v.f
+set_principal t.var_out[6].v.t
+set_principal t.var_out[6].v.f
+set_principal t.var_out[7].v.t
+set_principal t.var_out[7].v.f
+set_principal t.var_temp.go.r
+set_principal t.var_temp[0].v.t
+set_principal t.var_temp[0].v.f
+set_principal t.var_temp[1].v.t
+set_principal t.var_temp[1].v.f
+set_principal t.var_temp[2].v.t
+set_principal t.var_temp[2].v.f
+set_principal t.var_temp[3].v.t
+set_principal t.var_temp[3].v.f
+set_principal t.var_temp[4].v.t
+set_principal t.var_temp[4].v.f
+set_principal t.var_temp[5].v.t
+set_principal t.var_temp[5].v.f
+set_principal t.var_temp[6].v.t
+set_principal t.var_temp[6].v.f
+set_principal t.var_temp[7].v.t
+set_principal t.var_temp[7].v.f
+set_principal t.e_1.d.out
+
+mode reset
+set Reset 1
+set _Reset 0
+set t.go.r 0
+cycle
+set Reset 0
+set _Reset 1
+cycle
+mode run
+set t.go.r 0
+cycle
+
+assert t.go.r 0
+assert t.var_abc[0].v.t 0
+assert t.var_abc[0].v.f 1
+assert t.var_abc[1].v.t 0
+assert t.var_abc[1].v.f 1
+assert t.var_abc[2].v.t 0
+assert t.var_abc[2].v.f 1
+assert t.var_abc[3].v.t 0
+assert t.var_abc[3].v.f 1
+assert t.var_abc[4].v.t 0
+assert t.var_abc[4].v.f 1
+assert t.var_abc[5].v.t 0
+assert t.var_abc[5].v.f 1
+assert t.var_abc[6].v.t 0
+assert t.var_abc[6].v.f 1
+assert t.var_abc[7].v.t 0
+assert t.var_abc[7].v.f 1
+assert t.var_out[0].v.t 0
+assert t.var_out[0].v.f 1
+assert t.var_out[1].v.t 0
+assert t.var_out[1].v.f 1
+assert t.var_out[2].v.t 0
+assert t.var_out[2].v.f 1
+assert t.var_out[3].v.t 0
+assert t.var_out[3].v.f 1
+assert t.var_out[4].v.t 0
+assert t.var_out[4].v.f 1
+assert t.var_out[5].v.t 0
+assert t.var_out[5].v.f 1
+assert t.var_out[6].v.t 0
+assert t.var_out[6].v.f 1
+assert t.var_out[7].v.t 0
+assert t.var_out[7].v.f 1
+assert t.var_temp[0].v.t 0
+assert t.var_temp[0].v.f 1
+assert t.var_temp[1].v.t 0
+assert t.var_temp[1].v.f 1
+assert t.var_temp[2].v.t 0
+assert t.var_temp[2].v.f 1
+assert t.var_temp[3].v.t 0
+assert t.var_temp[3].v.f 1
+assert t.var_temp[4].v.t 0
+assert t.var_temp[4].v.f 1
+assert t.var_temp[5].v.t 0
+assert t.var_temp[5].v.f 1
+assert t.var_temp[6].v.t 0
+assert t.var_temp[6].v.f 1
+assert t.var_temp[7].v.t 0
+assert t.var_temp[7].v.f 1
+set t.go.r 1
+cycle
+
+assert t.go.r 1

@@ -1,0 +1,92 @@
+import "lab_syn.act";
+import "opcode_conditions.act";
+import "functions.act";
+
+defproc toplevel (a1of1 go)
+{
+ /* --- declaring all variables and channels --- */
+ syn_var_init_false var_out[8];
+ syn_var_init_false var_temp[8];
+ syn_var_init_true var_abc[8];
+ /* --- end of declarations --- */
+
+
+ /*--- emit individual gc (#0) [loop] ---*/
+ r1of2 gc_0;
+/* semicolon */
+ a1of1 c_0;
+/* assign */
+ bundled_stackadd_8 e_1;
+ (i:8: e_1.v0[i] = var_out[i].v;)
+ (i:8: e_1.v1[i] = var_abc[i].v;)
+ a1of1 c_1;
+ syn_fullseq s_1;
+ c_1.r = s_1.go.r;
+ syn_recv rtv_1[8];
+ syn_expr_vararray<8> e_2;
+ syn_var_init_false tv_1[8];
+ (i:8: e_2.v[i] = tv_1[i].v; e_2.v[i]=rtv_1[i].v;)
+ s_1.r.r = e_1.go_r;
+ (i:8: s_1.r.r = rtv_1[i].go.r;)
+ syn_ctree<8> ct_1;
+ (i:8: ct_1.in[i]=rtv_1[i].go.a;)
+ s_1.r.a = ct_1.out;
+ (i:8: e_1.out[i].t = rtv_1[i].in.t; e_1.out[i].f = rtv_1[i].in.f;)
+ s_1.go.a = e_2.go_r;
+ syn_recv s_0[8];
+ (i:8: s_0[i].go.r = c_1.r;)
+ syn_ctree<8> ct_0;
+ (i:8: ct_0.in[i]=s_0[i].go.a;)
+ ct_0.out=c_1.a;
+ (i:8: s_0[i].in.t = e_2.out[i].t;
+          s_0[i].in.f = e_2.out[i].f;
+          s_0[i].v = var_temp[i].v; )
+
+ syn_seq s_2(c_0);
+ s_2.s1 = c_1;
+/* assign */
+ syn_expr_vararray<8> e_3;
+ (i:8: e_3.v[i] = var_temp[i].v;)
+ a1of1 c_2;
+ syn_fullseq s_4;
+ c_2.r = s_4.go.r;
+ syn_recv rtv_4[8];
+ syn_expr_vararray<8> e_4;
+ syn_var_init_false tv_4[8];
+ (i:8: e_4.v[i] = tv_4[i].v; e_4.v[i]=rtv_4[i].v;)
+ s_4.r.r = e_3.go_r;
+ (i:8: s_4.r.r = rtv_4[i].go.r;)
+ syn_ctree<8> ct_4;
+ (i:8: ct_4.in[i]=rtv_4[i].go.a;)
+ s_4.r.a = ct_4.out;
+ (i:8: e_3.out[i].t = rtv_4[i].in.t; e_3.out[i].f = rtv_4[i].in.f;)
+ s_4.go.a = e_4.go_r;
+ syn_recv s_3[8];
+ (i:8: s_3[i].go.r = c_2.r;)
+ syn_ctree<8> ct_3;
+ (i:8: ct_3.in[i]=s_3[i].go.a;)
+ ct_3.out=c_2.a;
+ (i:8: s_3[i].in.t = e_4.out[i].t;
+          s_3[i].in.f = e_4.out[i].f;
+          s_3[i].v = var_out[i].v; )
+
+ s_2.s2 = c_2;
+
+ a1of1 c_3;
+ syn_fullseq fs_5(c_3, c_0);
+ gc_0.r = c_3.r;
+ gc_0.t = c_3.a;
+ gc_0.f = GND;
+ a1of1 c_4;
+ /* gc cascade, start=0, end=0 */
+ syn_notand na_6;
+ na_6.x = c_4.r;
+ na_6.out = gc_0.r;
+ gc_0.t = na_6.y;
+ gc_0.f = c_4.a;
+ /* ----- end of gc (#0) ----- */
+
+ go = c_4;
+}
+
+toplevel t;

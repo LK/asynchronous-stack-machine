@@ -1,0 +1,8 @@
+bool t.go.r 0,0 1,1,
+bool t.var_abc.go.r n
+syn_var t.var_abc[8] nnnnnnnn,00000000
+bool t.var_out.go.r n
+syn_var t.var_out[8] nnnnnnnn,00000000
+bool t.var_temp.go.r n
+syn_var t.var_temp[8] nnnnnnnn,00000000
+bool t.e_1.d.out n

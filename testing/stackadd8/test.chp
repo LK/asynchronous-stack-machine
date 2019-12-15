@@ -1,0 +1,8 @@
+vars {
+  int<8> abc;
+  int<8> out;
+  int<8> temp;
+}
+chp {
+  *[ temp := stackadd_8(out, abc); out := temp ]
+}

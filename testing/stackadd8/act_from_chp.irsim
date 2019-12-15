@@ -1,0 +1,18 @@
+ana GND! Vdd! Reset _Reset t/go/r t/var_abc/go/r t/var_out/go/r t/var_temp/go/r t/e_1/d/out 
+h Vdd!
+l GND!
+h Reset
+l _Reset
+s
+l Reset
+h _Reset
+
+l t/go/r 
+s
+assert t/go/r 0
+
+h t/go/r 
+
+s
+assert t/go/r 1
+

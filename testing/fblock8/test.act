@@ -1,8 +1,0 @@
-import "functions.act";
-
-bool go_r;
-dualrail c[4];
-dualrail x[8], y[8];
-dualrail out[8];
-
-bundled_fblock_8 f (go_r, c, x, y, out);

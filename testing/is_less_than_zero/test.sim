@@ -13,9 +13,9 @@ n f/out/d[1] GND f/n#10 4 3
 n Vdd GND f/n#12 46 3
 n f/out/d[0] GND f/n#13 4 3
 n Vdd GND f/n#15 46 3
-p f/v0[11]/d[0] f/n#5 f/out/d[1] 2 5
+p f/v0[7]/d[0] f/n#5 f/out/d[1] 2 5
 p f/n#10 f/n#11 f/out/d[1] 2 3
 n f/n#10 f/n#12 f/out/d[1] 2 3
-p f/v0[11]/d[1] f/n#8 f/out/d[0] 2 5
+p f/v0[7]/d[1] f/n#8 f/out/d[0] 2 5
 p f/n#13 f/n#14 f/out/d[0] 2 3
 n f/n#13 f/n#15 f/out/d[0] 2 3

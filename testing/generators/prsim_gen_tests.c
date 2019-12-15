@@ -560,6 +560,10 @@ void print_irsim_test(FILE * f, var * vars, int len_vars, bool reset, bool _rese
             print_irsim_var(f, "", vars[v].varname, "/t", arr_index, -1);
             print_irsim_var(f, "", vars[v].varname, "/f", arr_index, -1);
             break;
+          case SYN_VAR:
+            print_irsim_var(f, "", vars[v].varname, "/v/t", arr_index, -1);
+            print_irsim_var(f, "", vars[v].varname, "/v/f", arr_index, -1);
+            break;
           default:
             // do nothing
             printf("Encountered unknown type\n");
@@ -617,7 +621,7 @@ void print_irsim_test(FILE * f, var * vars, int len_vars, bool reset, bool _rese
         for (a=0; a<vars[v].len_var_array; a++)               // each index of var array
         {
           // printf("---S --- l=%d a=%d vals[%d][%d]=%d\n", l, a, l, a, vars[v].values[l][a]);
-          if (vars[v].type == DUALRAIL && (vars[v].values[l][a] == 1 || vars[v].values[l][a] == 0))
+          if ((vars[v].type == DUALRAIL || vars[v].type == SYN_VAR) && (vars[v].values[l][a] == 1 || vars[v].values[l][a] == 0))
           {
             highs[len_highs][0] = v;
             highs[len_highs][1] = a;
@@ -648,7 +652,7 @@ void print_irsim_test(FILE * f, var * vars, int len_vars, bool reset, bool _rese
       }
     }
 
-    printf("SET #highs=%d, #lows=%d, #resets=%d\n", len_highs, len_lows, len_resets);
+    // printf("SET #highs=%d, #lows=%d, #resets=%d\n", len_highs, len_lows, len_resets);
 
     // Print out HIGH values
     if (len_highs > 0)
@@ -665,6 +669,9 @@ void print_irsim_test(FILE * f, var * vars, int len_vars, bool reset, bool _rese
           break;
         case DUALRAIL:
           print_irsim_var(f, "", vars[v].varname,  ((vars[v].values[l][a] == 1) ? "/t" : "/f"), arr_index, -1);
+          break;
+        case SYN_VAR:
+          print_irsim_var(f, "", vars[v].varname,  ((vars[v].values[l][a] == 1) ? "/v/t" : "/v/f"), arr_index, -1);
           break;
         default:
           // do nothing
@@ -689,6 +696,9 @@ void print_irsim_test(FILE * f, var * vars, int len_vars, bool reset, bool _rese
         case DUALRAIL:
           print_irsim_var(f, "", vars[v].varname, ((vars[v].values[l][a] == 0) ? "/t" : "/f"), arr_index, -1);
           break;
+        case SYN_VAR:
+          print_irsim_var(f, "", vars[v].varname, ((vars[v].values[l][a] == 0) ? "/v/t" : "/v/f"), arr_index, -1);
+          break;
         default:
           // do nothing
           printf("Encountered unknown type\n");
@@ -706,6 +716,10 @@ void print_irsim_test(FILE * f, var * vars, int len_vars, bool reset, bool _rese
         case DUALRAIL:
           print_irsim_var(f, "", vars[v].varname, "/t", arr_index, -1);
           print_irsim_var(f, "", vars[v].varname, "/f", arr_index, -1);
+          break;
+        case SYN_VAR:
+          print_irsim_var(f, "", vars[v].varname, "/v/t", arr_index, -1);
+          print_irsim_var(f, "", vars[v].varname, "/v/f", arr_index, -1);
           break;
         default:
           // do nothing
@@ -734,7 +748,7 @@ void print_irsim_test(FILE * f, var * vars, int len_vars, bool reset, bool _rese
         {
           // printf("---A --- l+1=%d a=%d vals[%d][%d]=%d\n", l+1, a, l+1, a, vars[v].values[l+1][a]);
 
-          if (vars[v].type == DUALRAIL && (vars[v].values[l+1][a] == 1 || vars[v].values[l+1][a] == 0))
+          if ((vars[v].type == DUALRAIL || vars[v].type == SYN_VAR) && (vars[v].values[l+1][a] == 1 || vars[v].values[l+1][a] == 0))
           {
             highs[len_highs][0] = v;
             highs[len_highs][1] = a;
@@ -765,7 +779,7 @@ void print_irsim_test(FILE * f, var * vars, int len_vars, bool reset, bool _rese
       }
     }
 
-    printf("ASSERT #highs=%d, #lows=%d, #resets=%d\n", len_highs, len_lows, len_resets);
+    // printf("ASSERT #highs=%d, #lows=%d, #resets=%d\n", len_highs, len_lows, len_resets);
 
     // Assert HIGH values
     for (i=0; i<len_highs; i++)
@@ -779,6 +793,9 @@ void print_irsim_test(FILE * f, var * vars, int len_vars, bool reset, bool _rese
           break;
         case DUALRAIL:
           print_irsim_var(f, "assert ", vars[v].varname, ((vars[v].values[l+1][a] == 1) ? "/t" : "/f"), arr_index, 1);
+          break;
+        case SYN_VAR:
+          print_irsim_var(f, "assert ", vars[v].varname, ((vars[v].values[l+1][a] == 1) ? "/v/t" : "/v/f"), arr_index, 1);
           break;
         default:
           // do nothing
@@ -799,6 +816,9 @@ void print_irsim_test(FILE * f, var * vars, int len_vars, bool reset, bool _rese
         case DUALRAIL:
           print_irsim_var(f, "assert ", vars[v].varname, ((vars[v].values[l+1][a] == 0) ? "/t" : "/f"), arr_index, 0);
           break;
+        case SYN_VAR:
+          print_irsim_var(f, "assert ", vars[v].varname, ((vars[v].values[l+1][a] == 0) ? "/v/t" : "/v/f"), arr_index, 0);
+          break;
         default:
           // do nothing
           printf("Encountered unknown type\n");
@@ -816,6 +836,10 @@ void print_irsim_test(FILE * f, var * vars, int len_vars, bool reset, bool _rese
         case DUALRAIL:
           print_irsim_var(f, "assert ", vars[v].varname, "/t", arr_index,0);
           print_irsim_var(f, "assert ", vars[v].varname, "/f", arr_index,0);
+          break;
+        case SYN_VAR:
+          print_irsim_var(f, "assert ", vars[v].varname, "/v/t", arr_index,0);
+          print_irsim_var(f, "assert ", vars[v].varname, "/v/f", arr_index,0);
           break;
         default:
           // do nothing

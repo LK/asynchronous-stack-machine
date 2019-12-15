@@ -1,0 +1,271 @@
+ana GND! Vdd! go_r f/f1/_gor f/f2/_gor op\[0\]/t op\[0\]/f op\[1\]/t op\[1\]/f op\[2\]/t op\[2\]/f op\[3\]/t op\[3\]/f data\[0\]/t data\[0\]/f data\[1\]/t data\[1\]/f data\[2\]/t data\[2\]/f data\[3\]/t data\[3\]/f data\[4\]/t data\[4\]/f data\[5\]/t data\[5\]/f data\[6\]/t data\[6\]/f data\[7\]/t data\[7\]/f out/t out/f 
+h Vdd!
+l GND!
+
+l go_r op\[0\]/t op\[0\]/f op\[1\]/t op\[1\]/f op\[2\]/t op\[2\]/f op\[3\]/t op\[3\]/f data\[0\]/t data\[0\]/f data\[1\]/t data\[1\]/f data\[2\]/t data\[2\]/f data\[3\]/t data\[3\]/f data\[4\]/t data\[4\]/f data\[5\]/t data\[5\]/f data\[6\]/t data\[6\]/f data\[7\]/t data\[7\]/f 
+s
+assert go_r 0
+assert op\[0\]/t 0
+assert op\[0\]/f 0
+assert op\[1\]/t 0
+assert op\[1\]/f 0
+assert op\[2\]/t 0
+assert op\[2\]/f 0
+assert op\[3\]/t 0
+assert op\[3\]/f 0
+assert data\[0\]/t 0
+assert data\[0\]/f 0
+assert data\[1\]/t 0
+assert data\[1\]/f 0
+assert data\[2\]/t 0
+assert data\[2\]/f 0
+assert data\[3\]/t 0
+assert data\[3\]/f 0
+assert data\[4\]/t 0
+assert data\[4\]/f 0
+assert data\[5\]/t 0
+assert data\[5\]/f 0
+assert data\[6\]/t 0
+assert data\[6\]/f 0
+assert data\[7\]/t 0
+assert data\[7\]/f 0
+assert out/t 0
+assert out/f 0
+
+h op\[0\]/f op\[1\]/t op\[2\]/f op\[3\]/t data\[0\]/f data\[1\]/f data\[2\]/f data\[3\]/f data\[4\]/f data\[5\]/f data\[6\]/f data\[7\]/t 
+l go_r op\[0\]/t op\[1\]/f op\[2\]/t op\[3\]/f data\[0\]/t data\[1\]/t data\[2\]/t data\[3\]/t data\[4\]/t data\[5\]/t data\[6\]/t data\[7\]/f 
+s
+assert op\[0\]/f 1
+assert op\[1\]/t 1
+assert op\[2\]/f 1
+assert op\[3\]/t 1
+assert data\[0\]/f 1
+assert data\[1\]/f 1
+assert data\[2\]/f 1
+assert data\[3\]/f 1
+assert data\[4\]/f 1
+assert data\[5\]/f 1
+assert data\[6\]/f 1
+assert data\[7\]/t 1
+assert go_r 0
+assert op\[0\]/t 0
+assert op\[1\]/f 0
+assert op\[2\]/t 0
+assert op\[3\]/f 0
+assert data\[0\]/t 0
+assert data\[1\]/t 0
+assert data\[2\]/t 0
+assert data\[3\]/t 0
+assert data\[4\]/t 0
+assert data\[5\]/t 0
+assert data\[6\]/t 0
+assert data\[7\]/f 0
+
+h go_r 
+
+s
+assert go_r 1
+assert out/t 1
+assert out/f 0
+
+
+l go_r op\[0\]/t op\[0\]/f op\[1\]/t op\[1\]/f op\[2\]/t op\[2\]/f op\[3\]/t op\[3\]/f data\[0\]/t data\[0\]/f data\[1\]/t data\[1\]/f data\[2\]/t data\[2\]/f data\[3\]/t data\[3\]/f data\[4\]/t data\[4\]/f data\[5\]/t data\[5\]/f data\[6\]/t data\[6\]/f data\[7\]/t data\[7\]/f 
+s
+assert go_r 0
+assert op\[0\]/t 0
+assert op\[0\]/f 0
+assert op\[1\]/t 0
+assert op\[1\]/f 0
+assert op\[2\]/t 0
+assert op\[2\]/f 0
+assert op\[3\]/t 0
+assert op\[3\]/f 0
+assert data\[0\]/t 0
+assert data\[0\]/f 0
+assert data\[1\]/t 0
+assert data\[1\]/f 0
+assert data\[2\]/t 0
+assert data\[2\]/f 0
+assert data\[3\]/t 0
+assert data\[3\]/f 0
+assert data\[4\]/t 0
+assert data\[4\]/f 0
+assert data\[5\]/t 0
+assert data\[5\]/f 0
+assert data\[6\]/t 0
+assert data\[6\]/f 0
+assert data\[7\]/t 0
+assert data\[7\]/f 0
+assert out/t 0
+assert out/f 0
+
+h op\[0\]/f op\[1\]/t op\[2\]/f op\[3\]/t data\[0\]/f data\[1\]/t data\[2\]/f data\[3\]/t data\[4\]/f data\[5\]/t data\[6\]/f data\[7\]/f 
+l go_r op\[0\]/t op\[1\]/f op\[2\]/t op\[3\]/f data\[0\]/t data\[1\]/f data\[2\]/t data\[3\]/f data\[4\]/t data\[5\]/f data\[6\]/t data\[7\]/t 
+s
+assert op\[0\]/f 1
+assert op\[1\]/t 1
+assert op\[2\]/f 1
+assert op\[3\]/t 1
+assert data\[0\]/f 1
+assert data\[1\]/t 1
+assert data\[2\]/f 1
+assert data\[3\]/t 1
+assert data\[4\]/f 1
+assert data\[5\]/t 1
+assert data\[6\]/f 1
+assert data\[7\]/f 1
+assert go_r 0
+assert op\[0\]/t 0
+assert op\[1\]/f 0
+assert op\[2\]/t 0
+assert op\[3\]/f 0
+assert data\[0\]/t 0
+assert data\[1\]/f 0
+assert data\[2\]/t 0
+assert data\[3\]/f 0
+assert data\[4\]/t 0
+assert data\[5\]/f 0
+assert data\[6\]/t 0
+assert data\[7\]/t 0
+
+h go_r 
+
+s
+assert go_r 1
+assert out/f 1
+assert out/t 0
+
+
+l go_r op\[0\]/t op\[0\]/f op\[1\]/t op\[1\]/f op\[2\]/t op\[2\]/f op\[3\]/t op\[3\]/f data\[0\]/t data\[0\]/f data\[1\]/t data\[1\]/f data\[2\]/t data\[2\]/f data\[3\]/t data\[3\]/f data\[4\]/t data\[4\]/f data\[5\]/t data\[5\]/f data\[6\]/t data\[6\]/f data\[7\]/t data\[7\]/f 
+s
+assert go_r 0
+assert op\[0\]/t 0
+assert op\[0\]/f 0
+assert op\[1\]/t 0
+assert op\[1\]/f 0
+assert op\[2\]/t 0
+assert op\[2\]/f 0
+assert op\[3\]/t 0
+assert op\[3\]/f 0
+assert data\[0\]/t 0
+assert data\[0\]/f 0
+assert data\[1\]/t 0
+assert data\[1\]/f 0
+assert data\[2\]/t 0
+assert data\[2\]/f 0
+assert data\[3\]/t 0
+assert data\[3\]/f 0
+assert data\[4\]/t 0
+assert data\[4\]/f 0
+assert data\[5\]/t 0
+assert data\[5\]/f 0
+assert data\[6\]/t 0
+assert data\[6\]/f 0
+assert data\[7\]/t 0
+assert data\[7\]/f 0
+assert out/t 0
+assert out/f 0
+
+h op\[0\]/f op\[1\]/f op\[2\]/f op\[3\]/t data\[0\]/f data\[1\]/f data\[2\]/f data\[3\]/f data\[4\]/f data\[5\]/f data\[6\]/f data\[7\]/t 
+l go_r op\[0\]/t op\[1\]/t op\[2\]/t op\[3\]/f data\[0\]/t data\[1\]/t data\[2\]/t data\[3\]/t data\[4\]/t data\[5\]/t data\[6\]/t data\[7\]/f 
+s
+assert op\[0\]/f 1
+assert op\[1\]/f 1
+assert op\[2\]/f 1
+assert op\[3\]/t 1
+assert data\[0\]/f 1
+assert data\[1\]/f 1
+assert data\[2\]/f 1
+assert data\[3\]/f 1
+assert data\[4\]/f 1
+assert data\[5\]/f 1
+assert data\[6\]/f 1
+assert data\[7\]/t 1
+assert go_r 0
+assert op\[0\]/t 0
+assert op\[1\]/t 0
+assert op\[2\]/t 0
+assert op\[3\]/f 0
+assert data\[0\]/t 0
+assert data\[1\]/t 0
+assert data\[2\]/t 0
+assert data\[3\]/t 0
+assert data\[4\]/t 0
+assert data\[5\]/t 0
+assert data\[6\]/t 0
+assert data\[7\]/f 0
+
+h go_r 
+
+s
+assert go_r 1
+assert out/f 1
+assert out/t 0
+
+
+l go_r op\[0\]/t op\[0\]/f op\[1\]/t op\[1\]/f op\[2\]/t op\[2\]/f op\[3\]/t op\[3\]/f data\[0\]/t data\[0\]/f data\[1\]/t data\[1\]/f data\[2\]/t data\[2\]/f data\[3\]/t data\[3\]/f data\[4\]/t data\[4\]/f data\[5\]/t data\[5\]/f data\[6\]/t data\[6\]/f data\[7\]/t data\[7\]/f 
+s
+assert go_r 0
+assert op\[0\]/t 0
+assert op\[0\]/f 0
+assert op\[1\]/t 0
+assert op\[1\]/f 0
+assert op\[2\]/t 0
+assert op\[2\]/f 0
+assert op\[3\]/t 0
+assert op\[3\]/f 0
+assert data\[0\]/t 0
+assert data\[0\]/f 0
+assert data\[1\]/t 0
+assert data\[1\]/f 0
+assert data\[2\]/t 0
+assert data\[2\]/f 0
+assert data\[3\]/t 0
+assert data\[3\]/f 0
+assert data\[4\]/t 0
+assert data\[4\]/f 0
+assert data\[5\]/t 0
+assert data\[5\]/f 0
+assert data\[6\]/t 0
+assert data\[6\]/f 0
+assert data\[7\]/t 0
+assert data\[7\]/f 0
+assert out/t 0
+assert out/f 0
+
+h op\[0\]/t op\[1\]/t op\[2\]/f op\[3\]/t data\[0\]/f data\[1\]/t data\[2\]/f data\[3\]/t data\[4\]/f data\[5\]/t data\[6\]/f data\[7\]/f 
+l go_r op\[0\]/f op\[1\]/f op\[2\]/t op\[3\]/f data\[0\]/t data\[1\]/f data\[2\]/t data\[3\]/f data\[4\]/t data\[5\]/f data\[6\]/t data\[7\]/t 
+s
+assert op\[0\]/t 1
+assert op\[1\]/t 1
+assert op\[2\]/f 1
+assert op\[3\]/t 1
+assert data\[0\]/f 1
+assert data\[1\]/t 1
+assert data\[2\]/f 1
+assert data\[3\]/t 1
+assert data\[4\]/f 1
+assert data\[5\]/t 1
+assert data\[6\]/f 1
+assert data\[7\]/f 1
+assert go_r 0
+assert op\[0\]/f 0
+assert op\[1\]/f 0
+assert op\[2\]/t 0
+assert op\[3\]/f 0
+assert data\[0\]/t 0
+assert data\[1\]/f 0
+assert data\[2\]/t 0
+assert data\[3\]/f 0
+assert data\[4\]/t 0
+assert data\[5\]/f 0
+assert data\[6\]/t 0
+assert data\[7\]/t 0
+
+h go_r 
+
+s
+assert go_r 1
+assert out/f 1
+assert out/t 0
+

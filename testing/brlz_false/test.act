@@ -1,0 +1,8 @@
+import "combined_functions.act";
+
+bool go_r;
+dualrail op[4];
+dualrail data[8];
+dualrail out;
+
+bundled_is_brlz_false_1 f(go_r, op, data, out);

@@ -1,0 +1,562 @@
+initialize
+random
+watch go_r
+watch f.f1._gor
+watch f.f2._gor
+watch op[0].t
+watch op[0].f
+watch op[1].t
+watch op[1].f
+watch op[2].t
+watch op[2].f
+watch op[3].t
+watch op[3].f
+watch data[0].t
+watch data[0].f
+watch data[1].t
+watch data[1].f
+watch data[2].t
+watch data[2].f
+watch data[3].t
+watch data[3].f
+watch data[4].t
+watch data[4].f
+watch data[5].t
+watch data[5].f
+watch data[6].t
+watch data[6].f
+watch data[7].t
+watch data[7].f
+watch out.t
+watch out.f
+set_principal go_r
+set_principal f.f1._gor
+set_principal f.f2._gor
+set_principal op[0].t
+set_principal op[0].f
+set_principal op[1].t
+set_principal op[1].f
+set_principal op[2].t
+set_principal op[2].f
+set_principal op[3].t
+set_principal op[3].f
+set_principal data[0].t
+set_principal data[0].f
+set_principal data[1].t
+set_principal data[1].f
+set_principal data[2].t
+set_principal data[2].f
+set_principal data[3].t
+set_principal data[3].f
+set_principal data[4].t
+set_principal data[4].f
+set_principal data[5].t
+set_principal data[5].f
+set_principal data[6].t
+set_principal data[6].f
+set_principal data[7].t
+set_principal data[7].f
+set_principal out.t
+set_principal out.f
+
+mode reset
+set go_r 0
+set op[0].t 0
+set op[0].f 0
+set op[1].t 0
+set op[1].f 0
+set op[2].t 0
+set op[2].f 0
+set op[3].t 0
+set op[3].f 0
+set data[0].t 0
+set data[0].f 0
+set data[1].t 0
+set data[1].f 0
+set data[2].t 0
+set data[2].f 0
+set data[3].t 0
+set data[3].f 0
+set data[4].t 0
+set data[4].f 0
+set data[5].t 0
+set data[5].f 0
+set data[6].t 0
+set data[6].f 0
+set data[7].t 0
+set data[7].f 0
+cycle
+assert op[0].t 0
+assert op[0].f 0
+assert op[1].t 0
+assert op[1].f 0
+assert op[2].t 0
+assert op[2].f 0
+assert op[3].t 0
+assert op[3].f 0
+assert data[0].t 0
+assert data[0].f 0
+assert data[1].t 0
+assert data[1].f 0
+assert data[2].t 0
+assert data[2].f 0
+assert data[3].t 0
+assert data[3].f 0
+assert data[4].t 0
+assert data[4].f 0
+assert data[5].t 0
+assert data[5].f 0
+assert data[6].t 0
+assert data[6].f 0
+assert data[7].t 0
+assert data[7].f 0
+cycle
+mode run
+set go_r 0
+set op[0].t 0
+set op[0].f 0
+set op[1].t 0
+set op[1].f 0
+set op[2].t 0
+set op[2].f 0
+set op[3].t 0
+set op[3].f 0
+set data[0].t 0
+set data[0].f 0
+set data[1].t 0
+set data[1].f 0
+set data[2].t 0
+set data[2].f 0
+set data[3].t 0
+set data[3].f 0
+set data[4].t 0
+set data[4].f 0
+set data[5].t 0
+set data[5].f 0
+set data[6].t 0
+set data[6].f 0
+set data[7].t 0
+set data[7].f 0
+cycle
+
+assert go_r 0
+assert op[0].t 0
+assert op[0].f 0
+assert op[1].t 0
+assert op[1].f 0
+assert op[2].t 0
+assert op[2].f 0
+assert op[3].t 0
+assert op[3].f 0
+assert data[0].t 0
+assert data[0].f 0
+assert data[1].t 0
+assert data[1].f 0
+assert data[2].t 0
+assert data[2].f 0
+assert data[3].t 0
+assert data[3].f 0
+assert data[4].t 0
+assert data[4].f 0
+assert data[5].t 0
+assert data[5].f 0
+assert data[6].t 0
+assert data[6].f 0
+assert data[7].t 0
+assert data[7].f 0
+assert out.t 0
+assert out.f 0
+set go_r 0
+set op[0].t 0
+set op[0].f 1
+set op[1].t 1
+set op[1].f 0
+set op[2].t 0
+set op[2].f 1
+set op[3].t 1
+set op[3].f 0
+set data[0].t 0
+set data[0].f 1
+set data[1].t 0
+set data[1].f 1
+set data[2].t 0
+set data[2].f 1
+set data[3].t 0
+set data[3].f 1
+set data[4].t 0
+set data[4].f 1
+set data[5].t 0
+set data[5].f 1
+set data[6].t 0
+set data[6].f 1
+set data[7].t 1
+set data[7].f 0
+cycle
+
+assert go_r 0
+assert op[0].t 0
+assert op[0].f 1
+assert op[1].t 1
+assert op[1].f 0
+assert op[2].t 0
+assert op[2].f 1
+assert op[3].t 1
+assert op[3].f 0
+assert data[0].t 0
+assert data[0].f 1
+assert data[1].t 0
+assert data[1].f 1
+assert data[2].t 0
+assert data[2].f 1
+assert data[3].t 0
+assert data[3].f 1
+assert data[4].t 0
+assert data[4].f 1
+assert data[5].t 0
+assert data[5].f 1
+assert data[6].t 0
+assert data[6].f 1
+assert data[7].t 1
+assert data[7].f 0
+set go_r 1
+cycle
+
+assert go_r 1
+assert out.t 0
+assert out.f 1
+set go_r 0
+set op[0].t 0
+set op[0].f 0
+set op[1].t 0
+set op[1].f 0
+set op[2].t 0
+set op[2].f 0
+set op[3].t 0
+set op[3].f 0
+set data[0].t 0
+set data[0].f 0
+set data[1].t 0
+set data[1].f 0
+set data[2].t 0
+set data[2].f 0
+set data[3].t 0
+set data[3].f 0
+set data[4].t 0
+set data[4].f 0
+set data[5].t 0
+set data[5].f 0
+set data[6].t 0
+set data[6].f 0
+set data[7].t 0
+set data[7].f 0
+cycle
+
+assert go_r 0
+assert op[0].t 0
+assert op[0].f 0
+assert op[1].t 0
+assert op[1].f 0
+assert op[2].t 0
+assert op[2].f 0
+assert op[3].t 0
+assert op[3].f 0
+assert data[0].t 0
+assert data[0].f 0
+assert data[1].t 0
+assert data[1].f 0
+assert data[2].t 0
+assert data[2].f 0
+assert data[3].t 0
+assert data[3].f 0
+assert data[4].t 0
+assert data[4].f 0
+assert data[5].t 0
+assert data[5].f 0
+assert data[6].t 0
+assert data[6].f 0
+assert data[7].t 0
+assert data[7].f 0
+assert out.t 0
+assert out.f 0
+set go_r 0
+set op[0].t 0
+set op[0].f 1
+set op[1].t 1
+set op[1].f 0
+set op[2].t 0
+set op[2].f 1
+set op[3].t 1
+set op[3].f 0
+set data[0].t 0
+set data[0].f 1
+set data[1].t 1
+set data[1].f 0
+set data[2].t 0
+set data[2].f 1
+set data[3].t 1
+set data[3].f 0
+set data[4].t 0
+set data[4].f 1
+set data[5].t 1
+set data[5].f 0
+set data[6].t 0
+set data[6].f 1
+set data[7].t 0
+set data[7].f 1
+cycle
+
+assert go_r 0
+assert op[0].t 0
+assert op[0].f 1
+assert op[1].t 1
+assert op[1].f 0
+assert op[2].t 0
+assert op[2].f 1
+assert op[3].t 1
+assert op[3].f 0
+assert data[0].t 0
+assert data[0].f 1
+assert data[1].t 1
+assert data[1].f 0
+assert data[2].t 0
+assert data[2].f 1
+assert data[3].t 1
+assert data[3].f 0
+assert data[4].t 0
+assert data[4].f 1
+assert data[5].t 1
+assert data[5].f 0
+assert data[6].t 0
+assert data[6].f 1
+assert data[7].t 0
+assert data[7].f 1
+set go_r 1
+cycle
+
+assert go_r 1
+assert out.t 1
+assert out.f 0
+set go_r 0
+set op[0].t 0
+set op[0].f 0
+set op[1].t 0
+set op[1].f 0
+set op[2].t 0
+set op[2].f 0
+set op[3].t 0
+set op[3].f 0
+set data[0].t 0
+set data[0].f 0
+set data[1].t 0
+set data[1].f 0
+set data[2].t 0
+set data[2].f 0
+set data[3].t 0
+set data[3].f 0
+set data[4].t 0
+set data[4].f 0
+set data[5].t 0
+set data[5].f 0
+set data[6].t 0
+set data[6].f 0
+set data[7].t 0
+set data[7].f 0
+cycle
+
+assert go_r 0
+assert op[0].t 0
+assert op[0].f 0
+assert op[1].t 0
+assert op[1].f 0
+assert op[2].t 0
+assert op[2].f 0
+assert op[3].t 0
+assert op[3].f 0
+assert data[0].t 0
+assert data[0].f 0
+assert data[1].t 0
+assert data[1].f 0
+assert data[2].t 0
+assert data[2].f 0
+assert data[3].t 0
+assert data[3].f 0
+assert data[4].t 0
+assert data[4].f 0
+assert data[5].t 0
+assert data[5].f 0
+assert data[6].t 0
+assert data[6].f 0
+assert data[7].t 0
+assert data[7].f 0
+assert out.t 0
+assert out.f 0
+set go_r 0
+set op[0].t 0
+set op[0].f 1
+set op[1].t 0
+set op[1].f 1
+set op[2].t 0
+set op[2].f 1
+set op[3].t 1
+set op[3].f 0
+set data[0].t 0
+set data[0].f 1
+set data[1].t 0
+set data[1].f 1
+set data[2].t 0
+set data[2].f 1
+set data[3].t 0
+set data[3].f 1
+set data[4].t 0
+set data[4].f 1
+set data[5].t 0
+set data[5].f 1
+set data[6].t 0
+set data[6].f 1
+set data[7].t 1
+set data[7].f 0
+cycle
+
+assert go_r 0
+assert op[0].t 0
+assert op[0].f 1
+assert op[1].t 0
+assert op[1].f 1
+assert op[2].t 0
+assert op[2].f 1
+assert op[3].t 1
+assert op[3].f 0
+assert data[0].t 0
+assert data[0].f 1
+assert data[1].t 0
+assert data[1].f 1
+assert data[2].t 0
+assert data[2].f 1
+assert data[3].t 0
+assert data[3].f 1
+assert data[4].t 0
+assert data[4].f 1
+assert data[5].t 0
+assert data[5].f 1
+assert data[6].t 0
+assert data[6].f 1
+assert data[7].t 1
+assert data[7].f 0
+set go_r 1
+cycle
+
+assert go_r 1
+assert out.t 0
+assert out.f 1
+set go_r 0
+set op[0].t 0
+set op[0].f 0
+set op[1].t 0
+set op[1].f 0
+set op[2].t 0
+set op[2].f 0
+set op[3].t 0
+set op[3].f 0
+set data[0].t 0
+set data[0].f 0
+set data[1].t 0
+set data[1].f 0
+set data[2].t 0
+set data[2].f 0
+set data[3].t 0
+set data[3].f 0
+set data[4].t 0
+set data[4].f 0
+set data[5].t 0
+set data[5].f 0
+set data[6].t 0
+set data[6].f 0
+set data[7].t 0
+set data[7].f 0
+cycle
+
+assert go_r 0
+assert op[0].t 0
+assert op[0].f 0
+assert op[1].t 0
+assert op[1].f 0
+assert op[2].t 0
+assert op[2].f 0
+assert op[3].t 0
+assert op[3].f 0
+assert data[0].t 0
+assert data[0].f 0
+assert data[1].t 0
+assert data[1].f 0
+assert data[2].t 0
+assert data[2].f 0
+assert data[3].t 0
+assert data[3].f 0
+assert data[4].t 0
+assert data[4].f 0
+assert data[5].t 0
+assert data[5].f 0
+assert data[6].t 0
+assert data[6].f 0
+assert data[7].t 0
+assert data[7].f 0
+assert out.t 0
+assert out.f 0
+set go_r 0
+set op[0].t 1
+set op[0].f 0
+set op[1].t 1
+set op[1].f 0
+set op[2].t 0
+set op[2].f 1
+set op[3].t 1
+set op[3].f 0
+set data[0].t 0
+set data[0].f 1
+set data[1].t 1
+set data[1].f 0
+set data[2].t 0
+set data[2].f 1
+set data[3].t 1
+set data[3].f 0
+set data[4].t 0
+set data[4].f 1
+set data[5].t 1
+set data[5].f 0
+set data[6].t 0
+set data[6].f 1
+set data[7].t 0
+set data[7].f 1
+cycle
+
+assert go_r 0
+assert op[0].t 1
+assert op[0].f 0
+assert op[1].t 1
+assert op[1].f 0
+assert op[2].t 0
+assert op[2].f 1
+assert op[3].t 1
+assert op[3].f 0
+assert data[0].t 0
+assert data[0].f 1
+assert data[1].t 1
+assert data[1].f 0
+assert data[2].t 0
+assert data[2].f 1
+assert data[3].t 1
+assert data[3].f 0
+assert data[4].t 0
+assert data[4].f 1
+assert data[5].t 1
+assert data[5].f 0
+assert data[6].t 0
+assert data[6].f 1
+assert data[7].t 0
+assert data[7].f 1
+set go_r 1
+cycle
+
+assert go_r 1
+assert out.t 0
+assert out.f 1
