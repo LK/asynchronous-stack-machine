@@ -96,11 +96,11 @@ defproc syn_recv (a1of1 go; dualrail v; a1of2 in)
   bool _goa;
   go.a = in.a;
   prs {
-   [keeper=0] go.r & _goa & in.t -> v.f-
-   [keeper=0] go.r & _goa & in.f -> v.t-
+   [keeper=0] go.r <20> & _goa & in.t -> v.f-
+   [keeper=0] go.r <20> & _goa & in.f -> v.t-
    go.r & (v.t & in.t | v.f & in.f) -> _goa-
   ~in.t & ~in.f & ~go.r -> _goa+
-   Reset|_goa => go.a-
+   Reset | _goa  <20> => go.a-
   }
 }
 
@@ -117,8 +117,8 @@ defproc syn_expr_var (bool go_r; dualrail v; dualrail out)
   prs {
    go_r & v.t -> _out.t-
    go_r & v.f -> _out.f-
-  ~_Reset | ~go_r -> _out.t+
-  ~_Reset | ~go_r -> _out.f+
+  ~_Reset | ~go_r <20> -> _out.t+
+  ~_Reset | ~go_r <20> -> _out.f+
 
    _out.t => out.t-
    _out.f => out.f-

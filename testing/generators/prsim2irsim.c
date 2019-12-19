@@ -28,7 +28,7 @@ int read_varname(char * line, int i, char * varname)
   }
   varname[v] = '\0';
   i++;
-  printf("--- found varname %s, w/ value %c\n", varname, line[i]);
+  // printf("--- found varname %s, w/ value %c\n", varname, line[i]);
   return i;
 }
 
@@ -48,6 +48,8 @@ int main (int argc, char * argv[])
     fprintf(stderr, "ERROR: cannot open %s\n", (in == NULL ? argv[1] : argv[2]));
     return 0;
   }
+
+  printf("Converting PRSIM in \"%s\"  to IRSIM in \"%s\"...\n", argv[1], argv[2]);
 
   // preamble
   fprintf(out, "ana go/r go/a Reset _Reset\n\n");
@@ -81,5 +83,6 @@ int main (int argc, char * argv[])
     // ignore all else
   }
 
+  printf("Done :)\n");
   return 1;
 }

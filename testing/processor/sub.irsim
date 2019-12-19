@@ -31,6 +31,7 @@ l p/chan_IN/d\[10\]/t
 l p/chan_IN/d\[10\]/f
 l p/chan_IN/d\[11\]/t
 l p/chan_IN/d\[11\]/f
+
 l p/chan_stack10_pop_chan/d\[0\]/t
 l p/chan_stack10_pop_chan/d\[0\]/f
 l p/chan_stack10_pop_chan/d\[1\]/t
@@ -52,11 +53,14 @@ l p/chan_stack10_op_chan/a
 l p/chan_stack10_full_chan/t
 l p/chan_stack10_full_chan/f
 s
+
 l Reset
 h _Reset
 s
+
 h go/r
 s
+
 assert p/var_stack0_is_full/v/t 0
 assert p/var_stack0_is_full/v/f 1
 assert p/var_stack1_is_full/v/t 0

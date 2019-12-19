@@ -1,4 +1,4 @@
-ana go/r go/a Reset _Reset p/chan_PC/a p/chan_PC/d\[0\]/t p/chan_PC/d\[1\]/t p/chan_PC/d\[2\]/t p/chan_PC/d\[3\]/t 
+ana go/r go/a Reset _Reset p/chan_PC/a p/chan_PC/d\[0\]/t p/chan_PC/d\[1\]/t p/chan_PC/d\[2\]/t p/chan_PC/d\[3\]/t
 
 l GND!
 h Vdd!
@@ -31,12 +31,37 @@ l p/chan_IN/d\[10\]/t
 l p/chan_IN/d\[10\]/f
 l p/chan_IN/d\[11\]/t
 l p/chan_IN/d\[11\]/f
+
+
+l p/chan_stack10_pop_chan/d\[0\]/t
+l p/chan_stack10_pop_chan/d\[0\]/f
+l p/chan_stack10_pop_chan/d\[1\]/t
+l p/chan_stack10_pop_chan/d\[1\]/f
+l p/chan_stack10_pop_chan/d\[2\]/t
+l p/chan_stack10_pop_chan/d\[2\]/f
+l p/chan_stack10_pop_chan/d\[3\]/t
+l p/chan_stack10_pop_chan/d\[3\]/f
+l p/chan_stack10_pop_chan/d\[4\]/t
+l p/chan_stack10_pop_chan/d\[4\]/f
+l p/chan_stack10_pop_chan/d\[5\]/t
+l p/chan_stack10_pop_chan/d\[5\]/f
+l p/chan_stack10_pop_chan/d\[6\]/t
+l p/chan_stack10_pop_chan/d\[6\]/f
+l p/chan_stack10_pop_chan/d\[7\]/t
+l p/chan_stack10_pop_chan/d\[7\]/f
+l p/chan_stack10_push_chan/a
+l p/chan_stack10_op_chan/a
+l p/chan_stack10_full_chan/t
+l p/chan_stack10_full_chan/f
 s
+
 l Reset
 h _Reset
 s
+
 h go/r
 s
+
 assert p/var_stack0_is_full/v/t 0
 assert p/var_stack0_is_full/v/f 1
 assert p/var_stack1_is_full/v/t 0
@@ -171,6 +196,7 @@ assert p/chan_PC/d\[11\]/t 0
 assert p/chan_PC/d\[11\]/f 1
 h p/chan_PC/a
 s
+
 assert p/chan_PC/d\[0\]/t 0
 assert p/chan_PC/d\[0\]/f 0
 assert p/chan_PC/d\[1\]/t 0
@@ -197,6 +223,7 @@ assert p/chan_PC/d\[11\]/t 0
 assert p/chan_PC/d\[11\]/f 0
 l p/chan_PC/a
 s
+
 h p/chan_IN/d\[0\]/t
 l p/chan_IN/d\[0\]/f
 l p/chan_IN/d\[1\]/t
@@ -222,6 +249,7 @@ h p/chan_IN/d\[10\]/f
 l p/chan_IN/d\[11\]/t
 h p/chan_IN/d\[11\]/f
 s
+
 assert p/chan_IN/a 1
 l p/chan_IN/d\[0\]/t
 l p/chan_IN/d\[0\]/f
@@ -248,6 +276,7 @@ l p/chan_IN/d\[10\]/f
 l p/chan_IN/d\[11\]/t
 l p/chan_IN/d\[11\]/f
 s
+
 assert p/chan_IN/a 0
 assert p/var_stack0_is_full/v/t 1
 assert p/var_stack0_is_full/v/f 0
