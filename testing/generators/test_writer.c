@@ -195,7 +195,7 @@ int read_file(FILE * f, var * vars, int * len_vars, int * max_len_vars)
     if (vars[i_vars].len_values > vars[vars->num_cycles].len_values)
     {
       vars->num_cycles = i_vars;
-      printf("----> num_cycles = %d\n", vars[i_vars].num_cycles);
+      // printf("----> num_cycles = %d\n", vars[i_vars].num_cycles);
     }
 
     // move on to next variable
@@ -526,7 +526,7 @@ void convert_varnames_to_irsim(var * vars, int len_vars) {
       }
       c++;
     }
-    printf("=== vars[%d].varname=%s\n", v, vars[v].varname);
+    // printf("=== vars[%d].varname=%s\n", v, vars[v].varname);
   }
 }
 
