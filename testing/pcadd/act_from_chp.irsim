@@ -1,0 +1,58 @@
+ana GND! Vdd! Reset _Reset t/go/r t/var_pc/go_r t/var_pc\[0\]/v/t t/var_pc\[0\]/v/f t/var_pc\[1\]/v/t t/var_pc\[1\]/v/f t/var_pc\[2\]/v/t t/var_pc\[2\]/v/f t/var_pc\[3\]/v/t t/var_pc\[3\]/v/f t/var_pc\[4\]/v/t t/var_pc\[4\]/v/f t/var_pc\[5\]/v/t t/var_pc\[5\]/v/f t/var_pc\[6\]/v/t t/var_pc\[6\]/v/f t/var_pc\[7\]/v/t t/var_pc\[7\]/v/f t/var_pc\[8\]/v/t t/var_pc\[8\]/v/f t/var_pc\[9\]/v/t t/var_pc\[9\]/v/f t/var_pc\[10\]/v/t t/var_pc\[10\]/v/f t/var_pc\[11\]/v/t t/var_pc\[11\]/v/f t/var_a/go_r t/var_a\[0\]/v/t t/var_a\[0\]/v/f t/var_a\[1\]/v/t t/var_a\[1\]/v/f t/var_a\[2\]/v/t t/var_a\[2\]/v/f t/var_a\[3\]/v/t t/var_a\[3\]/v/f t/var_a\[4\]/v/t t/var_a\[4\]/v/f t/var_a\[5\]/v/t t/var_a\[5\]/v/f t/var_a\[6\]/v/t t/var_a\[6\]/v/f t/var_a\[7\]/v/t t/var_a\[7\]/v/f t/e_1/d/out 
+h Vdd!
+l GND!
+h Reset
+l _Reset
+s
+l Reset
+h _Reset
+
+l t/go/r 
+s
+assert t/var_pc\[0\]/v/f 1
+assert t/var_pc\[1\]/v/f 1
+assert t/var_pc\[2\]/v/f 1
+assert t/var_pc\[3\]/v/f 1
+assert t/var_pc\[4\]/v/f 1
+assert t/var_pc\[5\]/v/f 1
+assert t/var_pc\[6\]/v/f 1
+assert t/var_pc\[7\]/v/f 1
+assert t/var_pc\[8\]/v/f 1
+assert t/var_pc\[9\]/v/f 1
+assert t/var_pc\[10\]/v/f 1
+assert t/var_pc\[11\]/v/f 1
+assert t/var_a\[0\]/v/t 1
+assert t/var_a\[1\]/v/t 1
+assert t/var_a\[2\]/v/t 1
+assert t/var_a\[3\]/v/t 1
+assert t/var_a\[4\]/v/t 1
+assert t/var_a\[5\]/v/t 1
+assert t/var_a\[6\]/v/t 1
+assert t/var_a\[7\]/v/t 1
+assert t/go/r 0
+assert t/var_pc\[0\]/v/t 0
+assert t/var_pc\[1\]/v/t 0
+assert t/var_pc\[2\]/v/t 0
+assert t/var_pc\[3\]/v/t 0
+assert t/var_pc\[4\]/v/t 0
+assert t/var_pc\[5\]/v/t 0
+assert t/var_pc\[6\]/v/t 0
+assert t/var_pc\[7\]/v/t 0
+assert t/var_pc\[8\]/v/t 0
+assert t/var_pc\[9\]/v/t 0
+assert t/var_pc\[10\]/v/t 0
+assert t/var_pc\[11\]/v/t 0
+assert t/var_a\[0\]/v/f 0
+assert t/var_a\[1\]/v/f 0
+assert t/var_a\[2\]/v/f 0
+assert t/var_a\[3\]/v/f 0
+assert t/var_a\[4\]/v/f 0
+assert t/var_a\[5\]/v/f 0
+assert t/var_a\[6\]/v/f 0
+assert t/var_a\[7\]/v/f 0
+
+h t/go/r 
+
+s
+assert t/go/r 1
+

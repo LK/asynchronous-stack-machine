@@ -1,0 +1,159 @@
+import "lab_syn.act";
+import "opcode_conditions.act";
+import "functions.act";
+
+import "combined_functions.act";
+
+defproc toplevel (a1of1 go; aN1of2<12> chan_IN, chan_PC, chan_OUT)
+{
+ /* --- declaring all variables and channels --- */
+ aN1of2<8> chan_stack10_push_chan;
+ syn_var_init_false var_stack1_is_full;
+ aN1of2<8> chan_stack3_pop_chan;
+ a1of2 chan_stack2_full_chan;
+ a1of2 chan_stack4_full_chan;
+ aN1of2<8> chan_stack0_pop_chan;
+ a1of2 chan_stack1_op_chan;
+ a1of2 chan_stack1_full_chan;
+ a1of2 chan_stack6_full_chan;
+ syn_var_init_false var_stack7_op;
+ syn_var_init_false var_stack8_data[8];
+ syn_var_init_false var_stack_should_perform;
+ syn_var_init_false var_stack6_is_full;
+ syn_var_init_false var_stack3_is_full;
+ syn_var_init_false var_stack3_op;
+ syn_var_init_false var_stack4_data[8];
+ aN1of2<8> chan_stack4_pop_chan;
+ syn_var_init_false var_stack6_data[8];
+ syn_var_init_false var_stack7_data[8];
+ a1of2 chan_stack7_full_chan;
+ syn_var_init_false var_stack_op;
+ syn_var_init_false var_stack1_op;
+ syn_var_init_false var_stack2_is_full;
+ syn_var_init_false var_stack5_data[8];
+ aN1of2<8> chan_stack1_pop_chan;
+ syn_var_init_false var_stack3_data[8];
+ syn_var_init_false var_pc_index[12];
+ syn_var_init_false var_stack0_op;
+ a1of2 chan_stack0_op_chan;
+ aN1of2<8> chan_stack1_push_chan;
+ syn_var_init_false var_stack9_op;
+ aN1of2<8> chan_stack2_pop_chan;
+ syn_var_init_false var_reg0[8];
+ a1of2 chan_stack10_op_chan;
+ syn_var_init_false var_exec_temp[12];
+ a1of2 chan_stack0_full_chan;
+ syn_var_init_false var_stack5_is_full;
+ syn_var_init_false var_exec_op[4];
+ syn_var_init_false var_stack2_data[8];
+ syn_var_init_false var_stack4_op;
+ a1of2 chan_stack5_full_chan;
+ a1of2 chan_stack9_full_chan;
+ a1of2 chan_stack9_op_chan;
+ syn_var_init_false var_stack_data[8];
+ syn_var_init_false var_stack0_is_full;
+ aN1of2<8> chan_stack5_pop_chan;
+ syn_var_init_false var_stack6_op;
+ aN1of2<8> chan_stack7_push_chan;
+ aN1of2<8> chan_stack8_push_chan;
+ syn_var_init_false var_reg3[8];
+ syn_var_init_false var_exec_data[8];
+ a1of2 chan_stack3_full_chan;
+ a1of2 chan_stack8_op_chan;
+ aN1of2<8> chan_stack2_push_chan;
+ aN1of2<8> chan_stack3_push_chan;
+ aN1of2<8> chan_stack4_push_chan;
+ aN1of2<8> chan_stack6_pop_chan;
+ syn_var_init_false var_dbg;
+ aN1of2<8> chan_stack10_pop_chan;
+ syn_var_init_false var_stack2_op;
+ aN1of2<8> chan_stack6_push_chan;
+ syn_var_init_false var_stack7_is_full;
+ syn_var_init_false var_reg1[8];
+ a1of2 chan_stack8_full_chan;
+ syn_var_init_false var_stack4_is_full;
+ aN1of2<8> chan_stack5_push_chan;
+ a1of2 chan_stack5_op_chan;
+ a1of2 chan_stack2_op_chan;
+ a1of2 chan_stack3_op_chan;
+ syn_var_init_false var_stack5_op;
+ aN1of2<8> chan_stack9_pop_chan;
+ aN1of2<8> chan_stack9_push_chan;
+ syn_var_init_false var_stack9_data[8];
+ syn_var_init_false var_stack9_is_full;
+ syn_var_init_false var_stack0_data[8];
+ a1of2 chan_stack7_op_chan;
+ syn_var_init_false var_reg2[8];
+ syn_var_init_false var_stack1_data[8];
+ aN1of2<8> chan_stack8_pop_chan;
+ syn_var_init_false var_stack8_op;
+ syn_var_init_false var_stack8_is_full;
+ syn_var_init_false var_exec_dump[8];
+ a1of2 chan_stack6_op_chan;
+ syn_var_init_false var_jnk;
+ a1of2 chan_stack10_full_chan;
+ aN1of2<8> chan_stack7_pop_chan;
+ a1of2 chan_stack4_op_chan;
+ aN1of2<8> chan_stack0_push_chan;
+ /* --- end of declarations --- */
+
+
+ /*--- emit individual gc (#0) [loop] ---*/
+ r1of2 gc_0;
+/* semicolon */
+ a1of1 c_0;
+/* send */
+ syn_expr_vararray<12> e_1;
+ (i:12: e_1.v[i] = var_pc_index[i].v;)
+ a1of1 c_1;
+ a1of1 recv_r_0;
+ syn_fullseq fs_0(c_1, recv_r_0);
+ syn_fullseq s_1;
+ recv_r_0.r = s_1.go.r;
+ syn_recv rtv_1[12];
+ syn_expr_vararray<12> e_2;
+ syn_var_init_false tv_1[12];
+ (i:12: e_2.v[i] = tv_1[i].v; e_2.v[i]=rtv_1[i].v;)
+ s_1.r.r = e_1.go_r;
+ (i:12: s_1.r.r = rtv_1[i].go.r;)
+ syn_ctree<12> ct_1;
+ (i:12: ct_1.in[i]=rtv_1[i].go.a;)
+ s_1.r.a = ct_1.out;
+ (i:12: e_1.out[i].t = rtv_1[i].in.t; e_1.out[i].f = rtv_1[i].in.f;)
+ s_1.go.a = e_2.go_r;
+ recv_r_0.a = chan_PC.a;
+ (i:12: chan_PC.d[i] = e_2.out[i];)
+
+ syn_seq s_2(c_0);
+ s_2.s1 = c_1;
+/* recv */
+ a1of1 c_2;
+ syn_fullseq fs_3(c_2,);
+ syn_recv s_3[12];
+ (i:12: s_3[i].go.r = fs_3.r.r;)
+ syn_ctree<12> ct_3;
+ (i:12: ct_3.in[i]=s_3[i].go.a;)
+ ct_3.out=fs_3.r.a;
+ fs_3.r.a=chan_IN.a;
+ (i:12: s_3[i].in.t = chan_IN.d[i].t;
+          s_3[i].in.f = chan_IN.d[i].f;
+          s_3[i].v = var_exec_temp[i].v; )
+
+ s_2.s2 = c_2;
+
+ a1of1 c_3;
+ syn_fullseq fs_4(c_3, c_0);
+ gc_0.r = c_3.r;
+ gc_0.t = c_3.a;
+ gc_0.f = GND;
+ a1of1 c_4;
+ /* gc cascade, start=0, end=0 */
+ syn_notand na_5;
+ na_5.x = c_4.r;
+ na_5.out = gc_0.r;
+ gc_0.t = na_5.y;
+ gc_0.f = c_4.a;
+ /* ----- end of gc (#0) ----- */
+
+ go = c_4;
+}

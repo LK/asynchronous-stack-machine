@@ -1,0 +1,70 @@
+ana GND! Vdd! go_r v0\[0\]/t v0\[0\]/f v0\[1\]/t v0\[1\]/f v0\[2\]/t v0\[2\]/f v0\[3\]/t v0\[3\]/f v1\[0\]/t v1\[0\]/f v1\[1\]/t v1\[1\]/f v1\[2\]/t v1\[2\]/f v1\[3\]/t v1\[3\]/f v1\[4\]/t v1\[4\]/f v1\[5\]/t v1\[5\]/f v1\[6\]/t v1\[6\]/f v1\[7\]/t v1\[7\]/f out/t out/f 
+h Vdd!
+l GND!
+
+l go_r v0\[0\]/t v0\[0\]/f v0\[1\]/t v0\[1\]/f v0\[2\]/t v0\[2\]/f v0\[3\]/t v0\[3\]/f v1\[0\]/t v1\[0\]/f v1\[1\]/t v1\[1\]/f v1\[2\]/t v1\[2\]/f v1\[3\]/t v1\[3\]/f v1\[4\]/t v1\[4\]/f v1\[5\]/t v1\[5\]/f v1\[6\]/t v1\[6\]/f v1\[7\]/t v1\[7\]/f 
+s
+assert go_r 0
+assert v0\[0\]/t 0
+assert v0\[0\]/f 0
+assert v0\[1\]/t 0
+assert v0\[1\]/f 0
+assert v0\[2\]/t 0
+assert v0\[2\]/f 0
+assert v0\[3\]/t 0
+assert v0\[3\]/f 0
+assert v1\[0\]/t 0
+assert v1\[0\]/f 0
+assert v1\[1\]/t 0
+assert v1\[1\]/f 0
+assert v1\[2\]/t 0
+assert v1\[2\]/f 0
+assert v1\[3\]/t 0
+assert v1\[3\]/f 0
+assert v1\[4\]/t 0
+assert v1\[4\]/f 0
+assert v1\[5\]/t 0
+assert v1\[5\]/f 0
+assert v1\[6\]/t 0
+assert v1\[6\]/f 0
+assert v1\[7\]/t 0
+assert v1\[7\]/f 0
+assert out/t 0
+assert out/f 0
+
+h v0\[0\]/f v0\[1\]/f v0\[2\]/t v0\[3\]/f v1\[0\]/f v1\[1\]/f v1\[2\]/f v1\[3\]/f v1\[4\]/f v1\[5\]/f v1\[6\]/f v1\[7\]/t 
+l go_r v0\[0\]/t v0\[1\]/t v0\[2\]/f v0\[3\]/t v1\[0\]/t v1\[1\]/t v1\[2\]/t v1\[3\]/t v1\[4\]/t v1\[5\]/t v1\[6\]/t v1\[7\]/f 
+s
+assert v0\[0\]/f 1
+assert v0\[1\]/f 1
+assert v0\[2\]/t 1
+assert v0\[3\]/f 1
+assert v1\[0\]/f 1
+assert v1\[1\]/f 1
+assert v1\[2\]/f 1
+assert v1\[3\]/f 1
+assert v1\[4\]/f 1
+assert v1\[5\]/f 1
+assert v1\[6\]/f 1
+assert v1\[7\]/t 1
+assert go_r 0
+assert v0\[0\]/t 0
+assert v0\[1\]/t 0
+assert v0\[2\]/f 0
+assert v0\[3\]/t 0
+assert v1\[0\]/t 0
+assert v1\[1\]/t 0
+assert v1\[2\]/t 0
+assert v1\[3\]/t 0
+assert v1\[4\]/t 0
+assert v1\[5\]/t 0
+assert v1\[6\]/t 0
+assert v1\[7\]/f 0
+
+h go_r 
+
+s
+assert go_r 1
+assert out/t 1
+assert out/f 0
+

@@ -1,4 +1,4 @@
-import "nofex_processor.act";
+import "processor.act";
 import "lab_syn.act";
 
 a1of1 go;

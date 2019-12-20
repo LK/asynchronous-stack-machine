@@ -1,0 +1,8 @@
+import "combined_functions.act";
+
+bool go_r;
+dualrail v0[4];
+dualrail v1[8];
+dualrail out;
+
+bundled_is_pushreg0_1 f(go_r, v0, v1, out);

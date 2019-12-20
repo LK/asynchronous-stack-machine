@@ -1,45 +1,46 @@
 import "lab_syn.act";
+import "opcode_conditions.act";
 import "functions.act";
+
+import "combined_functions.act";
 
 defproc toplevel (a1of1 go)
 {
  /* --- declaring all variables and channels --- */
  syn_var_init_false var_stack1_is_full;
  syn_var_init_false var_reg3[8];
- aN1of2<8> chan_stack1_comm_chan;
+ a1of2 chan_stack2_full_chan;
  syn_var_init_false var_exec_data[8];
- aN1of2<8> chan_stack2_comm_chan;
+ a1of2 chan_stack1_full_chan;
  a1of2 chan_stack1_op_chan;
- syn_var_init_false var_exec_op_1;
- syn_var_init_false var_isbr;
- syn_var_init_false var_stack2_op;
- syn_var_init_false var_exec_op_2;
- syn_var_init_false var_fetch_op[4];
+ aN1of2<8> chan_stack0_pop_chan;
+ aN1of2<8> chan_stack2_push_chan;
+ syn_var_init_false var_stack_should_perform;
+ syn_var_init_false var_dbg;
  syn_var_init_false var_reg1[8];
- aN1of2<8> chan_stack0_comm_chan;
  a1of2 chan_stack2_op_chan;
- syn_var_init_false var_stack2_is_full;
  syn_var_init_false var_stack1_op;
+ syn_var_init_false var_stack_op;
  aN1of2<12> chan_IN;
- syn_var_init_false var_fetch_data[8];
+ aN1of2<8> chan_stack1_pop_chan;
+ aN1of2<8> chan_stack1_push_chan;
  a1of2 chan_stack0_op_chan;
  syn_var_init_false var_stack0_op;
  syn_var_init_false var_pc_index[12];
- aN1of2<12> chan_FEX;
+ aN1of2<8> chan_stack2_pop_chan;
  syn_var_init_false var_stack0_data[8];
- syn_var_init_false var_temp[12];
  syn_var_init_false var_reg2[8];
  syn_var_init_false var_reg0[8];
  syn_var_init_false var_stack1_data[8];
+ a1of2 chan_stack0_full_chan;
  syn_var_init_false var_exec_temp[12];
  syn_var_init_false var_exec_dump[8];
- syn_var_init_false var_exec_op_3;
- syn_var_init_false var_exec_op_0;
- syn_var_init_false var_stack2_data[8];
+ syn_var_init_false var_jnk;
+ syn_var_init_false var_exec_op[4];
  syn_var_init_false var_stack0_is_full;
- syn_var_init_false var_exec_func_bit;
- syn_var_init_false var_exec_pc[12];
+ syn_var_init_false var_stack_data[8];
  aN1of2<12> chan_OUT;
+ aN1of2<8> chan_stack0_push_chan;
  aN1of2<12> chan_PC;
  /* --- end of declarations --- */
 
@@ -54,2537 +55,3093 @@ defproc toplevel (a1of1 go)
  syn_expr_vararray<12> e_1;
  (i:12: e_1.v[i] = var_pc_index[i].v;)
  a1of1 c_2;
- syn_fullseq s_0;
- c_2.r = s_0.go.r;
- syn_recv rtv_0[12];
+ a1of1 recv_r_0;
+ syn_fullseq fs_0(c_2, recv_r_0);
+ syn_fullseq s_1;
+ recv_r_0.r = s_1.go.r;
+ syn_recv rtv_1[12];
  syn_expr_vararray<12> e_2;
- syn_var_init_false tv_0[12];
- (i:12: e_2.v[i] = tv_0[i].v; e_2.v[i]=rtv_0[i].v;)
- s_0.r.r = e_1.go_r;
- (i:12: s_0.r.r = rtv_0[i].go.r;)
- syn_ctree<12> ct_0;
- (i:12: ct_0.in[i]=rtv_0[i].go.a;)
- s_0.r.a = ct_0.out;
- (i:12: e_1.out[i].t = rtv_0[i].in.t; e_1.out[i].f = rtv_0[i].in.f;)
- s_0.go.a = e_2.go_r;
- c_2.a = chan_PC.a;
+ syn_var_init_false tv_1[12];
+ (i:12: e_2.v[i] = tv_1[i].v; e_2.v[i]=rtv_1[i].v;)
+ s_1.r.r = e_1.go_r;
+ (i:12: s_1.r.r = rtv_1[i].go.r;)
+ syn_ctree<12> ct_1;
+ (i:12: ct_1.in[i]=rtv_1[i].go.a;)
+ s_1.r.a = ct_1.out;
+ (i:12: e_1.out[i].t = rtv_1[i].in.t; e_1.out[i].f = rtv_1[i].in.f;)
+ s_1.go.a = e_2.go_r;
+ recv_r_0.a = chan_PC.a;
  (i:12: chan_PC.d[i] = e_2.out[i];)
 
- syn_seq s_1(c_1);
- s_1.s1 = c_2;
+ syn_seq s_2(c_1);
+ s_2.s1 = c_2;
  a1of1 c_3;
- s_1.s2 = c_3;
+ s_2.s2 = c_3;
 /* recv */
-
- syn_seq s_2(c_3);
- s_2.s1 = c_1;
  a1of1 c_4;
- s_2.s2 = c_4;
-/* assign */
- bundled_is_branch_1 e_3;
- (i:4: e_3.v0[i] = var_fetch_op[i].v;)
- a1of1 c_5;
- syn_fullseq s_4;
- c_5.r = s_4.go.r;
- syn_recv rtv_4;
- syn_expr_var e_4;
- syn_var_init_false tv_4(rtv_4.v);
- e_4.v = tv_4.v;
- s_4.r.r = e_3.go_r;
- s_4.r = rtv_4.go;
- e_3.out.t = rtv_4.in.t;
- e_3.out.f = rtv_4.in.f;
- s_4.go.a = e_4.go_r;
- syn_recv s_3(c_5);
- s_3.in.t = e_4.out.t;
- s_3.in.f = e_4.out.f;
- s_3.v = var_isbr.v;
+ syn_fullseq fs_3(c_4,);
+ syn_recv s_3[12];
+ (i:12: s_3[i].go.r = fs_3.r.r;)
+ syn_ctree<12> ct_3;
+ (i:12: ct_3.in[i]=s_3[i].go.a;)
+ ct_3.out=fs_3.r.a; fs_3.r.a=chan_IN.a;
+ (i:12: s_3[i].in.t = chan_IN.d[i].t;
+          s_3[i].in.f = chan_IN.d[i].f;
+          s_3[i].v = var_exec_temp[i].v; )
 
- syn_seq s_5(c_4);
- s_5.s1 = c_5;
+ syn_seq s_4(c_3);
+ s_4.s1 = c_4;
+ a1of1 c_5;
+ s_4.s2 = c_5;
+/* assign */
+ bundled_split_4 e_3;
+ (i:12: e_3.v0[i] = var_exec_temp[i].v;)
+ a1of1 c_6;
+ syn_fullseq s_6;
+ c_6.r = s_6.go.r;
+ syn_recv rtv_6[4];
+ syn_expr_vararray<4> e_4;
+ syn_var_init_false tv_6[4];
+ (i:4: e_4.v[i] = tv_6[i].v; e_4.v[i]=rtv_6[i].v;)
+ s_6.r.r = e_3.go_r;
+ (i:4: s_6.r.r = rtv_6[i].go.r;)
+ syn_ctree<4> ct_6;
+ (i:4: ct_6.in[i]=rtv_6[i].go.a;)
+ s_6.r.a = ct_6.out;
+ (i:4: e_3.out[i].t = rtv_6[i].in.t; e_3.out[i].f = rtv_6[i].in.f;)
+ s_6.go.a = e_4.go_r;
+ syn_recv s_5[4];
+ (i:4: s_5[i].go.r = c_6.r;)
+ syn_ctree<4> ct_5;
+ (i:4: ct_5.in[i]=s_5[i].go.a;)
+ ct_5.out=c_6.a;
+ (i:4: s_5[i].in.t = e_4.out[i].t;
+          s_5[i].in.f = e_4.out[i].f;
+          s_5[i].v = var_exec_op[i].v; )
+
+ syn_seq s_7(c_5);
+ s_7.s1 = c_6;
+ a1of1 c_7;
+ s_7.s2 = c_7;
+/* assign */
+ bundled_split_8 e_5;
+ (i:12: e_5.v0[i] = var_exec_temp[i].v;)
+ a1of1 c_8;
+ syn_fullseq s_9;
+ c_8.r = s_9.go.r;
+ syn_recv rtv_9[8];
+ syn_expr_vararray<8> e_6;
+ syn_var_init_false tv_9[8];
+ (i:8: e_6.v[i] = tv_9[i].v; e_6.v[i]=rtv_9[i].v;)
+ s_9.r.r = e_5.go_r;
+ (i:8: s_9.r.r = rtv_9[i].go.r;)
+ syn_ctree<8> ct_9;
+ (i:8: ct_9.in[i]=rtv_9[i].go.a;)
+ s_9.r.a = ct_9.out;
+ (i:8: e_5.out[i].t = rtv_9[i].in.t; e_5.out[i].f = rtv_9[i].in.f;)
+ s_9.go.a = e_6.go_r;
+ syn_recv s_8[8];
+ (i:8: s_8[i].go.r = c_8.r;)
+ syn_ctree<8> ct_8;
+ (i:8: ct_8.in[i]=s_8[i].go.a;)
+ ct_8.out=c_8.a;
+ (i:8: s_8[i].in.t = e_6.out[i].t;
+          s_8[i].in.f = e_6.out[i].f;
+          s_8[i].v = var_exec_data[i].v; )
+
+ syn_seq s_10(c_7);
+ s_10.s1 = c_8;
+ a1of1 c_9;
+ s_10.s2 = c_9;
 
  /*--- emit individual gc (#1) [selection] ---*/
  r1of2 gc_1;
- syn_expr_var e_5(,var_isbr.v);
- syn_fullseq s_6;
- gc_1.r = s_6.go.r;
- syn_recv rtv_6;
- syn_expr_var e_6;
- syn_var_init_false tv_6(rtv_6.v);
- e_6.v = tv_6.v;
- s_6.r.r = e_5.go_r;
- s_6.r = rtv_6.go;
- e_5.out.t = rtv_6.in.t;
- e_5.out.f = rtv_6.in.f;
- s_6.go.a = e_6.go_r;
-/* semicolon */
- a1of1 c_6;
-/* send */
-
- syn_seq s_7(c_6);
- s_7.s1 = c_1;
- a1of1 c_7;
- s_7.s2 = c_7;
-/* send */
- syn_expr_vararray<12> e_7;
- (i:12: e_7.v[i] = var_pc_index[i].v;)
- a1of1 c_8;
- syn_fullseq s_8;
- c_8.r = s_8.go.r;
- syn_recv rtv_8[12];
- syn_expr_vararray<12> e_8;
- syn_var_init_false tv_8[12];
- (i:12: e_8.v[i] = tv_8[i].v; e_8.v[i]=rtv_8[i].v;)
- s_8.r.r = e_7.go_r;
- (i:12: s_8.r.r = rtv_8[i].go.r;)
- syn_ctree<12> ct_8;
- (i:12: ct_8.in[i]=rtv_8[i].go.a;)
- s_8.r.a = ct_8.out;
- (i:12: e_7.out[i].t = rtv_8[i].in.t; e_7.out[i].f = rtv_8[i].in.f;)
- s_8.go.a = e_8.go_r;
- c_8.a = chan_FEX.a;
- (i:12: chan_FEX.d[i] = e_8.out[i];)
-
- syn_seq s_9(c_7);
- s_9.s1 = c_8;
-/* recv */
- a1of1 c_9;
- syn_recv s_10[12];
- (i:12: s_10[i].go.r = c_9.r;)
- syn_ctree<12> ct_10;
- (i:12: ct_10.in[i]=s_10[i].go.a;)
- ct_10.out=c_9.a; c_9.a=chan_FEX.a;
- (i:12: s_10[i].in.t = chan_FEX.d[i].t;
-          s_10[i].in.f = chan_FEX.d[i].f;
-          s_10[i].v = var_pc_index[i].v; )
-
- s_9.s2 = c_9;
-
- e_6.out.t = c_6.r;
- gc_1.t = c_6.a;
- gc_1.f = e_6.out.f;
- r1of2 gc_2;
-/* semicolon */
- a1of1 c_10;
+ bundled_is_branch_1 e_7;
+ (i:4: e_7.v0[i] = var_exec_op[i].v;)
+ syn_var_init_false const_0;
+ syn_expr_var e_8(,const_0.v);
+ e_8.go_r = e_7.go_r;
+ syn_expr_eq e_9(e_7.out, e_8.out);
+/* HOUSTON WE HAD AN E_EQ W/ RET 9 */
+ syn_fullseq s_11;
+ gc_1.r = s_11.go.r;
+ syn_recv rtv_11;
+ syn_expr_var e_10;
+ syn_var_init_false tv_11(rtv_11.v);
+ e_10.v = tv_11.v;
+ s_11.r.r = e_7.go_r;
+ s_11.r = rtv_11.go;
+ e_9.out.t = rtv_11.in.t;
+ e_9.out.f = rtv_11.in.f;
+ s_11.go.a = e_10.go_r;
 /* assign */
- bundled_pcincrement_12 e_9;
- (i:12: e_9.v0[i] = var_pc_index[i].v;)
- a1of1 c_11;
- syn_fullseq s_12;
- c_11.r = s_12.go.r;
- syn_recv rtv_12[12];
- syn_expr_vararray<12> e_10;
- syn_var_init_false tv_12[12];
- (i:12: e_10.v[i] = tv_12[i].v; e_10.v[i]=rtv_12[i].v;)
- s_12.r.r = e_9.go_r;
- (i:12: s_12.r.r = rtv_12[i].go.r;)
+ bundled_pcincrement_12 e_11;
+ (i:12: e_11.v0[i] = var_pc_index[i].v;)
+ a1of1 c_10;
+ syn_fullseq s_13;
+ c_10.r = s_13.go.r;
+ syn_recv rtv_13[12];
+ syn_expr_vararray<12> e_12;
+ syn_var_init_false tv_13[12];
+ (i:12: e_12.v[i] = tv_13[i].v; e_12.v[i]=rtv_13[i].v;)
+ s_13.r.r = e_11.go_r;
+ (i:12: s_13.r.r = rtv_13[i].go.r;)
+ syn_ctree<12> ct_13;
+ (i:12: ct_13.in[i]=rtv_13[i].go.a;)
+ s_13.r.a = ct_13.out;
+ (i:12: e_11.out[i].t = rtv_13[i].in.t; e_11.out[i].f = rtv_13[i].in.f;)
+ s_13.go.a = e_12.go_r;
+ syn_recv s_12[12];
+ (i:12: s_12[i].go.r = c_10.r;)
  syn_ctree<12> ct_12;
- (i:12: ct_12.in[i]=rtv_12[i].go.a;)
- s_12.r.a = ct_12.out;
- (i:12: e_9.out[i].t = rtv_12[i].in.t; e_9.out[i].f = rtv_12[i].in.f;)
- s_12.go.a = e_10.go_r;
- syn_recv s_11[12];
- (i:12: s_11[i].go.r = c_11.r;)
- syn_ctree<12> ct_11;
- (i:12: ct_11.in[i]=s_11[i].go.a;)
- ct_11.out=c_11.a;
- (i:12: s_11[i].in.t = e_10.out[i].t;
-          s_11[i].in.f = e_10.out[i].f;
-          s_11[i].v = var_pc_index[i].v; )
+ (i:12: ct_12.in[i]=s_12[i].go.a;)
+ ct_12.out=c_10.a;
+ (i:12: s_12[i].in.t = e_12.out[i].t;
+          s_12[i].in.f = e_12.out[i].f;
+          s_12[i].v = var_pc_index[i].v; )
 
- syn_seq s_13(c_10);
- s_13.s1 = c_11;
- a1of1 c_12;
- s_13.s2 = c_12;
-/* send */
-
- syn_seq s_14(c_12);
- s_14.s1 = c_1;
-/* recv */
+ a1of1 c_11;
+ syn_fullseq fs_14(c_11, c_10);
+ e_10.out.t = c_11.r;
+ gc_1.t = c_11.a;
+ gc_1.f = e_10.out.f;
+ r1of2 gc_2;
+/* skip */   a1of1 c_12;
+ syn_skip s_15(c_12);
  a1of1 c_13;
- syn_recv s_15[12];
- (i:12: s_15[i].go.r = c_13.r;)
- syn_ctree<12> ct_15;
- (i:12: ct_15.in[i]=s_15[i].go.a;)
- ct_15.out=c_13.a; c_13.a=chan_FEX.a;
- (i:12: s_15[i].in.t = chan_FEX.d[i].t;
-          s_15[i].in.f = chan_FEX.d[i].f;
-          s_15[i].v = var_temp[i].v; )
-
- s_14.s2 = c_13;
-
- gc_2.r = c_10.r;
- gc_2.t = c_10.a;
+ syn_fullseq fs_16(c_13, c_12);
+ gc_2.r = c_13.r;
+ gc_2.t = c_13.a;
  gc_2.f = GND;
  a1of1 c_14;
  /* gc cascade, start=1, end=2 */
  gc_1.f = gc_2.r;
  gc_1.r = c_14.r;
- syn_or2 or_16(gc_1.t,gc_2.t);
- or_16.out = c_14.a;
+ syn_or2 or_17(gc_1.t,gc_2.t);
+ or_17.out = c_14.a;
  /* ----- end of gc (#1) ----- */
 
- s_5.s2 = c_14;
-
- gc_0.r = c_1.r;
- gc_0.t = c_1.a;
- gc_0.f = GND;
+ syn_seq s_18(c_9);
+ s_18.s1 = c_14;
  a1of1 c_15;
- /* gc cascade, start=0, end=0 */
- syn_notand na_17;
- na_17.x = c_15.r;
- na_17.out = gc_0.r;
- gc_0.t = na_17.y;
- gc_0.f = c_15.a;
- /* ----- end of gc (#0) ----- */
+ s_18.s2 = c_15;
 
- syn_par s_18(c_0);
- s_18.s1 = c_15;
- a1of1 c_16;
- s_18.s2 = c_16;
-
- /*--- emit individual gc (#2) [loop] ---*/
+ /*--- emit individual gc (#2) [selection] ---*/
  r1of2 gc_3;
-/* semicolon */
- a1of1 c_17;
-/* recv */
+ syn_var_init_true const_1;
+ syn_expr_var e_13(,const_1.v);
+ syn_fullseq s_19;
+ gc_3.r = s_19.go.r;
+ syn_recv rtv_19;
+ syn_expr_var e_14;
+ syn_var_init_false tv_19(rtv_19.v);
+ e_14.v = tv_19.v;
+ s_19.r.r = e_13.go_r;
+ s_19.r = rtv_19.go;
+ e_13.out.t = rtv_19.in.t;
+ e_13.out.f = rtv_19.in.f;
+ s_19.go.a = e_14.go_r;
+/* assign */
+ syn_expr_var e_15(,const_1.v);
+ a1of1 c_16;
+ syn_fullseq s_21;
+ c_16.r = s_21.go.r;
+ syn_recv rtv_21;
+ syn_expr_var e_16;
+ syn_var_init_false tv_21(rtv_21.v);
+ e_16.v = tv_21.v;
+ s_21.r.r = e_15.go_r;
+ s_21.r = rtv_21.go;
+ e_15.out.t = rtv_21.in.t;
+ e_15.out.f = rtv_21.in.f;
+ s_21.go.a = e_16.go_r;
+ syn_recv s_20(c_16);
+ s_20.in.t = e_16.out.t;
+ s_20.in.f = e_16.out.f;
+ s_20.v = var_stack_should_perform.v;
 
- syn_seq s_19(c_17);
- s_19.s1 = c_1;
+ a1of1 c_17;
+ syn_fullseq fs_22(c_17, c_16);
+ e_14.out.t = c_17.r;
+ gc_3.t = c_17.a;
+ gc_3.f = e_14.out.f;
  a1of1 c_18;
- s_19.s2 = c_18;
+ /* gc cascade, start=3, end=3 */
+ gc_3.r = c_18.r;
+ gc_3.t = c_18.a;
+ /* ----- end of gc (#2) ----- */
+
+ syn_seq s_23(c_15);
+ s_23.s1 = c_18;
+ a1of1 c_19;
+ s_23.s2 = c_19;
 
  /*--- emit individual gc (#3) [selection] ---*/
  r1of2 gc_4;
- syn_expr_var e_11(,var_exec_op_0.v);
- syn_expr_not e_12(e_11.out);
- syn_expr_var e_13(,var_exec_op_1.v);
- e_13.go_r = e_11.go_r;
- syn_expr_not e_14(e_13.out);
- syn_expr_and e_15(e_12.out, e_14.out);
- syn_expr_var e_16(,var_exec_op_2.v);
- e_16.go_r = e_11.go_r;
- syn_expr_not e_17(e_16.out);
- syn_expr_and e_18(e_15.out, e_17.out);
- syn_expr_var e_19(,var_exec_op_3.v);
- e_19.go_r = e_11.go_r;
- syn_expr_not e_20(e_19.out);
- syn_expr_and e_21(e_18.out, e_20.out);
- syn_fullseq s_20;
- gc_4.r = s_20.go.r;
- syn_recv rtv_20;
- syn_expr_var e_22;
- syn_var_init_false tv_20(rtv_20.v);
- e_22.v = tv_20.v;
- s_20.r.r = e_11.go_r;
- s_20.r = rtv_20.go;
- e_21.out.t = rtv_20.in.t;
- e_21.out.f = rtv_20.in.f;
- s_20.go.a = e_22.go_r;
-/* skip */   a1of1 c_19;
- syn_skip s_21(c_19);
- e_22.out.t = c_19.r;
- gc_4.t = c_19.a;
- gc_4.f = e_22.out.f;
- r1of2 gc_5;
- syn_expr_var e_23(,var_exec_op_0.v);
- syn_expr_not e_24(e_23.out);
- syn_expr_var e_25(,var_exec_op_1.v);
- e_25.go_r = e_23.go_r;
- syn_expr_not e_26(e_25.out);
- syn_expr_and e_27(e_24.out, e_26.out);
- syn_expr_var e_28(,var_exec_op_2.v);
- e_28.go_r = e_23.go_r;
- syn_expr_not e_29(e_28.out);
- syn_expr_and e_30(e_27.out, e_29.out);
- syn_expr_var e_31(,var_exec_op_3.v);
- e_31.go_r = e_23.go_r;
- syn_expr_and e_32(e_30.out, e_31.out);
- syn_fullseq s_22;
- gc_5.r = s_22.go.r;
- syn_recv rtv_22;
- syn_expr_var e_33;
- syn_var_init_false tv_22(rtv_22.v);
- e_33.v = tv_22.v;
- s_22.r.r = e_23.go_r;
- s_22.r = rtv_22.go;
- e_32.out.t = rtv_22.in.t;
- e_32.out.f = rtv_22.in.f;
- s_22.go.a = e_33.go_r;
+ bundled_is_pushc_1 e_17;
+ (i:4: e_17.v0[i] = var_exec_op[i].v;)
+ syn_expr_var e_18(,const_1.v);
+ e_18.go_r = e_17.go_r;
+ syn_expr_eq e_19(e_17.out, e_18.out);
+/* HOUSTON WE HAD AN E_EQ W/ RET 19 */
+ syn_fullseq s_24;
+ gc_4.r = s_24.go.r;
+ syn_recv rtv_24;
+ syn_expr_var e_20;
+ syn_var_init_false tv_24(rtv_24.v);
+ e_20.v = tv_24.v;
+ s_24.r.r = e_17.go_r;
+ s_24.r = rtv_24.go;
+ e_19.out.t = rtv_24.in.t;
+ e_19.out.f = rtv_24.in.f;
+ s_24.go.a = e_20.go_r;
 /* semicolon */
  a1of1 c_20;
-/* send */
- syn_var_init_true const_1;
- syn_expr_var e_34(,const_1.v);
- a1of1 c_21;
- syn_fullseq s_23;
- c_21.r = s_23.go.r;
- syn_recv rtv_23;
- syn_expr_var e_35;
- syn_var_init_false tv_23(rtv_23.v);
- e_35.v = tv_23.v;
- s_23.r.r = e_34.go_r;
- s_23.r = rtv_23.go;
- e_34.out.t = rtv_23.in.t;
- e_34.out.f = rtv_23.in.f;
- s_23.go.a = e_35.go_r;
- c_21.a = chan_stack0_op_chan.a;
- chan_stack0_op_chan.t = e_35.out.t;
- chan_stack0_op_chan.f = e_35.out.f;
-
- syn_seq s_24(c_20);
- s_24.s1 = c_21;
-/* send */
- syn_expr_vararray<8> e_36;
- (i:8: e_36.v[i] = var_exec_data[i].v;)
- a1of1 c_22;
- syn_fullseq s_25;
- c_22.r = s_25.go.r;
- syn_recv rtv_25[8];
- syn_expr_vararray<8> e_37;
- syn_var_init_false tv_25[8];
- (i:8: e_37.v[i] = tv_25[i].v; e_37.v[i]=rtv_25[i].v;)
- s_25.r.r = e_36.go_r;
- (i:8: s_25.r.r = rtv_25[i].go.r;)
- syn_ctree<8> ct_25;
- (i:8: ct_25.in[i]=rtv_25[i].go.a;)
- s_25.r.a = ct_25.out;
- (i:8: e_36.out[i].t = rtv_25[i].in.t; e_36.out[i].f = rtv_25[i].in.f;)
- s_25.go.a = e_37.go_r;
- c_22.a = chan_stack0_comm_chan.a;
- (i:8: chan_stack0_comm_chan.d[i] = e_37.out[i];)
-
- s_24.s2 = c_22;
-
- e_33.out.t = c_20.r;
- gc_5.t = c_20.a;
- gc_5.f = e_33.out.f;
- r1of2 gc_6;
- syn_expr_var e_38(,var_exec_op_0.v);
- syn_expr_not e_39(e_38.out);
- syn_expr_var e_40(,var_exec_op_1.v);
- e_40.go_r = e_38.go_r;
- syn_expr_not e_41(e_40.out);
- syn_expr_and e_42(e_39.out, e_41.out);
- syn_expr_var e_43(,var_exec_op_2.v);
- e_43.go_r = e_38.go_r;
- syn_expr_and e_44(e_42.out, e_43.out);
- syn_expr_var e_45(,var_exec_op_3.v);
- e_45.go_r = e_38.go_r;
- syn_expr_not e_46(e_45.out);
- syn_expr_and e_47(e_44.out, e_46.out);
- syn_fullseq s_26;
- gc_6.r = s_26.go.r;
- syn_recv rtv_26;
- syn_expr_var e_48;
- syn_var_init_false tv_26(rtv_26.v);
- e_48.v = tv_26.v;
- s_26.r.r = e_38.go_r;
- s_26.r = rtv_26.go;
- e_47.out.t = rtv_26.in.t;
- e_47.out.f = rtv_26.in.f;
- s_26.go.a = e_48.go_r;
-/* semicolon */
- a1of1 c_23;
-/* send */
- syn_var_init_false const_0;
- syn_expr_var e_49(,const_0.v);
- a1of1 c_24;
- syn_fullseq s_27;
- c_24.r = s_27.go.r;
- syn_recv rtv_27;
- syn_expr_var e_50;
- syn_var_init_false tv_27(rtv_27.v);
- e_50.v = tv_27.v;
- s_27.r.r = e_49.go_r;
- s_27.r = rtv_27.go;
- e_49.out.t = rtv_27.in.t;
- e_49.out.f = rtv_27.in.f;
- s_27.go.a = e_50.go_r;
- c_24.a = chan_stack0_op_chan.a;
- chan_stack0_op_chan.t = e_50.out.t;
- chan_stack0_op_chan.f = e_50.out.f;
-
- syn_seq s_28(c_23);
- s_28.s1 = c_24;
-/* recv */
- a1of1 c_25;
- syn_recv s_29[8];
- (i:8: s_29[i].go.r = c_25.r;)
- syn_ctree<8> ct_29;
- (i:8: ct_29.in[i]=s_29[i].go.a;)
- ct_29.out=c_25.a; c_25.a=chan_stack0_comm_chan.a;
- (i:8: s_29[i].in.t = chan_stack0_comm_chan.d[i].t;
-          s_29[i].in.f = chan_stack0_comm_chan.d[i].f;
-          s_29[i].v = var_exec_data[i].v; )
-
- s_28.s2 = c_25;
-
- e_48.out.t = c_23.r;
- gc_6.t = c_23.a;
- gc_6.f = e_48.out.f;
- r1of2 gc_7;
- syn_expr_var e_51(,var_exec_op_0.v);
- syn_expr_not e_52(e_51.out);
- syn_expr_var e_53(,var_exec_op_1.v);
- e_53.go_r = e_51.go_r;
- syn_expr_not e_54(e_53.out);
- syn_expr_and e_55(e_52.out, e_54.out);
- syn_expr_var e_56(,var_exec_op_2.v);
- e_56.go_r = e_51.go_r;
- syn_expr_and e_57(e_55.out, e_56.out);
- syn_expr_var e_58(,var_exec_op_3.v);
- e_58.go_r = e_51.go_r;
- syn_expr_and e_59(e_57.out, e_58.out);
- syn_fullseq s_30;
- gc_7.r = s_30.go.r;
- syn_recv rtv_30;
- syn_expr_var e_60;
- syn_var_init_false tv_30(rtv_30.v);
- e_60.v = tv_30.v;
- s_30.r.r = e_51.go_r;
- s_30.r = rtv_30.go;
- e_59.out.t = rtv_30.in.t;
- e_59.out.f = rtv_30.in.f;
- s_30.go.a = e_60.go_r;
-/* semicolon */
- a1of1 c_26;
-/* send */
- syn_expr_var e_61(,const_0.v);
- a1of1 c_27;
- syn_fullseq s_31;
- c_27.r = s_31.go.r;
- syn_recv rtv_31;
- syn_expr_var e_62;
- syn_var_init_false tv_31(rtv_31.v);
- e_62.v = tv_31.v;
- s_31.r.r = e_61.go_r;
- s_31.r = rtv_31.go;
- e_61.out.t = rtv_31.in.t;
- e_61.out.f = rtv_31.in.f;
- s_31.go.a = e_62.go_r;
- c_27.a = chan_stack0_op_chan.a;
- chan_stack0_op_chan.t = e_62.out.t;
- chan_stack0_op_chan.f = e_62.out.f;
-
- syn_seq s_32(c_26);
- s_32.s1 = c_27;
- a1of1 c_28;
- s_32.s2 = c_28;
-/* recv */
- a1of1 c_29;
- syn_recv s_33[8];
- (i:8: s_33[i].go.r = c_29.r;)
- syn_ctree<8> ct_33;
- (i:8: ct_33.in[i]=s_33[i].go.a;)
- ct_33.out=c_29.a; c_29.a=chan_stack0_comm_chan.a;
- (i:8: s_33[i].in.t = chan_stack0_comm_chan.d[i].t;
-          s_33[i].in.f = chan_stack0_comm_chan.d[i].f;
-          s_33[i].v = var_exec_data[i].v; )
-
- syn_seq s_34(c_28);
- s_34.s1 = c_29;
-/* send */
-
- s_34.s2 = c_1;
-
- e_60.out.t = c_26.r;
- gc_7.t = c_26.a;
- gc_7.f = e_60.out.f;
- r1of2 gc_8;
- syn_expr_var e_63(,var_exec_op_0.v);
- syn_expr_not e_64(e_63.out);
- syn_expr_var e_65(,var_exec_op_1.v);
- e_65.go_r = e_63.go_r;
- syn_expr_and e_66(e_64.out, e_65.out);
- syn_expr_var e_67(,var_exec_op_2.v);
- e_67.go_r = e_63.go_r;
- syn_expr_not e_68(e_67.out);
- syn_expr_and e_69(e_66.out, e_68.out);
- syn_expr_var e_70(,var_exec_op_3.v);
- e_70.go_r = e_63.go_r;
- syn_expr_not e_71(e_70.out);
- syn_expr_and e_72(e_69.out, e_71.out);
- syn_fullseq s_35;
- gc_8.r = s_35.go.r;
- syn_recv rtv_35;
- syn_expr_var e_73;
- syn_var_init_false tv_35(rtv_35.v);
- e_73.v = tv_35.v;
- s_35.r.r = e_63.go_r;
- s_35.r = rtv_35.go;
- e_72.out.t = rtv_35.in.t;
- e_72.out.f = rtv_35.in.f;
- s_35.go.a = e_73.go_r;
-/* semicolon */
- a1of1 c_30;
-/* send */
- syn_expr_var e_74(,const_1.v);
- a1of1 c_31;
- syn_fullseq s_36;
- c_31.r = s_36.go.r;
- syn_recv rtv_36;
- syn_expr_var e_75;
- syn_var_init_false tv_36(rtv_36.v);
- e_75.v = tv_36.v;
- s_36.r.r = e_74.go_r;
- s_36.r = rtv_36.go;
- e_74.out.t = rtv_36.in.t;
- e_74.out.f = rtv_36.in.f;
- s_36.go.a = e_75.go_r;
- c_31.a = chan_stack0_op_chan.a;
- chan_stack0_op_chan.t = e_75.out.t;
- chan_stack0_op_chan.f = e_75.out.f;
-
- syn_seq s_37(c_30);
- s_37.s1 = c_31;
- a1of1 c_32;
- s_37.s2 = c_32;
 /* assign */
- bundled_is_reg0_1 e_76;
- (i:8: e_76.v0[i] = var_exec_data[i].v;)
- a1of1 c_33;
- syn_fullseq s_39;
- c_33.r = s_39.go.r;
- syn_recv rtv_39;
- syn_expr_var e_77;
- syn_var_init_false tv_39(rtv_39.v);
- e_77.v = tv_39.v;
- s_39.r.r = e_76.go_r;
- s_39.r = rtv_39.go;
- e_76.out.t = rtv_39.in.t;
- e_76.out.f = rtv_39.in.f;
- s_39.go.a = e_77.go_r;
- syn_recv s_38(c_33);
- s_38.in.t = e_77.out.t;
- s_38.in.f = e_77.out.f;
- s_38.v = var_exec_func_bit.v;
+ syn_expr_var e_21(,const_1.v);
+ a1of1 c_21;
+ syn_fullseq s_26;
+ c_21.r = s_26.go.r;
+ syn_recv rtv_26;
+ syn_expr_var e_22;
+ syn_var_init_false tv_26(rtv_26.v);
+ e_22.v = tv_26.v;
+ s_26.r.r = e_21.go_r;
+ s_26.r = rtv_26.go;
+ e_21.out.t = rtv_26.in.t;
+ e_21.out.f = rtv_26.in.f;
+ s_26.go.a = e_22.go_r;
+ syn_recv s_25(c_21);
+ s_25.in.t = e_22.out.t;
+ s_25.in.f = e_22.out.f;
+ s_25.v = var_stack_op.v;
 
- syn_seq s_40(c_32);
- s_40.s1 = c_33;
- a1of1 c_34;
- s_40.s2 = c_34;
+ syn_seq s_27(c_20);
+ s_27.s1 = c_21;
+/* assign */
+ syn_expr_vararray<8> e_23;
+ (i:8: e_23.v[i] = var_exec_data[i].v;)
+ a1of1 c_22;
+ syn_fullseq s_29;
+ c_22.r = s_29.go.r;
+ syn_recv rtv_29[8];
+ syn_expr_vararray<8> e_24;
+ syn_var_init_false tv_29[8];
+ (i:8: e_24.v[i] = tv_29[i].v; e_24.v[i]=rtv_29[i].v;)
+ s_29.r.r = e_23.go_r;
+ (i:8: s_29.r.r = rtv_29[i].go.r;)
+ syn_ctree<8> ct_29;
+ (i:8: ct_29.in[i]=rtv_29[i].go.a;)
+ s_29.r.a = ct_29.out;
+ (i:8: e_23.out[i].t = rtv_29[i].in.t; e_23.out[i].f = rtv_29[i].in.f;)
+ s_29.go.a = e_24.go_r;
+ syn_recv s_28[8];
+ (i:8: s_28[i].go.r = c_22.r;)
+ syn_ctree<8> ct_28;
+ (i:8: ct_28.in[i]=s_28[i].go.a;)
+ ct_28.out=c_22.a;
+ (i:8: s_28[i].in.t = e_24.out[i].t;
+          s_28[i].in.f = e_24.out[i].f;
+          s_28[i].v = var_stack_data[i].v; )
+
+ s_27.s2 = c_22;
+
+ a1of1 c_23;
+ syn_fullseq fs_30(c_23, c_20);
+ e_20.out.t = c_23.r;
+ gc_4.t = c_23.a;
+ gc_4.f = e_20.out.f;
+ r1of2 gc_5;
+/* skip */   a1of1 c_24;
+ syn_skip s_31(c_24);
+ a1of1 c_25;
+ syn_fullseq fs_32(c_25, c_24);
+ gc_5.r = c_25.r;
+ gc_5.t = c_25.a;
+ gc_5.f = GND;
+ a1of1 c_26;
+ /* gc cascade, start=4, end=5 */
+ gc_4.f = gc_5.r;
+ gc_4.r = c_26.r;
+ syn_or2 or_33(gc_4.t,gc_5.t);
+ or_33.out = c_26.a;
+ /* ----- end of gc (#3) ----- */
+
+ syn_seq s_34(c_19);
+ s_34.s1 = c_26;
+ a1of1 c_27;
+ s_34.s2 = c_27;
 
  /*--- emit individual gc (#4) [selection] ---*/
- r1of2 gc_9;
- syn_expr_var e_78(,var_exec_func_bit.v);
- syn_fullseq s_41;
- gc_9.r = s_41.go.r;
- syn_recv rtv_41;
- syn_expr_var e_79;
- syn_var_init_false tv_41(rtv_41.v);
- e_79.v = tv_41.v;
- s_41.r.r = e_78.go_r;
- s_41.r = rtv_41.go;
- e_78.out.t = rtv_41.in.t;
- e_78.out.f = rtv_41.in.f;
- s_41.go.a = e_79.go_r;
-/* send */
- syn_expr_vararray<8> e_80;
- (i:8: e_80.v[i] = var_reg0[i].v;)
- a1of1 c_35;
- syn_fullseq s_42;
- c_35.r = s_42.go.r;
- syn_recv rtv_42[8];
- syn_expr_vararray<8> e_81;
- syn_var_init_false tv_42[8];
- (i:8: e_81.v[i] = tv_42[i].v; e_81.v[i]=rtv_42[i].v;)
- s_42.r.r = e_80.go_r;
- (i:8: s_42.r.r = rtv_42[i].go.r;)
- syn_ctree<8> ct_42;
- (i:8: ct_42.in[i]=rtv_42[i].go.a;)
- s_42.r.a = ct_42.out;
- (i:8: e_80.out[i].t = rtv_42[i].in.t; e_80.out[i].f = rtv_42[i].in.f;)
- s_42.go.a = e_81.go_r;
- c_35.a = chan_stack0_comm_chan.a;
- (i:8: chan_stack0_comm_chan.d[i] = e_81.out[i];)
+ r1of2 gc_6;
+ bundled_is_pop_1 e_25;
+ (i:4: e_25.v0[i] = var_exec_op[i].v;)
+ syn_expr_var e_26(,const_1.v);
+ e_26.go_r = e_25.go_r;
+ syn_expr_eq e_27(e_25.out, e_26.out);
+/* HOUSTON WE HAD AN E_EQ W/ RET 27 */
+ syn_fullseq s_35;
+ gc_6.r = s_35.go.r;
+ syn_recv rtv_35;
+ syn_expr_var e_28;
+ syn_var_init_false tv_35(rtv_35.v);
+ e_28.v = tv_35.v;
+ s_35.r.r = e_25.go_r;
+ s_35.r = rtv_35.go;
+ e_27.out.t = rtv_35.in.t;
+ e_27.out.f = rtv_35.in.f;
+ s_35.go.a = e_28.go_r;
+/* assign */
+ syn_expr_var e_29(,const_0.v);
+ a1of1 c_28;
+ syn_fullseq s_37;
+ c_28.r = s_37.go.r;
+ syn_recv rtv_37;
+ syn_expr_var e_30;
+ syn_var_init_false tv_37(rtv_37.v);
+ e_30.v = tv_37.v;
+ s_37.r.r = e_29.go_r;
+ s_37.r = rtv_37.go;
+ e_29.out.t = rtv_37.in.t;
+ e_29.out.f = rtv_37.in.f;
+ s_37.go.a = e_30.go_r;
+ syn_recv s_36(c_28);
+ s_36.in.t = e_30.out.t;
+ s_36.in.f = e_30.out.f;
+ s_36.v = var_stack_op.v;
 
- e_79.out.t = c_35.r;
- gc_9.t = c_35.a;
- gc_9.f = e_79.out.f;
- a1of1 c_36;
- /* gc cascade, start=9, end=9 */
- gc_9.r = c_36.r;
- gc_9.t = c_36.a;
+ a1of1 c_29;
+ syn_fullseq fs_38(c_29, c_28);
+ e_28.out.t = c_29.r;
+ gc_6.t = c_29.a;
+ gc_6.f = e_28.out.f;
+ r1of2 gc_7;
+/* skip */   a1of1 c_30;
+ syn_skip s_39(c_30);
+ a1of1 c_31;
+ syn_fullseq fs_40(c_31, c_30);
+ gc_7.r = c_31.r;
+ gc_7.t = c_31.a;
+ gc_7.f = GND;
+ a1of1 c_32;
+ /* gc cascade, start=6, end=7 */
+ gc_6.f = gc_7.r;
+ gc_6.r = c_32.r;
+ syn_or2 or_41(gc_6.t,gc_7.t);
+ or_41.out = c_32.a;
  /* ----- end of gc (#4) ----- */
 
- syn_seq s_43(c_34);
- s_43.s1 = c_36;
- a1of1 c_37;
- s_43.s2 = c_37;
-/* assign */
- bundled_is_reg1_1 e_82;
- (i:8: e_82.v0[i] = var_exec_data[i].v;)
- a1of1 c_38;
- syn_fullseq s_45;
- c_38.r = s_45.go.r;
- syn_recv rtv_45;
- syn_expr_var e_83;
- syn_var_init_false tv_45(rtv_45.v);
- e_83.v = tv_45.v;
- s_45.r.r = e_82.go_r;
- s_45.r = rtv_45.go;
- e_82.out.t = rtv_45.in.t;
- e_82.out.f = rtv_45.in.f;
- s_45.go.a = e_83.go_r;
- syn_recv s_44(c_38);
- s_44.in.t = e_83.out.t;
- s_44.in.f = e_83.out.f;
- s_44.v = var_exec_func_bit.v;
-
- syn_seq s_46(c_37);
- s_46.s1 = c_38;
- a1of1 c_39;
- s_46.s2 = c_39;
+ syn_seq s_42(c_27);
+ s_42.s1 = c_32;
+ a1of1 c_33;
+ s_42.s2 = c_33;
 
  /*--- emit individual gc (#5) [selection] ---*/
- r1of2 gc_10;
- syn_expr_var e_84(,var_exec_func_bit.v);
- syn_fullseq s_47;
- gc_10.r = s_47.go.r;
- syn_recv rtv_47;
- syn_expr_var e_85;
- syn_var_init_false tv_47(rtv_47.v);
- e_85.v = tv_47.v;
- s_47.r.r = e_84.go_r;
- s_47.r = rtv_47.go;
- e_84.out.t = rtv_47.in.t;
- e_84.out.f = rtv_47.in.f;
- s_47.go.a = e_85.go_r;
-/* send */
- syn_expr_vararray<8> e_86;
- (i:8: e_86.v[i] = var_reg1[i].v;)
- a1of1 c_40;
- syn_fullseq s_48;
- c_40.r = s_48.go.r;
- syn_recv rtv_48[8];
- syn_expr_vararray<8> e_87;
- syn_var_init_false tv_48[8];
- (i:8: e_87.v[i] = tv_48[i].v; e_87.v[i]=rtv_48[i].v;)
- s_48.r.r = e_86.go_r;
- (i:8: s_48.r.r = rtv_48[i].go.r;)
- syn_ctree<8> ct_48;
- (i:8: ct_48.in[i]=rtv_48[i].go.a;)
- s_48.r.a = ct_48.out;
- (i:8: e_86.out[i].t = rtv_48[i].in.t; e_86.out[i].f = rtv_48[i].in.f;)
- s_48.go.a = e_87.go_r;
- c_40.a = chan_stack0_comm_chan.a;
- (i:8: chan_stack0_comm_chan.d[i] = e_87.out[i];)
+ r1of2 gc_8;
+ bundled_is_popout_1 e_31;
+ (i:4: e_31.v0[i] = var_exec_op[i].v;)
+ syn_expr_var e_32(,const_1.v);
+ e_32.go_r = e_31.go_r;
+ syn_expr_eq e_33(e_31.out, e_32.out);
+/* HOUSTON WE HAD AN E_EQ W/ RET 33 */
+ syn_fullseq s_43;
+ gc_8.r = s_43.go.r;
+ syn_recv rtv_43;
+ syn_expr_var e_34;
+ syn_var_init_false tv_43(rtv_43.v);
+ e_34.v = tv_43.v;
+ s_43.r.r = e_31.go_r;
+ s_43.r = rtv_43.go;
+ e_33.out.t = rtv_43.in.t;
+ e_33.out.f = rtv_43.in.f;
+ s_43.go.a = e_34.go_r;
+/* assign */
+ syn_expr_var e_35(,const_0.v);
+ a1of1 c_34;
+ syn_fullseq s_45;
+ c_34.r = s_45.go.r;
+ syn_recv rtv_45;
+ syn_expr_var e_36;
+ syn_var_init_false tv_45(rtv_45.v);
+ e_36.v = tv_45.v;
+ s_45.r.r = e_35.go_r;
+ s_45.r = rtv_45.go;
+ e_35.out.t = rtv_45.in.t;
+ e_35.out.f = rtv_45.in.f;
+ s_45.go.a = e_36.go_r;
+ syn_recv s_44(c_34);
+ s_44.in.t = e_36.out.t;
+ s_44.in.f = e_36.out.f;
+ s_44.v = var_stack_op.v;
 
- e_85.out.t = c_40.r;
- gc_10.t = c_40.a;
- gc_10.f = e_85.out.f;
- a1of1 c_41;
- /* gc cascade, start=10, end=10 */
- gc_10.r = c_41.r;
- gc_10.t = c_41.a;
+ a1of1 c_35;
+ syn_fullseq fs_46(c_35, c_34);
+ e_34.out.t = c_35.r;
+ gc_8.t = c_35.a;
+ gc_8.f = e_34.out.f;
+ r1of2 gc_9;
+/* skip */   a1of1 c_36;
+ syn_skip s_47(c_36);
+ a1of1 c_37;
+ syn_fullseq fs_48(c_37, c_36);
+ gc_9.r = c_37.r;
+ gc_9.t = c_37.a;
+ gc_9.f = GND;
+ a1of1 c_38;
+ /* gc cascade, start=8, end=9 */
+ gc_8.f = gc_9.r;
+ gc_8.r = c_38.r;
+ syn_or2 or_49(gc_8.t,gc_9.t);
+ or_49.out = c_38.a;
  /* ----- end of gc (#5) ----- */
 
- syn_seq s_49(c_39);
- s_49.s1 = c_41;
- a1of1 c_42;
- s_49.s2 = c_42;
-/* assign */
- bundled_is_reg2_1 e_88;
- (i:8: e_88.v0[i] = var_exec_data[i].v;)
- a1of1 c_43;
- syn_fullseq s_51;
- c_43.r = s_51.go.r;
- syn_recv rtv_51;
- syn_expr_var e_89;
- syn_var_init_false tv_51(rtv_51.v);
- e_89.v = tv_51.v;
- s_51.r.r = e_88.go_r;
- s_51.r = rtv_51.go;
- e_88.out.t = rtv_51.in.t;
- e_88.out.f = rtv_51.in.f;
- s_51.go.a = e_89.go_r;
- syn_recv s_50(c_43);
- s_50.in.t = e_89.out.t;
- s_50.in.f = e_89.out.f;
- s_50.v = var_exec_func_bit.v;
-
- syn_seq s_52(c_42);
- s_52.s1 = c_43;
- a1of1 c_44;
- s_52.s2 = c_44;
+ syn_seq s_50(c_33);
+ s_50.s1 = c_38;
+ a1of1 c_39;
+ s_50.s2 = c_39;
 
  /*--- emit individual gc (#6) [selection] ---*/
- r1of2 gc_11;
- syn_expr_var e_90(,var_exec_func_bit.v);
+ r1of2 gc_10;
+ bundled_is_pushreg0_1 e_37;
+ (i:4: e_37.v0[i] = var_exec_op[i].v;)
+ (i:8: e_37.v1[i] = var_exec_data[i].v;)
+ syn_expr_var e_38(,const_1.v);
+ e_38.go_r = e_37.go_r;
+ syn_expr_eq e_39(e_37.out, e_38.out);
+/* HOUSTON WE HAD AN E_EQ W/ RET 39 */
+ syn_fullseq s_51;
+ gc_10.r = s_51.go.r;
+ syn_recv rtv_51;
+ syn_expr_var e_40;
+ syn_var_init_false tv_51(rtv_51.v);
+ e_40.v = tv_51.v;
+ s_51.r.r = e_37.go_r;
+ s_51.r = rtv_51.go;
+ e_39.out.t = rtv_51.in.t;
+ e_39.out.f = rtv_51.in.f;
+ s_51.go.a = e_40.go_r;
+/* comma */
+ a1of1 c_40;
+/* assign */
+ syn_expr_var e_41(,const_1.v);
+ a1of1 c_41;
  syn_fullseq s_53;
- gc_11.r = s_53.go.r;
+ c_41.r = s_53.go.r;
  syn_recv rtv_53;
- syn_expr_var e_91;
+ syn_expr_var e_42;
  syn_var_init_false tv_53(rtv_53.v);
- e_91.v = tv_53.v;
- s_53.r.r = e_90.go_r;
+ e_42.v = tv_53.v;
+ s_53.r.r = e_41.go_r;
  s_53.r = rtv_53.go;
- e_90.out.t = rtv_53.in.t;
- e_90.out.f = rtv_53.in.f;
- s_53.go.a = e_91.go_r;
-/* send */
- syn_expr_vararray<8> e_92;
- (i:8: e_92.v[i] = var_reg2[i].v;)
- a1of1 c_45;
- syn_fullseq s_54;
- c_45.r = s_54.go.r;
- syn_recv rtv_54[8];
- syn_expr_vararray<8> e_93;
- syn_var_init_false tv_54[8];
- (i:8: e_93.v[i] = tv_54[i].v; e_93.v[i]=rtv_54[i].v;)
- s_54.r.r = e_92.go_r;
- (i:8: s_54.r.r = rtv_54[i].go.r;)
- syn_ctree<8> ct_54;
- (i:8: ct_54.in[i]=rtv_54[i].go.a;)
- s_54.r.a = ct_54.out;
- (i:8: e_92.out[i].t = rtv_54[i].in.t; e_92.out[i].f = rtv_54[i].in.f;)
- s_54.go.a = e_93.go_r;
- c_45.a = chan_stack0_comm_chan.a;
- (i:8: chan_stack0_comm_chan.d[i] = e_93.out[i];)
+ e_41.out.t = rtv_53.in.t;
+ e_41.out.f = rtv_53.in.f;
+ s_53.go.a = e_42.go_r;
+ syn_recv s_52(c_41);
+ s_52.in.t = e_42.out.t;
+ s_52.in.f = e_42.out.f;
+ s_52.v = var_stack_op.v;
 
- e_91.out.t = c_45.r;
+ syn_par s_54(c_40);
+ s_54.s1 = c_41;
+/* assign */
+ syn_expr_vararray<8> e_43;
+ (i:8: e_43.v[i] = var_reg0[i].v;)
+ a1of1 c_42;
+ syn_fullseq s_56;
+ c_42.r = s_56.go.r;
+ syn_recv rtv_56[8];
+ syn_expr_vararray<8> e_44;
+ syn_var_init_false tv_56[8];
+ (i:8: e_44.v[i] = tv_56[i].v; e_44.v[i]=rtv_56[i].v;)
+ s_56.r.r = e_43.go_r;
+ (i:8: s_56.r.r = rtv_56[i].go.r;)
+ syn_ctree<8> ct_56;
+ (i:8: ct_56.in[i]=rtv_56[i].go.a;)
+ s_56.r.a = ct_56.out;
+ (i:8: e_43.out[i].t = rtv_56[i].in.t; e_43.out[i].f = rtv_56[i].in.f;)
+ s_56.go.a = e_44.go_r;
+ syn_recv s_55[8];
+ (i:8: s_55[i].go.r = c_42.r;)
+ syn_ctree<8> ct_55;
+ (i:8: ct_55.in[i]=s_55[i].go.a;)
+ ct_55.out=c_42.a;
+ (i:8: s_55[i].in.t = e_44.out[i].t;
+          s_55[i].in.f = e_44.out[i].f;
+          s_55[i].v = var_stack_data[i].v; )
+
+ s_54.s2 = c_42;
+
+ a1of1 c_43;
+ syn_fullseq fs_57(c_43, c_40);
+ e_40.out.t = c_43.r;
+ gc_10.t = c_43.a;
+ gc_10.f = e_40.out.f;
+ r1of2 gc_11;
+/* skip */   a1of1 c_44;
+ syn_skip s_58(c_44);
+ a1of1 c_45;
+ syn_fullseq fs_59(c_45, c_44);
+ gc_11.r = c_45.r;
  gc_11.t = c_45.a;
- gc_11.f = e_91.out.f;
+ gc_11.f = GND;
  a1of1 c_46;
- /* gc cascade, start=11, end=11 */
- gc_11.r = c_46.r;
- gc_11.t = c_46.a;
+ /* gc cascade, start=10, end=11 */
+ gc_10.f = gc_11.r;
+ gc_10.r = c_46.r;
+ syn_or2 or_60(gc_10.t,gc_11.t);
+ or_60.out = c_46.a;
  /* ----- end of gc (#6) ----- */
 
- syn_seq s_55(c_44);
- s_55.s1 = c_46;
+ syn_seq s_61(c_39);
+ s_61.s1 = c_46;
  a1of1 c_47;
- s_55.s2 = c_47;
-/* assign */
- bundled_is_reg3_1 e_94;
- (i:8: e_94.v0[i] = var_exec_data[i].v;)
- a1of1 c_48;
- syn_fullseq s_57;
- c_48.r = s_57.go.r;
- syn_recv rtv_57;
- syn_expr_var e_95;
- syn_var_init_false tv_57(rtv_57.v);
- e_95.v = tv_57.v;
- s_57.r.r = e_94.go_r;
- s_57.r = rtv_57.go;
- e_94.out.t = rtv_57.in.t;
- e_94.out.f = rtv_57.in.f;
- s_57.go.a = e_95.go_r;
- syn_recv s_56(c_48);
- s_56.in.t = e_95.out.t;
- s_56.in.f = e_95.out.f;
- s_56.v = var_exec_func_bit.v;
-
- syn_seq s_58(c_47);
- s_58.s1 = c_48;
+ s_61.s2 = c_47;
 
  /*--- emit individual gc (#7) [selection] ---*/
  r1of2 gc_12;
- syn_expr_var e_96(,var_exec_func_bit.v);
- syn_fullseq s_59;
- gc_12.r = s_59.go.r;
- syn_recv rtv_59;
- syn_expr_var e_97;
- syn_var_init_false tv_59(rtv_59.v);
- e_97.v = tv_59.v;
- s_59.r.r = e_96.go_r;
- s_59.r = rtv_59.go;
- e_96.out.t = rtv_59.in.t;
- e_96.out.f = rtv_59.in.f;
- s_59.go.a = e_97.go_r;
-/* send */
- syn_expr_vararray<8> e_98;
- (i:8: e_98.v[i] = var_reg3[i].v;)
+ bundled_is_pushreg1_1 e_45;
+ (i:4: e_45.v0[i] = var_exec_op[i].v;)
+ (i:8: e_45.v1[i] = var_exec_data[i].v;)
+ syn_expr_var e_46(,const_1.v);
+ e_46.go_r = e_45.go_r;
+ syn_expr_eq e_47(e_45.out, e_46.out);
+/* HOUSTON WE HAD AN E_EQ W/ RET 47 */
+ syn_fullseq s_62;
+ gc_12.r = s_62.go.r;
+ syn_recv rtv_62;
+ syn_expr_var e_48;
+ syn_var_init_false tv_62(rtv_62.v);
+ e_48.v = tv_62.v;
+ s_62.r.r = e_45.go_r;
+ s_62.r = rtv_62.go;
+ e_47.out.t = rtv_62.in.t;
+ e_47.out.f = rtv_62.in.f;
+ s_62.go.a = e_48.go_r;
+/* comma */
+ a1of1 c_48;
+/* assign */
+ syn_expr_var e_49(,const_1.v);
  a1of1 c_49;
- syn_fullseq s_60;
- c_49.r = s_60.go.r;
- syn_recv rtv_60[8];
- syn_expr_vararray<8> e_99;
- syn_var_init_false tv_60[8];
- (i:8: e_99.v[i] = tv_60[i].v; e_99.v[i]=rtv_60[i].v;)
- s_60.r.r = e_98.go_r;
- (i:8: s_60.r.r = rtv_60[i].go.r;)
- syn_ctree<8> ct_60;
- (i:8: ct_60.in[i]=rtv_60[i].go.a;)
- s_60.r.a = ct_60.out;
- (i:8: e_98.out[i].t = rtv_60[i].in.t; e_98.out[i].f = rtv_60[i].in.f;)
- s_60.go.a = e_99.go_r;
- c_49.a = chan_stack0_comm_chan.a;
- (i:8: chan_stack0_comm_chan.d[i] = e_99.out[i];)
+ syn_fullseq s_64;
+ c_49.r = s_64.go.r;
+ syn_recv rtv_64;
+ syn_expr_var e_50;
+ syn_var_init_false tv_64(rtv_64.v);
+ e_50.v = tv_64.v;
+ s_64.r.r = e_49.go_r;
+ s_64.r = rtv_64.go;
+ e_49.out.t = rtv_64.in.t;
+ e_49.out.f = rtv_64.in.f;
+ s_64.go.a = e_50.go_r;
+ syn_recv s_63(c_49);
+ s_63.in.t = e_50.out.t;
+ s_63.in.f = e_50.out.f;
+ s_63.v = var_stack_op.v;
 
- e_97.out.t = c_49.r;
- gc_12.t = c_49.a;
- gc_12.f = e_97.out.f;
+ syn_par s_65(c_48);
+ s_65.s1 = c_49;
+/* assign */
+ syn_expr_vararray<8> e_51;
+ (i:8: e_51.v[i] = var_reg1[i].v;)
  a1of1 c_50;
- /* gc cascade, start=12, end=12 */
- gc_12.r = c_50.r;
- gc_12.t = c_50.a;
+ syn_fullseq s_67;
+ c_50.r = s_67.go.r;
+ syn_recv rtv_67[8];
+ syn_expr_vararray<8> e_52;
+ syn_var_init_false tv_67[8];
+ (i:8: e_52.v[i] = tv_67[i].v; e_52.v[i]=rtv_67[i].v;)
+ s_67.r.r = e_51.go_r;
+ (i:8: s_67.r.r = rtv_67[i].go.r;)
+ syn_ctree<8> ct_67;
+ (i:8: ct_67.in[i]=rtv_67[i].go.a;)
+ s_67.r.a = ct_67.out;
+ (i:8: e_51.out[i].t = rtv_67[i].in.t; e_51.out[i].f = rtv_67[i].in.f;)
+ s_67.go.a = e_52.go_r;
+ syn_recv s_66[8];
+ (i:8: s_66[i].go.r = c_50.r;)
+ syn_ctree<8> ct_66;
+ (i:8: ct_66.in[i]=s_66[i].go.a;)
+ ct_66.out=c_50.a;
+ (i:8: s_66[i].in.t = e_52.out[i].t;
+          s_66[i].in.f = e_52.out[i].f;
+          s_66[i].v = var_stack_data[i].v; )
+
+ s_65.s2 = c_50;
+
+ a1of1 c_51;
+ syn_fullseq fs_68(c_51, c_48);
+ e_48.out.t = c_51.r;
+ gc_12.t = c_51.a;
+ gc_12.f = e_48.out.f;
+ r1of2 gc_13;
+/* skip */   a1of1 c_52;
+ syn_skip s_69(c_52);
+ a1of1 c_53;
+ syn_fullseq fs_70(c_53, c_52);
+ gc_13.r = c_53.r;
+ gc_13.t = c_53.a;
+ gc_13.f = GND;
+ a1of1 c_54;
+ /* gc cascade, start=12, end=13 */
+ gc_12.f = gc_13.r;
+ gc_12.r = c_54.r;
+ syn_or2 or_71(gc_12.t,gc_13.t);
+ or_71.out = c_54.a;
  /* ----- end of gc (#7) ----- */
 
- s_58.s2 = c_50;
-
- e_73.out.t = c_30.r;
- gc_8.t = c_30.a;
- gc_8.f = e_73.out.f;
- r1of2 gc_13;
- syn_expr_var e_100(,var_exec_op_0.v);
- syn_expr_not e_101(e_100.out);
- syn_expr_var e_102(,var_exec_op_1.v);
- e_102.go_r = e_100.go_r;
- syn_expr_and e_103(e_101.out, e_102.out);
- syn_expr_var e_104(,var_exec_op_2.v);
- e_104.go_r = e_100.go_r;
- syn_expr_not e_105(e_104.out);
- syn_expr_and e_106(e_103.out, e_105.out);
- syn_expr_var e_107(,var_exec_op_3.v);
- e_107.go_r = e_100.go_r;
- syn_expr_and e_108(e_106.out, e_107.out);
- syn_fullseq s_61;
- gc_13.r = s_61.go.r;
- syn_recv rtv_61;
- syn_expr_var e_109;
- syn_var_init_false tv_61(rtv_61.v);
- e_109.v = tv_61.v;
- s_61.r.r = e_100.go_r;
- s_61.r = rtv_61.go;
- e_108.out.t = rtv_61.in.t;
- e_108.out.f = rtv_61.in.f;
- s_61.go.a = e_109.go_r;
-/* semicolon */
- a1of1 c_51;
-/* send */
- syn_expr_var e_110(,const_0.v);
- a1of1 c_52;
- syn_fullseq s_62;
- c_52.r = s_62.go.r;
- syn_recv rtv_62;
- syn_expr_var e_111;
- syn_var_init_false tv_62(rtv_62.v);
- e_111.v = tv_62.v;
- s_62.r.r = e_110.go_r;
- s_62.r = rtv_62.go;
- e_110.out.t = rtv_62.in.t;
- e_110.out.f = rtv_62.in.f;
- s_62.go.a = e_111.go_r;
- c_52.a = chan_stack0_op_chan.a;
- chan_stack0_op_chan.t = e_111.out.t;
- chan_stack0_op_chan.f = e_111.out.f;
-
- syn_seq s_63(c_51);
- s_63.s1 = c_52;
- a1of1 c_53;
- s_63.s2 = c_53;
-/* assign */
- bundled_is_reg0_1 e_112;
- (i:8: e_112.v0[i] = var_exec_data[i].v;)
- a1of1 c_54;
- syn_fullseq s_65;
- c_54.r = s_65.go.r;
- syn_recv rtv_65;
- syn_expr_var e_113;
- syn_var_init_false tv_65(rtv_65.v);
- e_113.v = tv_65.v;
- s_65.r.r = e_112.go_r;
- s_65.r = rtv_65.go;
- e_112.out.t = rtv_65.in.t;
- e_112.out.f = rtv_65.in.f;
- s_65.go.a = e_113.go_r;
- syn_recv s_64(c_54);
- s_64.in.t = e_113.out.t;
- s_64.in.f = e_113.out.f;
- s_64.v = var_exec_func_bit.v;
-
- syn_seq s_66(c_53);
- s_66.s1 = c_54;
+ syn_seq s_72(c_47);
+ s_72.s1 = c_54;
  a1of1 c_55;
- s_66.s2 = c_55;
+ s_72.s2 = c_55;
 
  /*--- emit individual gc (#8) [selection] ---*/
  r1of2 gc_14;
- syn_expr_var e_114(,var_exec_func_bit.v);
- syn_fullseq s_67;
- gc_14.r = s_67.go.r;
- syn_recv rtv_67;
- syn_expr_var e_115;
- syn_var_init_false tv_67(rtv_67.v);
- e_115.v = tv_67.v;
- s_67.r.r = e_114.go_r;
- s_67.r = rtv_67.go;
- e_114.out.t = rtv_67.in.t;
- e_114.out.f = rtv_67.in.f;
- s_67.go.a = e_115.go_r;
-/* recv */
+ bundled_is_pushreg2_1 e_53;
+ (i:4: e_53.v0[i] = var_exec_op[i].v;)
+ (i:8: e_53.v1[i] = var_exec_data[i].v;)
+ syn_expr_var e_54(,const_1.v);
+ e_54.go_r = e_53.go_r;
+ syn_expr_eq e_55(e_53.out, e_54.out);
+/* HOUSTON WE HAD AN E_EQ W/ RET 55 */
+ syn_fullseq s_73;
+ gc_14.r = s_73.go.r;
+ syn_recv rtv_73;
+ syn_expr_var e_56;
+ syn_var_init_false tv_73(rtv_73.v);
+ e_56.v = tv_73.v;
+ s_73.r.r = e_53.go_r;
+ s_73.r = rtv_73.go;
+ e_55.out.t = rtv_73.in.t;
+ e_55.out.f = rtv_73.in.f;
+ s_73.go.a = e_56.go_r;
+/* comma */
  a1of1 c_56;
- syn_recv s_68[8];
- (i:8: s_68[i].go.r = c_56.r;)
- syn_ctree<8> ct_68;
- (i:8: ct_68.in[i]=s_68[i].go.a;)
- ct_68.out=c_56.a; c_56.a=chan_stack0_comm_chan.a;
- (i:8: s_68[i].in.t = chan_stack0_comm_chan.d[i].t;
-          s_68[i].in.f = chan_stack0_comm_chan.d[i].f;
-          s_68[i].v = var_reg0[i].v; )
-
- e_115.out.t = c_56.r;
- gc_14.t = c_56.a;
- gc_14.f = e_115.out.f;
+/* assign */
+ syn_expr_var e_57(,const_1.v);
  a1of1 c_57;
- /* gc cascade, start=14, end=14 */
- gc_14.r = c_57.r;
- gc_14.t = c_57.a;
+ syn_fullseq s_75;
+ c_57.r = s_75.go.r;
+ syn_recv rtv_75;
+ syn_expr_var e_58;
+ syn_var_init_false tv_75(rtv_75.v);
+ e_58.v = tv_75.v;
+ s_75.r.r = e_57.go_r;
+ s_75.r = rtv_75.go;
+ e_57.out.t = rtv_75.in.t;
+ e_57.out.f = rtv_75.in.f;
+ s_75.go.a = e_58.go_r;
+ syn_recv s_74(c_57);
+ s_74.in.t = e_58.out.t;
+ s_74.in.f = e_58.out.f;
+ s_74.v = var_stack_op.v;
+
+ syn_par s_76(c_56);
+ s_76.s1 = c_57;
+/* assign */
+ syn_expr_vararray<8> e_59;
+ (i:8: e_59.v[i] = var_reg2[i].v;)
+ a1of1 c_58;
+ syn_fullseq s_78;
+ c_58.r = s_78.go.r;
+ syn_recv rtv_78[8];
+ syn_expr_vararray<8> e_60;
+ syn_var_init_false tv_78[8];
+ (i:8: e_60.v[i] = tv_78[i].v; e_60.v[i]=rtv_78[i].v;)
+ s_78.r.r = e_59.go_r;
+ (i:8: s_78.r.r = rtv_78[i].go.r;)
+ syn_ctree<8> ct_78;
+ (i:8: ct_78.in[i]=rtv_78[i].go.a;)
+ s_78.r.a = ct_78.out;
+ (i:8: e_59.out[i].t = rtv_78[i].in.t; e_59.out[i].f = rtv_78[i].in.f;)
+ s_78.go.a = e_60.go_r;
+ syn_recv s_77[8];
+ (i:8: s_77[i].go.r = c_58.r;)
+ syn_ctree<8> ct_77;
+ (i:8: ct_77.in[i]=s_77[i].go.a;)
+ ct_77.out=c_58.a;
+ (i:8: s_77[i].in.t = e_60.out[i].t;
+          s_77[i].in.f = e_60.out[i].f;
+          s_77[i].v = var_stack_data[i].v; )
+
+ s_76.s2 = c_58;
+
+ a1of1 c_59;
+ syn_fullseq fs_79(c_59, c_56);
+ e_56.out.t = c_59.r;
+ gc_14.t = c_59.a;
+ gc_14.f = e_56.out.f;
+ r1of2 gc_15;
+/* skip */   a1of1 c_60;
+ syn_skip s_80(c_60);
+ a1of1 c_61;
+ syn_fullseq fs_81(c_61, c_60);
+ gc_15.r = c_61.r;
+ gc_15.t = c_61.a;
+ gc_15.f = GND;
+ a1of1 c_62;
+ /* gc cascade, start=14, end=15 */
+ gc_14.f = gc_15.r;
+ gc_14.r = c_62.r;
+ syn_or2 or_82(gc_14.t,gc_15.t);
+ or_82.out = c_62.a;
  /* ----- end of gc (#8) ----- */
 
- syn_seq s_69(c_55);
- s_69.s1 = c_57;
- a1of1 c_58;
- s_69.s2 = c_58;
-/* assign */
- bundled_is_reg1_1 e_116;
- (i:8: e_116.v0[i] = var_exec_data[i].v;)
- a1of1 c_59;
- syn_fullseq s_71;
- c_59.r = s_71.go.r;
- syn_recv rtv_71;
- syn_expr_var e_117;
- syn_var_init_false tv_71(rtv_71.v);
- e_117.v = tv_71.v;
- s_71.r.r = e_116.go_r;
- s_71.r = rtv_71.go;
- e_116.out.t = rtv_71.in.t;
- e_116.out.f = rtv_71.in.f;
- s_71.go.a = e_117.go_r;
- syn_recv s_70(c_59);
- s_70.in.t = e_117.out.t;
- s_70.in.f = e_117.out.f;
- s_70.v = var_exec_func_bit.v;
-
- syn_seq s_72(c_58);
- s_72.s1 = c_59;
- a1of1 c_60;
- s_72.s2 = c_60;
+ syn_seq s_83(c_55);
+ s_83.s1 = c_62;
+ a1of1 c_63;
+ s_83.s2 = c_63;
 
  /*--- emit individual gc (#9) [selection] ---*/
- r1of2 gc_15;
- syn_expr_var e_118(,var_exec_func_bit.v);
- syn_fullseq s_73;
- gc_15.r = s_73.go.r;
- syn_recv rtv_73;
- syn_expr_var e_119;
- syn_var_init_false tv_73(rtv_73.v);
- e_119.v = tv_73.v;
- s_73.r.r = e_118.go_r;
- s_73.r = rtv_73.go;
- e_118.out.t = rtv_73.in.t;
- e_118.out.f = rtv_73.in.f;
- s_73.go.a = e_119.go_r;
-/* recv */
- a1of1 c_61;
- syn_recv s_74[8];
- (i:8: s_74[i].go.r = c_61.r;)
- syn_ctree<8> ct_74;
- (i:8: ct_74.in[i]=s_74[i].go.a;)
- ct_74.out=c_61.a; c_61.a=chan_stack0_comm_chan.a;
- (i:8: s_74[i].in.t = chan_stack0_comm_chan.d[i].t;
-          s_74[i].in.f = chan_stack0_comm_chan.d[i].f;
-          s_74[i].v = var_reg1[i].v; )
-
- e_119.out.t = c_61.r;
- gc_15.t = c_61.a;
- gc_15.f = e_119.out.f;
- a1of1 c_62;
- /* gc cascade, start=15, end=15 */
- gc_15.r = c_62.r;
- gc_15.t = c_62.a;
- /* ----- end of gc (#9) ----- */
-
- syn_seq s_75(c_60);
- s_75.s1 = c_62;
- a1of1 c_63;
- s_75.s2 = c_63;
-/* assign */
- bundled_is_reg2_1 e_120;
- (i:8: e_120.v0[i] = var_exec_data[i].v;)
- a1of1 c_64;
- syn_fullseq s_77;
- c_64.r = s_77.go.r;
- syn_recv rtv_77;
- syn_expr_var e_121;
- syn_var_init_false tv_77(rtv_77.v);
- e_121.v = tv_77.v;
- s_77.r.r = e_120.go_r;
- s_77.r = rtv_77.go;
- e_120.out.t = rtv_77.in.t;
- e_120.out.f = rtv_77.in.f;
- s_77.go.a = e_121.go_r;
- syn_recv s_76(c_64);
- s_76.in.t = e_121.out.t;
- s_76.in.f = e_121.out.f;
- s_76.v = var_exec_func_bit.v;
-
- syn_seq s_78(c_63);
- s_78.s1 = c_64;
- a1of1 c_65;
- s_78.s2 = c_65;
-
- /*--- emit individual gc (#10) [selection] ---*/
  r1of2 gc_16;
- syn_expr_var e_122(,var_exec_func_bit.v);
- syn_fullseq s_79;
- gc_16.r = s_79.go.r;
- syn_recv rtv_79;
- syn_expr_var e_123;
- syn_var_init_false tv_79(rtv_79.v);
- e_123.v = tv_79.v;
- s_79.r.r = e_122.go_r;
- s_79.r = rtv_79.go;
- e_122.out.t = rtv_79.in.t;
- e_122.out.f = rtv_79.in.f;
- s_79.go.a = e_123.go_r;
-/* recv */
+ bundled_is_pushreg3_1 e_61;
+ (i:4: e_61.v0[i] = var_exec_op[i].v;)
+ (i:8: e_61.v1[i] = var_exec_data[i].v;)
+ syn_expr_var e_62(,const_1.v);
+ e_62.go_r = e_61.go_r;
+ syn_expr_eq e_63(e_61.out, e_62.out);
+/* HOUSTON WE HAD AN E_EQ W/ RET 63 */
+ syn_fullseq s_84;
+ gc_16.r = s_84.go.r;
+ syn_recv rtv_84;
+ syn_expr_var e_64;
+ syn_var_init_false tv_84(rtv_84.v);
+ e_64.v = tv_84.v;
+ s_84.r.r = e_61.go_r;
+ s_84.r = rtv_84.go;
+ e_63.out.t = rtv_84.in.t;
+ e_63.out.f = rtv_84.in.f;
+ s_84.go.a = e_64.go_r;
+/* comma */
+ a1of1 c_64;
+/* assign */
+ syn_expr_var e_65(,const_1.v);
+ a1of1 c_65;
+ syn_fullseq s_86;
+ c_65.r = s_86.go.r;
+ syn_recv rtv_86;
+ syn_expr_var e_66;
+ syn_var_init_false tv_86(rtv_86.v);
+ e_66.v = tv_86.v;
+ s_86.r.r = e_65.go_r;
+ s_86.r = rtv_86.go;
+ e_65.out.t = rtv_86.in.t;
+ e_65.out.f = rtv_86.in.f;
+ s_86.go.a = e_66.go_r;
+ syn_recv s_85(c_65);
+ s_85.in.t = e_66.out.t;
+ s_85.in.f = e_66.out.f;
+ s_85.v = var_stack_op.v;
+
+ syn_par s_87(c_64);
+ s_87.s1 = c_65;
+/* assign */
+ syn_expr_vararray<8> e_67;
+ (i:8: e_67.v[i] = var_reg3[i].v;)
  a1of1 c_66;
- syn_recv s_80[8];
- (i:8: s_80[i].go.r = c_66.r;)
- syn_ctree<8> ct_80;
- (i:8: ct_80.in[i]=s_80[i].go.a;)
- ct_80.out=c_66.a; c_66.a=chan_stack0_comm_chan.a;
- (i:8: s_80[i].in.t = chan_stack0_comm_chan.d[i].t;
-          s_80[i].in.f = chan_stack0_comm_chan.d[i].f;
-          s_80[i].v = var_reg2[i].v; )
-
- e_123.out.t = c_66.r;
- gc_16.t = c_66.a;
- gc_16.f = e_123.out.f;
- a1of1 c_67;
- /* gc cascade, start=16, end=16 */
- gc_16.r = c_67.r;
- gc_16.t = c_67.a;
- /* ----- end of gc (#10) ----- */
-
- syn_seq s_81(c_65);
- s_81.s1 = c_67;
- a1of1 c_68;
- s_81.s2 = c_68;
-/* assign */
- bundled_is_reg3_1 e_124;
- (i:8: e_124.v0[i] = var_exec_data[i].v;)
- a1of1 c_69;
- syn_fullseq s_83;
- c_69.r = s_83.go.r;
- syn_recv rtv_83;
- syn_expr_var e_125;
- syn_var_init_false tv_83(rtv_83.v);
- e_125.v = tv_83.v;
- s_83.r.r = e_124.go_r;
- s_83.r = rtv_83.go;
- e_124.out.t = rtv_83.in.t;
- e_124.out.f = rtv_83.in.f;
- s_83.go.a = e_125.go_r;
- syn_recv s_82(c_69);
- s_82.in.t = e_125.out.t;
- s_82.in.f = e_125.out.f;
- s_82.v = var_exec_func_bit.v;
-
- syn_seq s_84(c_68);
- s_84.s1 = c_69;
-
- /*--- emit individual gc (#11) [selection] ---*/
- r1of2 gc_17;
- syn_expr_var e_126(,var_exec_func_bit.v);
- syn_fullseq s_85;
- gc_17.r = s_85.go.r;
- syn_recv rtv_85;
- syn_expr_var e_127;
- syn_var_init_false tv_85(rtv_85.v);
- e_127.v = tv_85.v;
- s_85.r.r = e_126.go_r;
- s_85.r = rtv_85.go;
- e_126.out.t = rtv_85.in.t;
- e_126.out.f = rtv_85.in.f;
- s_85.go.a = e_127.go_r;
-/* recv */
- a1of1 c_70;
- syn_recv s_86[8];
- (i:8: s_86[i].go.r = c_70.r;)
- syn_ctree<8> ct_86;
- (i:8: ct_86.in[i]=s_86[i].go.a;)
- ct_86.out=c_70.a; c_70.a=chan_stack0_comm_chan.a;
- (i:8: s_86[i].in.t = chan_stack0_comm_chan.d[i].t;
-          s_86[i].in.f = chan_stack0_comm_chan.d[i].f;
-          s_86[i].v = var_reg3[i].v; )
-
- e_127.out.t = c_70.r;
- gc_17.t = c_70.a;
- gc_17.f = e_127.out.f;
- a1of1 c_71;
- /* gc cascade, start=17, end=17 */
- gc_17.r = c_71.r;
- gc_17.t = c_71.a;
- /* ----- end of gc (#11) ----- */
-
- s_84.s2 = c_71;
-
- e_109.out.t = c_51.r;
- gc_13.t = c_51.a;
- gc_13.f = e_109.out.f;
- r1of2 gc_18;
- syn_expr_var e_128(,var_exec_op_0.v);
- syn_expr_not e_129(e_128.out);
- syn_expr_var e_130(,var_exec_op_1.v);
- e_130.go_r = e_128.go_r;
- syn_expr_and e_131(e_129.out, e_130.out);
- syn_expr_var e_132(,var_exec_op_2.v);
- e_132.go_r = e_128.go_r;
- syn_expr_and e_133(e_131.out, e_132.out);
- syn_expr_var e_134(,var_exec_op_3.v);
- e_134.go_r = e_128.go_r;
- syn_expr_not e_135(e_134.out);
- syn_expr_and e_136(e_133.out, e_135.out);
- syn_fullseq s_87;
- gc_18.r = s_87.go.r;
- syn_recv rtv_87;
- syn_expr_var e_137;
- syn_var_init_false tv_87(rtv_87.v);
- e_137.v = tv_87.v;
- s_87.r.r = e_128.go_r;
- s_87.r = rtv_87.go;
- e_136.out.t = rtv_87.in.t;
- e_136.out.f = rtv_87.in.f;
- s_87.go.a = e_137.go_r;
-/* semicolon */
- a1of1 c_72;
-/* assign */
- bundled_stackadd_8 e_138;
- (i:8: e_138.v0[i] = var_stack0_data[i].v;)
- (i:8: e_138.v1[i] = var_stack1_data[i].v;)
- a1of1 c_73;
  syn_fullseq s_89;
- c_73.r = s_89.go.r;
+ c_66.r = s_89.go.r;
  syn_recv rtv_89[8];
- syn_expr_vararray<8> e_139;
+ syn_expr_vararray<8> e_68;
  syn_var_init_false tv_89[8];
- (i:8: e_139.v[i] = tv_89[i].v; e_139.v[i]=rtv_89[i].v;)
- s_89.r.r = e_138.go_r;
+ (i:8: e_68.v[i] = tv_89[i].v; e_68.v[i]=rtv_89[i].v;)
+ s_89.r.r = e_67.go_r;
  (i:8: s_89.r.r = rtv_89[i].go.r;)
  syn_ctree<8> ct_89;
  (i:8: ct_89.in[i]=rtv_89[i].go.a;)
  s_89.r.a = ct_89.out;
- (i:8: e_138.out[i].t = rtv_89[i].in.t; e_138.out[i].f = rtv_89[i].in.f;)
- s_89.go.a = e_139.go_r;
+ (i:8: e_67.out[i].t = rtv_89[i].in.t; e_67.out[i].f = rtv_89[i].in.f;)
+ s_89.go.a = e_68.go_r;
  syn_recv s_88[8];
- (i:8: s_88[i].go.r = c_73.r;)
+ (i:8: s_88[i].go.r = c_66.r;)
  syn_ctree<8> ct_88;
  (i:8: ct_88.in[i]=s_88[i].go.a;)
- ct_88.out=c_73.a;
- (i:8: s_88[i].in.t = e_139.out[i].t;
-          s_88[i].in.f = e_139.out[i].f;
-          s_88[i].v = var_stack1_data[i].v; )
+ ct_88.out=c_66.a;
+ (i:8: s_88[i].in.t = e_68.out[i].t;
+          s_88[i].in.f = e_68.out[i].f;
+          s_88[i].v = var_stack_data[i].v; )
 
- syn_seq s_90(c_72);
- s_90.s1 = c_73;
- a1of1 c_74;
- s_90.s2 = c_74;
-/* send */
- syn_expr_var e_140(,const_0.v);
- a1of1 c_75;
- syn_fullseq s_91;
- c_75.r = s_91.go.r;
- syn_recv rtv_91;
- syn_expr_var e_141;
- syn_var_init_false tv_91(rtv_91.v);
- e_141.v = tv_91.v;
- s_91.r.r = e_140.go_r;
- s_91.r = rtv_91.go;
- e_140.out.t = rtv_91.in.t;
- e_140.out.f = rtv_91.in.f;
- s_91.go.a = e_141.go_r;
- c_75.a = chan_stack0_op_chan.a;
- chan_stack0_op_chan.t = e_141.out.t;
- chan_stack0_op_chan.f = e_141.out.f;
+ s_87.s2 = c_66;
 
- syn_seq s_92(c_74);
- s_92.s1 = c_75;
-/* recv */
- a1of1 c_76;
- syn_recv s_93[8];
- (i:8: s_93[i].go.r = c_76.r;)
- syn_ctree<8> ct_93;
- (i:8: ct_93.in[i]=s_93[i].go.a;)
- ct_93.out=c_76.a; c_76.a=chan_stack0_comm_chan.a;
- (i:8: s_93[i].in.t = chan_stack0_comm_chan.d[i].t;
-          s_93[i].in.f = chan_stack0_comm_chan.d[i].f;
-          s_93[i].v = var_exec_dump[i].v; )
+ a1of1 c_67;
+ syn_fullseq fs_90(c_67, c_64);
+ e_64.out.t = c_67.r;
+ gc_16.t = c_67.a;
+ gc_16.f = e_64.out.f;
+ r1of2 gc_17;
+/* skip */   a1of1 c_68;
+ syn_skip s_91(c_68);
+ a1of1 c_69;
+ syn_fullseq fs_92(c_69, c_68);
+ gc_17.r = c_69.r;
+ gc_17.t = c_69.a;
+ gc_17.f = GND;
+ a1of1 c_70;
+ /* gc cascade, start=16, end=17 */
+ gc_16.f = gc_17.r;
+ gc_16.r = c_70.r;
+ syn_or2 or_93(gc_16.t,gc_17.t);
+ or_93.out = c_70.a;
+ /* ----- end of gc (#9) ----- */
 
- s_92.s2 = c_76;
+ syn_seq s_94(c_63);
+ s_94.s1 = c_70;
+ a1of1 c_71;
+ s_94.s2 = c_71;
 
- e_137.out.t = c_72.r;
- gc_18.t = c_72.a;
- gc_18.f = e_137.out.f;
+ /*--- emit individual gc (#10) [selection] ---*/
+ r1of2 gc_18;
+ bundled_is_popreg_1 e_69;
+ (i:4: e_69.v0[i] = var_exec_op[i].v;)
+ syn_expr_var e_70(,const_1.v);
+ e_70.go_r = e_69.go_r;
+ syn_expr_eq e_71(e_69.out, e_70.out);
+/* HOUSTON WE HAD AN E_EQ W/ RET 71 */
+ syn_fullseq s_95;
+ gc_18.r = s_95.go.r;
+ syn_recv rtv_95;
+ syn_expr_var e_72;
+ syn_var_init_false tv_95(rtv_95.v);
+ e_72.v = tv_95.v;
+ s_95.r.r = e_69.go_r;
+ s_95.r = rtv_95.go;
+ e_71.out.t = rtv_95.in.t;
+ e_71.out.f = rtv_95.in.f;
+ s_95.go.a = e_72.go_r;
+/* assign */
+ syn_expr_var e_73(,const_0.v);
+ a1of1 c_72;
+ syn_fullseq s_97;
+ c_72.r = s_97.go.r;
+ syn_recv rtv_97;
+ syn_expr_var e_74;
+ syn_var_init_false tv_97(rtv_97.v);
+ e_74.v = tv_97.v;
+ s_97.r.r = e_73.go_r;
+ s_97.r = rtv_97.go;
+ e_73.out.t = rtv_97.in.t;
+ e_73.out.f = rtv_97.in.f;
+ s_97.go.a = e_74.go_r;
+ syn_recv s_96(c_72);
+ s_96.in.t = e_74.out.t;
+ s_96.in.f = e_74.out.f;
+ s_96.v = var_stack_op.v;
+
+ a1of1 c_73;
+ syn_fullseq fs_98(c_73, c_72);
+ e_72.out.t = c_73.r;
+ gc_18.t = c_73.a;
+ gc_18.f = e_72.out.f;
  r1of2 gc_19;
- syn_expr_var e_142(,var_exec_op_0.v);
- syn_expr_not e_143(e_142.out);
- syn_expr_var e_144(,var_exec_op_1.v);
- e_144.go_r = e_142.go_r;
- syn_expr_and e_145(e_143.out, e_144.out);
- syn_expr_var e_146(,var_exec_op_2.v);
- e_146.go_r = e_142.go_r;
- syn_expr_and e_147(e_145.out, e_146.out);
- syn_expr_var e_148(,var_exec_op_3.v);
- e_148.go_r = e_142.go_r;
- syn_expr_and e_149(e_147.out, e_148.out);
- syn_fullseq s_94;
- gc_19.r = s_94.go.r;
- syn_recv rtv_94;
- syn_expr_var e_150;
- syn_var_init_false tv_94(rtv_94.v);
- e_150.v = tv_94.v;
- s_94.r.r = e_142.go_r;
- s_94.r = rtv_94.go;
- e_149.out.t = rtv_94.in.t;
- e_149.out.f = rtv_94.in.f;
- s_94.go.a = e_150.go_r;
-/* semicolon */
+/* skip */   a1of1 c_74;
+ syn_skip s_99(c_74);
+ a1of1 c_75;
+ syn_fullseq fs_100(c_75, c_74);
+ gc_19.r = c_75.r;
+ gc_19.t = c_75.a;
+ gc_19.f = GND;
+ a1of1 c_76;
+ /* gc cascade, start=18, end=19 */
+ gc_18.f = gc_19.r;
+ gc_18.r = c_76.r;
+ syn_or2 or_101(gc_18.t,gc_19.t);
+ or_101.out = c_76.a;
+ /* ----- end of gc (#10) ----- */
+
+ syn_seq s_102(c_71);
+ s_102.s1 = c_76;
  a1of1 c_77;
-/* assign */
- bundled_stacksub_8 e_151;
- (i:8: e_151.v0[i] = var_stack0_data[i].v;)
- (i:8: e_151.v1[i] = var_stack1_data[i].v;)
- a1of1 c_78;
- syn_fullseq s_96;
- c_78.r = s_96.go.r;
- syn_recv rtv_96[8];
- syn_expr_vararray<8> e_152;
- syn_var_init_false tv_96[8];
- (i:8: e_152.v[i] = tv_96[i].v; e_152.v[i]=rtv_96[i].v;)
- s_96.r.r = e_151.go_r;
- (i:8: s_96.r.r = rtv_96[i].go.r;)
- syn_ctree<8> ct_96;
- (i:8: ct_96.in[i]=rtv_96[i].go.a;)
- s_96.r.a = ct_96.out;
- (i:8: e_151.out[i].t = rtv_96[i].in.t; e_151.out[i].f = rtv_96[i].in.f;)
- s_96.go.a = e_152.go_r;
- syn_recv s_95[8];
- (i:8: s_95[i].go.r = c_78.r;)
- syn_ctree<8> ct_95;
- (i:8: ct_95.in[i]=s_95[i].go.a;)
- ct_95.out=c_78.a;
- (i:8: s_95[i].in.t = e_152.out[i].t;
-          s_95[i].in.f = e_152.out[i].f;
-          s_95[i].v = var_stack1_data[i].v; )
+ s_102.s2 = c_77;
 
- syn_seq s_97(c_77);
- s_97.s1 = c_78;
- a1of1 c_79;
- s_97.s2 = c_79;
-/* send */
- syn_expr_var e_153(,const_0.v);
- a1of1 c_80;
- syn_fullseq s_98;
- c_80.r = s_98.go.r;
- syn_recv rtv_98;
- syn_expr_var e_154;
- syn_var_init_false tv_98(rtv_98.v);
- e_154.v = tv_98.v;
- s_98.r.r = e_153.go_r;
- s_98.r = rtv_98.go;
- e_153.out.t = rtv_98.in.t;
- e_153.out.f = rtv_98.in.f;
- s_98.go.a = e_154.go_r;
- c_80.a = chan_stack0_op_chan.a;
- chan_stack0_op_chan.t = e_154.out.t;
- chan_stack0_op_chan.f = e_154.out.f;
-
- syn_seq s_99(c_79);
- s_99.s1 = c_80;
-/* recv */
- a1of1 c_81;
- syn_recv s_100[8];
- (i:8: s_100[i].go.r = c_81.r;)
- syn_ctree<8> ct_100;
- (i:8: ct_100.in[i]=s_100[i].go.a;)
- ct_100.out=c_81.a; c_81.a=chan_stack0_comm_chan.a;
- (i:8: s_100[i].in.t = chan_stack0_comm_chan.d[i].t;
-          s_100[i].in.f = chan_stack0_comm_chan.d[i].f;
-          s_100[i].v = var_exec_dump[i].v; )
-
- s_99.s2 = c_81;
-
- e_150.out.t = c_77.r;
- gc_19.t = c_77.a;
- gc_19.f = e_150.out.f;
+ /*--- emit individual gc (#11) [selection] ---*/
  r1of2 gc_20;
- syn_expr_var e_155(,var_exec_op_0.v);
- syn_expr_var e_156(,var_exec_op_1.v);
- e_156.go_r = e_155.go_r;
- syn_expr_not e_157(e_156.out);
- syn_expr_and e_158(e_155.out, e_157.out);
- syn_expr_var e_159(,var_exec_op_2.v);
- e_159.go_r = e_155.go_r;
- syn_expr_not e_160(e_159.out);
- syn_expr_and e_161(e_158.out, e_160.out);
- syn_expr_var e_162(,var_exec_op_3.v);
- e_162.go_r = e_155.go_r;
- syn_expr_not e_163(e_162.out);
- syn_expr_and e_164(e_161.out, e_163.out);
- syn_fullseq s_101;
- gc_20.r = s_101.go.r;
- syn_recv rtv_101;
- syn_expr_var e_165;
- syn_var_init_false tv_101(rtv_101.v);
- e_165.v = tv_101.v;
- s_101.r.r = e_155.go_r;
- s_101.r = rtv_101.go;
- e_164.out.t = rtv_101.in.t;
- e_164.out.f = rtv_101.in.f;
- s_101.go.a = e_165.go_r;
+ bundled_is_add_1 e_75;
+ (i:4: e_75.v0[i] = var_exec_op[i].v;)
+ syn_expr_var e_76(,const_1.v);
+ e_76.go_r = e_75.go_r;
+ syn_expr_eq e_77(e_75.out, e_76.out);
+/* HOUSTON WE HAD AN E_EQ W/ RET 77 */
+ syn_fullseq s_103;
+ gc_20.r = s_103.go.r;
+ syn_recv rtv_103;
+ syn_expr_var e_78;
+ syn_var_init_false tv_103(rtv_103.v);
+ e_78.v = tv_103.v;
+ s_103.r.r = e_75.go_r;
+ s_103.r = rtv_103.go;
+ e_77.out.t = rtv_103.in.t;
+ e_77.out.f = rtv_103.in.f;
+ s_103.go.a = e_78.go_r;
 /* semicolon */
- a1of1 c_82;
-/* recv */
- a1of1 c_83;
- syn_recv s_102[12];
- (i:12: s_102[i].go.r = c_83.r;)
- syn_ctree<12> ct_102;
- (i:12: ct_102.in[i]=s_102[i].go.a;)
- ct_102.out=c_83.a; c_83.a=chan_FEX.a;
- (i:12: s_102[i].in.t = chan_FEX.d[i].t;
-          s_102[i].in.f = chan_FEX.d[i].f;
-          s_102[i].v = var_exec_pc[i].v; )
-
- syn_seq s_103(c_82);
- s_103.s1 = c_83;
+ a1of1 c_78;
 /* assign */
- bundled_pcadd_12 e_166;
- (i:12: e_166.v0[i] = var_exec_pc[i].v;)
- (i:8: e_166.v1[i] = var_exec_data[i].v;)
- a1of1 c_84;
+ bundled_stackadd_8 e_79;
+ (i:8: e_79.v0[i] = var_stack0_data[i].v;)
+ (i:8: e_79.v1[i] = var_stack1_data[i].v;)
+ a1of1 c_79;
  syn_fullseq s_105;
- c_84.r = s_105.go.r;
- syn_recv rtv_105[12];
- syn_expr_vararray<12> e_167;
- syn_var_init_false tv_105[12];
- (i:12: e_167.v[i] = tv_105[i].v; e_167.v[i]=rtv_105[i].v;)
- s_105.r.r = e_166.go_r;
- (i:12: s_105.r.r = rtv_105[i].go.r;)
- syn_ctree<12> ct_105;
- (i:12: ct_105.in[i]=rtv_105[i].go.a;)
+ c_79.r = s_105.go.r;
+ syn_recv rtv_105[8];
+ syn_expr_vararray<8> e_80;
+ syn_var_init_false tv_105[8];
+ (i:8: e_80.v[i] = tv_105[i].v; e_80.v[i]=rtv_105[i].v;)
+ s_105.r.r = e_79.go_r;
+ (i:8: s_105.r.r = rtv_105[i].go.r;)
+ syn_ctree<8> ct_105;
+ (i:8: ct_105.in[i]=rtv_105[i].go.a;)
  s_105.r.a = ct_105.out;
- (i:12: e_166.out[i].t = rtv_105[i].in.t; e_166.out[i].f = rtv_105[i].in.f;)
- s_105.go.a = e_167.go_r;
- syn_recv s_104[12];
- (i:12: s_104[i].go.r = c_84.r;)
- syn_ctree<12> ct_104;
- (i:12: ct_104.in[i]=s_104[i].go.a;)
- ct_104.out=c_84.a;
- (i:12: s_104[i].in.t = e_167.out[i].t;
-          s_104[i].in.f = e_167.out[i].f;
-          s_104[i].v = var_exec_temp[i].v; )
+ (i:8: e_79.out[i].t = rtv_105[i].in.t; e_79.out[i].f = rtv_105[i].in.f;)
+ s_105.go.a = e_80.go_r;
+ syn_recv s_104[8];
+ (i:8: s_104[i].go.r = c_79.r;)
+ syn_ctree<8> ct_104;
+ (i:8: ct_104.in[i]=s_104[i].go.a;)
+ ct_104.out=c_79.a;
+ (i:8: s_104[i].in.t = e_80.out[i].t;
+          s_104[i].in.f = e_80.out[i].f;
+          s_104[i].v = var_stack1_data[i].v; )
 
- s_103.s2 = c_84;
-
- e_165.out.t = c_82.r;
- gc_20.t = c_82.a;
- gc_20.f = e_165.out.f;
- r1of2 gc_21;
- syn_expr_var e_168(,var_exec_op_0.v);
- syn_expr_var e_169(,var_exec_op_1.v);
- e_169.go_r = e_168.go_r;
- syn_expr_not e_170(e_169.out);
- syn_expr_and e_171(e_168.out, e_170.out);
- syn_expr_var e_172(,var_exec_op_2.v);
- e_172.go_r = e_168.go_r;
- syn_expr_not e_173(e_172.out);
- syn_expr_and e_174(e_171.out, e_173.out);
- syn_expr_var e_175(,var_exec_op_3.v);
- e_175.go_r = e_168.go_r;
- syn_expr_and e_176(e_174.out, e_175.out);
- syn_fullseq s_106;
- gc_21.r = s_106.go.r;
- syn_recv rtv_106;
- syn_expr_var e_177;
- syn_var_init_false tv_106(rtv_106.v);
- e_177.v = tv_106.v;
- s_106.r.r = e_168.go_r;
- s_106.r = rtv_106.go;
- e_176.out.t = rtv_106.in.t;
- e_176.out.f = rtv_106.in.f;
- s_106.go.a = e_177.go_r;
-/* semicolon */
- a1of1 c_85;
-/* recv */
- a1of1 c_86;
- syn_recv s_107[12];
- (i:12: s_107[i].go.r = c_86.r;)
- syn_ctree<12> ct_107;
- (i:12: ct_107.in[i]=s_107[i].go.a;)
- ct_107.out=c_86.a; c_86.a=chan_FEX.a;
- (i:12: s_107[i].in.t = chan_FEX.d[i].t;
-          s_107[i].in.f = chan_FEX.d[i].f;
-          s_107[i].v = var_exec_pc[i].v; )
-
- syn_seq s_108(c_85);
- s_108.s1 = c_86;
- a1of1 c_87;
- s_108.s2 = c_87;
+ syn_seq s_106(c_78);
+ s_106.s1 = c_79;
 /* assign */
- bundled_is_zero_1 e_178;
- (i:8: e_178.v0[i] = var_stack0_data[i].v;)
- a1of1 c_88;
- syn_fullseq s_110;
- c_88.r = s_110.go.r;
- syn_recv rtv_110;
- syn_expr_var e_179;
- syn_var_init_false tv_110(rtv_110.v);
- e_179.v = tv_110.v;
- s_110.r.r = e_178.go_r;
- s_110.r = rtv_110.go;
- e_178.out.t = rtv_110.in.t;
- e_178.out.f = rtv_110.in.f;
- s_110.go.a = e_179.go_r;
- syn_recv s_109(c_88);
- s_109.in.t = e_179.out.t;
- s_109.in.f = e_179.out.f;
- s_109.v = var_exec_func_bit.v;
+ syn_expr_var e_81(,const_0.v);
+ a1of1 c_80;
+ syn_fullseq s_108;
+ c_80.r = s_108.go.r;
+ syn_recv rtv_108;
+ syn_expr_var e_82;
+ syn_var_init_false tv_108(rtv_108.v);
+ e_82.v = tv_108.v;
+ s_108.r.r = e_81.go_r;
+ s_108.r = rtv_108.go;
+ e_81.out.t = rtv_108.in.t;
+ e_81.out.f = rtv_108.in.f;
+ s_108.go.a = e_82.go_r;
+ syn_recv s_107(c_80);
+ s_107.in.t = e_82.out.t;
+ s_107.in.f = e_82.out.f;
+ s_107.v = var_stack_op.v;
 
- syn_seq s_111(c_87);
- s_111.s1 = c_88;
+ s_106.s2 = c_80;
+
+ a1of1 c_81;
+ syn_fullseq fs_109(c_81, c_78);
+ e_78.out.t = c_81.r;
+ gc_20.t = c_81.a;
+ gc_20.f = e_78.out.f;
+ r1of2 gc_21;
+/* skip */   a1of1 c_82;
+ syn_skip s_110(c_82);
+ a1of1 c_83;
+ syn_fullseq fs_111(c_83, c_82);
+ gc_21.r = c_83.r;
+ gc_21.t = c_83.a;
+ gc_21.f = GND;
+ a1of1 c_84;
+ /* gc cascade, start=20, end=21 */
+ gc_20.f = gc_21.r;
+ gc_20.r = c_84.r;
+ syn_or2 or_112(gc_20.t,gc_21.t);
+ or_112.out = c_84.a;
+ /* ----- end of gc (#11) ----- */
+
+ syn_seq s_113(c_77);
+ s_113.s1 = c_84;
+ a1of1 c_85;
+ s_113.s2 = c_85;
 
  /*--- emit individual gc (#12) [selection] ---*/
  r1of2 gc_22;
- syn_expr_var e_180(,var_exec_func_bit.v);
- syn_fullseq s_112;
- gc_22.r = s_112.go.r;
- syn_recv rtv_112;
- syn_expr_var e_181;
- syn_var_init_false tv_112(rtv_112.v);
- e_181.v = tv_112.v;
- s_112.r.r = e_180.go_r;
- s_112.r = rtv_112.go;
- e_180.out.t = rtv_112.in.t;
- e_180.out.f = rtv_112.in.f;
- s_112.go.a = e_181.go_r;
+ bundled_is_sub_1 e_83;
+ (i:4: e_83.v0[i] = var_exec_op[i].v;)
+ syn_expr_var e_84(,const_1.v);
+ e_84.go_r = e_83.go_r;
+ syn_expr_eq e_85(e_83.out, e_84.out);
+/* HOUSTON WE HAD AN E_EQ W/ RET 85 */
+ syn_fullseq s_114;
+ gc_22.r = s_114.go.r;
+ syn_recv rtv_114;
+ syn_expr_var e_86;
+ syn_var_init_false tv_114(rtv_114.v);
+ e_86.v = tv_114.v;
+ s_114.r.r = e_83.go_r;
+ s_114.r = rtv_114.go;
+ e_85.out.t = rtv_114.in.t;
+ e_85.out.f = rtv_114.in.f;
+ s_114.go.a = e_86.go_r;
 /* semicolon */
- a1of1 c_89;
-/* recv */
- a1of1 c_90;
- syn_recv s_113[12];
- (i:12: s_113[i].go.r = c_90.r;)
- syn_ctree<12> ct_113;
- (i:12: ct_113.in[i]=s_113[i].go.a;)
- ct_113.out=c_90.a; c_90.a=chan_FEX.a;
- (i:12: s_113[i].in.t = chan_FEX.d[i].t;
-          s_113[i].in.f = chan_FEX.d[i].f;
-          s_113[i].v = var_exec_pc[i].v; )
-
- syn_seq s_114(c_89);
- s_114.s1 = c_90;
+ a1of1 c_86;
 /* assign */
- bundled_pcadd_12 e_182;
- (i:12: e_182.v0[i] = var_exec_pc[i].v;)
- (i:8: e_182.v1[i] = var_exec_data[i].v;)
- a1of1 c_91;
+ bundled_stacksub_8 e_87;
+ (i:8: e_87.v0[i] = var_stack1_data[i].v;)
+ (i:8: e_87.v1[i] = var_stack0_data[i].v;)
+ a1of1 c_87;
  syn_fullseq s_116;
- c_91.r = s_116.go.r;
- syn_recv rtv_116[12];
- syn_expr_vararray<12> e_183;
- syn_var_init_false tv_116[12];
- (i:12: e_183.v[i] = tv_116[i].v; e_183.v[i]=rtv_116[i].v;)
- s_116.r.r = e_182.go_r;
- (i:12: s_116.r.r = rtv_116[i].go.r;)
- syn_ctree<12> ct_116;
- (i:12: ct_116.in[i]=rtv_116[i].go.a;)
+ c_87.r = s_116.go.r;
+ syn_recv rtv_116[8];
+ syn_expr_vararray<8> e_88;
+ syn_var_init_false tv_116[8];
+ (i:8: e_88.v[i] = tv_116[i].v; e_88.v[i]=rtv_116[i].v;)
+ s_116.r.r = e_87.go_r;
+ (i:8: s_116.r.r = rtv_116[i].go.r;)
+ syn_ctree<8> ct_116;
+ (i:8: ct_116.in[i]=rtv_116[i].go.a;)
  s_116.r.a = ct_116.out;
- (i:12: e_182.out[i].t = rtv_116[i].in.t; e_182.out[i].f = rtv_116[i].in.f;)
- s_116.go.a = e_183.go_r;
- syn_recv s_115[12];
- (i:12: s_115[i].go.r = c_91.r;)
- syn_ctree<12> ct_115;
- (i:12: ct_115.in[i]=s_115[i].go.a;)
- ct_115.out=c_91.a;
- (i:12: s_115[i].in.t = e_183.out[i].t;
-          s_115[i].in.f = e_183.out[i].f;
-          s_115[i].v = var_exec_temp[i].v; )
+ (i:8: e_87.out[i].t = rtv_116[i].in.t; e_87.out[i].f = rtv_116[i].in.f;)
+ s_116.go.a = e_88.go_r;
+ syn_recv s_115[8];
+ (i:8: s_115[i].go.r = c_87.r;)
+ syn_ctree<8> ct_115;
+ (i:8: ct_115.in[i]=s_115[i].go.a;)
+ ct_115.out=c_87.a;
+ (i:8: s_115[i].in.t = e_88.out[i].t;
+          s_115[i].in.f = e_88.out[i].f;
+          s_115[i].v = var_stack1_data[i].v; )
 
- s_114.s2 = c_91;
-
- e_181.out.t = c_89.r;
- gc_22.t = c_89.a;
- gc_22.f = e_181.out.f;
- r1of2 gc_23;
+ syn_seq s_117(c_86);
+ s_117.s1 = c_87;
 /* assign */
- bundled_pcincrement_12 e_184;
- (i:12: e_184.v0[i] = var_exec_pc[i].v;)
- a1of1 c_92;
- syn_fullseq s_118;
- c_92.r = s_118.go.r;
- syn_recv rtv_118[12];
- syn_expr_vararray<12> e_185;
- syn_var_init_false tv_118[12];
- (i:12: e_185.v[i] = tv_118[i].v; e_185.v[i]=rtv_118[i].v;)
- s_118.r.r = e_184.go_r;
- (i:12: s_118.r.r = rtv_118[i].go.r;)
- syn_ctree<12> ct_118;
- (i:12: ct_118.in[i]=rtv_118[i].go.a;)
- s_118.r.a = ct_118.out;
- (i:12: e_184.out[i].t = rtv_118[i].in.t; e_184.out[i].f = rtv_118[i].in.f;)
- s_118.go.a = e_185.go_r;
- syn_recv s_117[12];
- (i:12: s_117[i].go.r = c_92.r;)
- syn_ctree<12> ct_117;
- (i:12: ct_117.in[i]=s_117[i].go.a;)
- ct_117.out=c_92.a;
- (i:12: s_117[i].in.t = e_185.out[i].t;
-          s_117[i].in.f = e_185.out[i].f;
-          s_117[i].v = var_exec_temp[i].v; )
+ syn_expr_var e_89(,const_0.v);
+ a1of1 c_88;
+ syn_fullseq s_119;
+ c_88.r = s_119.go.r;
+ syn_recv rtv_119;
+ syn_expr_var e_90;
+ syn_var_init_false tv_119(rtv_119.v);
+ e_90.v = tv_119.v;
+ s_119.r.r = e_89.go_r;
+ s_119.r = rtv_119.go;
+ e_89.out.t = rtv_119.in.t;
+ e_89.out.f = rtv_119.in.f;
+ s_119.go.a = e_90.go_r;
+ syn_recv s_118(c_88);
+ s_118.in.t = e_90.out.t;
+ s_118.in.f = e_90.out.f;
+ s_118.v = var_stack_op.v;
 
- gc_23.r = c_92.r;
- gc_23.t = c_92.a;
+ s_117.s2 = c_88;
+
+ a1of1 c_89;
+ syn_fullseq fs_120(c_89, c_86);
+ e_86.out.t = c_89.r;
+ gc_22.t = c_89.a;
+ gc_22.f = e_86.out.f;
+ r1of2 gc_23;
+/* skip */   a1of1 c_90;
+ syn_skip s_121(c_90);
+ a1of1 c_91;
+ syn_fullseq fs_122(c_91, c_90);
+ gc_23.r = c_91.r;
+ gc_23.t = c_91.a;
  gc_23.f = GND;
- a1of1 c_93;
+ a1of1 c_92;
  /* gc cascade, start=22, end=23 */
  gc_22.f = gc_23.r;
- gc_22.r = c_93.r;
- syn_or2 or_119(gc_22.t,gc_23.t);
- or_119.out = c_93.a;
+ gc_22.r = c_92.r;
+ syn_or2 or_123(gc_22.t,gc_23.t);
+ or_123.out = c_92.a;
  /* ----- end of gc (#12) ----- */
 
- s_111.s2 = c_93;
-
- e_177.out.t = c_85.r;
- gc_21.t = c_85.a;
- gc_21.f = e_177.out.f;
- r1of2 gc_24;
- syn_expr_var e_186(,var_exec_op_0.v);
- syn_expr_var e_187(,var_exec_op_1.v);
- e_187.go_r = e_186.go_r;
- syn_expr_not e_188(e_187.out);
- syn_expr_and e_189(e_186.out, e_188.out);
- syn_expr_var e_190(,var_exec_op_2.v);
- e_190.go_r = e_186.go_r;
- syn_expr_and e_191(e_189.out, e_190.out);
- syn_expr_var e_192(,var_exec_op_3.v);
- e_192.go_r = e_186.go_r;
- syn_expr_not e_193(e_192.out);
- syn_expr_and e_194(e_191.out, e_193.out);
- syn_fullseq s_120;
- gc_24.r = s_120.go.r;
- syn_recv rtv_120;
- syn_expr_var e_195;
- syn_var_init_false tv_120(rtv_120.v);
- e_195.v = tv_120.v;
- s_120.r.r = e_186.go_r;
- s_120.r = rtv_120.go;
- e_194.out.t = rtv_120.in.t;
- e_194.out.f = rtv_120.in.f;
- s_120.go.a = e_195.go_r;
-/* semicolon */
- a1of1 c_94;
-/* recv */
- a1of1 c_95;
- syn_recv s_121[12];
- (i:12: s_121[i].go.r = c_95.r;)
- syn_ctree<12> ct_121;
- (i:12: ct_121.in[i]=s_121[i].go.a;)
- ct_121.out=c_95.a; c_95.a=chan_FEX.a;
- (i:12: s_121[i].in.t = chan_FEX.d[i].t;
-          s_121[i].in.f = chan_FEX.d[i].f;
-          s_121[i].v = var_exec_pc[i].v; )
-
- syn_seq s_122(c_94);
- s_122.s1 = c_95;
- a1of1 c_96;
- s_122.s2 = c_96;
-/* assign */
- bundled_is_less_than_zero_1 e_196;
- (i:8: e_196.v0[i] = var_stack0_data[i].v;)
- a1of1 c_97;
- syn_fullseq s_124;
- c_97.r = s_124.go.r;
- syn_recv rtv_124;
- syn_expr_var e_197;
- syn_var_init_false tv_124(rtv_124.v);
- e_197.v = tv_124.v;
- s_124.r.r = e_196.go_r;
- s_124.r = rtv_124.go;
- e_196.out.t = rtv_124.in.t;
- e_196.out.f = rtv_124.in.f;
- s_124.go.a = e_197.go_r;
- syn_recv s_123(c_97);
- s_123.in.t = e_197.out.t;
- s_123.in.f = e_197.out.f;
- s_123.v = var_exec_func_bit.v;
-
- syn_seq s_125(c_96);
- s_125.s1 = c_97;
+ syn_seq s_124(c_85);
+ s_124.s1 = c_92;
+ a1of1 c_93;
+ s_124.s2 = c_93;
 
  /*--- emit individual gc (#13) [selection] ---*/
- r1of2 gc_25;
- syn_expr_var e_198(,var_exec_func_bit.v);
- syn_fullseq s_126;
- gc_25.r = s_126.go.r;
- syn_recv rtv_126;
- syn_expr_var e_199;
- syn_var_init_false tv_126(rtv_126.v);
- e_199.v = tv_126.v;
- s_126.r.r = e_198.go_r;
- s_126.r = rtv_126.go;
- e_198.out.t = rtv_126.in.t;
- e_198.out.f = rtv_126.in.f;
- s_126.go.a = e_199.go_r;
+ r1of2 gc_24;
+ bundled_is_jmp_1 e_91;
+ (i:4: e_91.v0[i] = var_exec_op[i].v;)
+ syn_expr_var e_92(,const_1.v);
+ e_92.go_r = e_91.go_r;
+ syn_expr_eq e_93(e_91.out, e_92.out);
+/* HOUSTON WE HAD AN E_EQ W/ RET 93 */
+ syn_fullseq s_125;
+ gc_24.r = s_125.go.r;
+ syn_recv rtv_125;
+ syn_expr_var e_94;
+ syn_var_init_false tv_125(rtv_125.v);
+ e_94.v = tv_125.v;
+ s_125.r.r = e_91.go_r;
+ s_125.r = rtv_125.go;
+ e_93.out.t = rtv_125.in.t;
+ e_93.out.f = rtv_125.in.f;
+ s_125.go.a = e_94.go_r;
+/* comma */
+ a1of1 c_94;
 /* assign */
- bundled_pcadd_12 e_200;
- (i:12: e_200.v0[i] = var_exec_pc[i].v;)
- (i:8: e_200.v1[i] = var_exec_data[i].v;)
- a1of1 c_98;
- syn_fullseq s_128;
- c_98.r = s_128.go.r;
- syn_recv rtv_128[12];
- syn_expr_vararray<12> e_201;
- syn_var_init_false tv_128[12];
- (i:12: e_201.v[i] = tv_128[i].v; e_201.v[i]=rtv_128[i].v;)
- s_128.r.r = e_200.go_r;
- (i:12: s_128.r.r = rtv_128[i].go.r;)
- syn_ctree<12> ct_128;
- (i:12: ct_128.in[i]=rtv_128[i].go.a;)
- s_128.r.a = ct_128.out;
- (i:12: e_200.out[i].t = rtv_128[i].in.t; e_200.out[i].f = rtv_128[i].in.f;)
- s_128.go.a = e_201.go_r;
- syn_recv s_127[12];
- (i:12: s_127[i].go.r = c_98.r;)
+ bundled_pcadd_12 e_95;
+ (i:12: e_95.v0[i] = var_pc_index[i].v;)
+ (i:8: e_95.v1[i] = var_exec_data[i].v;)
+ a1of1 c_95;
+ syn_fullseq s_127;
+ c_95.r = s_127.go.r;
+ syn_recv rtv_127[12];
+ syn_expr_vararray<12> e_96;
+ syn_var_init_false tv_127[12];
+ (i:12: e_96.v[i] = tv_127[i].v; e_96.v[i]=rtv_127[i].v;)
+ s_127.r.r = e_95.go_r;
+ (i:12: s_127.r.r = rtv_127[i].go.r;)
  syn_ctree<12> ct_127;
- (i:12: ct_127.in[i]=s_127[i].go.a;)
- ct_127.out=c_98.a;
- (i:12: s_127[i].in.t = e_201.out[i].t;
-          s_127[i].in.f = e_201.out[i].f;
-          s_127[i].v = var_exec_temp[i].v; )
+ (i:12: ct_127.in[i]=rtv_127[i].go.a;)
+ s_127.r.a = ct_127.out;
+ (i:12: e_95.out[i].t = rtv_127[i].in.t; e_95.out[i].f = rtv_127[i].in.f;)
+ s_127.go.a = e_96.go_r;
+ syn_recv s_126[12];
+ (i:12: s_126[i].go.r = c_95.r;)
+ syn_ctree<12> ct_126;
+ (i:12: ct_126.in[i]=s_126[i].go.a;)
+ ct_126.out=c_95.a;
+ (i:12: s_126[i].in.t = e_96.out[i].t;
+          s_126[i].in.f = e_96.out[i].f;
+          s_126[i].v = var_pc_index[i].v; )
 
- e_199.out.t = c_98.r;
- gc_25.t = c_98.a;
- gc_25.f = e_199.out.f;
- r1of2 gc_26;
+ syn_par s_128(c_94);
+ s_128.s1 = c_95;
 /* assign */
- bundled_pcincrement_12 e_202;
- (i:12: e_202.v0[i] = var_exec_pc[i].v;)
- a1of1 c_99;
+ syn_expr_var e_97(,const_0.v);
+ a1of1 c_96;
  syn_fullseq s_130;
- c_99.r = s_130.go.r;
- syn_recv rtv_130[12];
- syn_expr_vararray<12> e_203;
- syn_var_init_false tv_130[12];
- (i:12: e_203.v[i] = tv_130[i].v; e_203.v[i]=rtv_130[i].v;)
- s_130.r.r = e_202.go_r;
- (i:12: s_130.r.r = rtv_130[i].go.r;)
- syn_ctree<12> ct_130;
- (i:12: ct_130.in[i]=rtv_130[i].go.a;)
- s_130.r.a = ct_130.out;
- (i:12: e_202.out[i].t = rtv_130[i].in.t; e_202.out[i].f = rtv_130[i].in.f;)
- s_130.go.a = e_203.go_r;
- syn_recv s_129[12];
- (i:12: s_129[i].go.r = c_99.r;)
- syn_ctree<12> ct_129;
- (i:12: ct_129.in[i]=s_129[i].go.a;)
- ct_129.out=c_99.a;
- (i:12: s_129[i].in.t = e_203.out[i].t;
-          s_129[i].in.f = e_203.out[i].f;
-          s_129[i].v = var_exec_temp[i].v; )
+ c_96.r = s_130.go.r;
+ syn_recv rtv_130;
+ syn_expr_var e_98;
+ syn_var_init_false tv_130(rtv_130.v);
+ e_98.v = tv_130.v;
+ s_130.r.r = e_97.go_r;
+ s_130.r = rtv_130.go;
+ e_97.out.t = rtv_130.in.t;
+ e_97.out.f = rtv_130.in.f;
+ s_130.go.a = e_98.go_r;
+ syn_recv s_129(c_96);
+ s_129.in.t = e_98.out.t;
+ s_129.in.f = e_98.out.f;
+ s_129.v = var_stack_should_perform.v;
 
- gc_26.r = c_99.r;
- gc_26.t = c_99.a;
- gc_26.f = GND;
+ s_128.s2 = c_96;
+
+ a1of1 c_97;
+ syn_fullseq fs_131(c_97, c_94);
+ e_94.out.t = c_97.r;
+ gc_24.t = c_97.a;
+ gc_24.f = e_94.out.f;
+ r1of2 gc_25;
+/* skip */   a1of1 c_98;
+ syn_skip s_132(c_98);
+ a1of1 c_99;
+ syn_fullseq fs_133(c_99, c_98);
+ gc_25.r = c_99.r;
+ gc_25.t = c_99.a;
+ gc_25.f = GND;
  a1of1 c_100;
- /* gc cascade, start=25, end=26 */
- gc_25.f = gc_26.r;
- gc_25.r = c_100.r;
- syn_or2 or_131(gc_25.t,gc_26.t);
- or_131.out = c_100.a;
+ /* gc cascade, start=24, end=25 */
+ gc_24.f = gc_25.r;
+ gc_24.r = c_100.r;
+ syn_or2 or_134(gc_24.t,gc_25.t);
+ or_134.out = c_100.a;
  /* ----- end of gc (#13) ----- */
 
- s_125.s2 = c_100;
-
- e_195.out.t = c_94.r;
- gc_24.t = c_94.a;
- gc_24.f = e_195.out.f;
+ syn_seq s_135(c_93);
+ s_135.s1 = c_100;
  a1of1 c_101;
- /* gc cascade, start=4, end=24 */
- gc_4.f = gc_5.r;
- gc_5.f = gc_6.r;
- gc_6.f = gc_7.r;
- gc_7.f = gc_8.r;
- gc_8.f = gc_9.r;
- gc_9.f = gc_10.r;
- gc_10.f = gc_11.r;
- gc_11.f = gc_12.r;
- gc_12.f = gc_13.r;
- gc_13.f = gc_14.r;
- gc_14.f = gc_15.r;
- gc_15.f = gc_16.r;
- gc_16.f = gc_17.r;
- gc_17.f = gc_18.r;
- gc_18.f = gc_19.r;
- gc_19.f = gc_20.r;
- gc_20.f = gc_21.r;
- gc_21.f = gc_22.r;
- gc_22.f = gc_23.r;
- gc_23.f = gc_24.r;
- gc_4.r = c_101.r;
- syn_or2 or_132(gc_4.t,gc_5.t);
- syn_or2 or_133(or_132.out,gc_6.t);
- syn_or2 or_134(or_133.out,gc_7.t);
- syn_or2 or_135(or_134.out,gc_8.t);
- syn_or2 or_136(or_135.out,gc_9.t);
- syn_or2 or_137(or_136.out,gc_10.t);
- syn_or2 or_138(or_137.out,gc_11.t);
- syn_or2 or_139(or_138.out,gc_12.t);
- syn_or2 or_140(or_139.out,gc_13.t);
- syn_or2 or_141(or_140.out,gc_14.t);
- syn_or2 or_142(or_141.out,gc_15.t);
- syn_or2 or_143(or_142.out,gc_16.t);
- syn_or2 or_144(or_143.out,gc_17.t);
- syn_or2 or_145(or_144.out,gc_18.t);
- syn_or2 or_146(or_145.out,gc_19.t);
- syn_or2 or_147(or_146.out,gc_20.t);
- syn_or2 or_148(or_147.out,gc_21.t);
- syn_or2 or_149(or_148.out,gc_22.t);
- syn_or2 or_150(or_149.out,gc_23.t);
- or_150.out = c_101.a;
- /* ----- end of gc (#3) ----- */
+ s_135.s2 = c_101;
 
- syn_seq s_151(c_18);
- s_151.s1 = c_101;
-/* send */
- syn_expr_vararray<12> e_204;
- (i:12: e_204.v[i] = var_exec_temp[i].v;)
+ /*--- emit individual gc (#14) [selection] ---*/
+ r1of2 gc_26;
+ bundled_is_brz_true_1 e_99;
+ (i:4: e_99.v0[i] = var_exec_op[i].v;)
+ (i:8: e_99.v1[i] = var_stack0_data[i].v;)
+ syn_expr_var e_100(,const_1.v);
+ e_100.go_r = e_99.go_r;
+ syn_expr_eq e_101(e_99.out, e_100.out);
+/* HOUSTON WE HAD AN E_EQ W/ RET 101 */
+ syn_fullseq s_136;
+ gc_26.r = s_136.go.r;
+ syn_recv rtv_136;
+ syn_expr_var e_102;
+ syn_var_init_false tv_136(rtv_136.v);
+ e_102.v = tv_136.v;
+ s_136.r.r = e_99.go_r;
+ s_136.r = rtv_136.go;
+ e_101.out.t = rtv_136.in.t;
+ e_101.out.f = rtv_136.in.f;
+ s_136.go.a = e_102.go_r;
+/* comma */
  a1of1 c_102;
+/* assign */
+ syn_expr_var e_103(,const_0.v);
+ a1of1 c_103;
+ syn_fullseq s_138;
+ c_103.r = s_138.go.r;
+ syn_recv rtv_138;
+ syn_expr_var e_104;
+ syn_var_init_false tv_138(rtv_138.v);
+ e_104.v = tv_138.v;
+ s_138.r.r = e_103.go_r;
+ s_138.r = rtv_138.go;
+ e_103.out.t = rtv_138.in.t;
+ e_103.out.f = rtv_138.in.f;
+ s_138.go.a = e_104.go_r;
+ syn_recv s_137(c_103);
+ s_137.in.t = e_104.out.t;
+ s_137.in.f = e_104.out.f;
+ s_137.v = var_stack_should_perform.v;
+
+ syn_par s_139(c_102);
+ s_139.s1 = c_103;
+/* assign */
+ bundled_pcadd_12 e_105;
+ (i:12: e_105.v0[i] = var_pc_index[i].v;)
+ (i:8: e_105.v1[i] = var_exec_data[i].v;)
+ a1of1 c_104;
+ syn_fullseq s_141;
+ c_104.r = s_141.go.r;
+ syn_recv rtv_141[12];
+ syn_expr_vararray<12> e_106;
+ syn_var_init_false tv_141[12];
+ (i:12: e_106.v[i] = tv_141[i].v; e_106.v[i]=rtv_141[i].v;)
+ s_141.r.r = e_105.go_r;
+ (i:12: s_141.r.r = rtv_141[i].go.r;)
+ syn_ctree<12> ct_141;
+ (i:12: ct_141.in[i]=rtv_141[i].go.a;)
+ s_141.r.a = ct_141.out;
+ (i:12: e_105.out[i].t = rtv_141[i].in.t; e_105.out[i].f = rtv_141[i].in.f;)
+ s_141.go.a = e_106.go_r;
+ syn_recv s_140[12];
+ (i:12: s_140[i].go.r = c_104.r;)
+ syn_ctree<12> ct_140;
+ (i:12: ct_140.in[i]=s_140[i].go.a;)
+ ct_140.out=c_104.a;
+ (i:12: s_140[i].in.t = e_106.out[i].t;
+          s_140[i].in.f = e_106.out[i].f;
+          s_140[i].v = var_pc_index[i].v; )
+
+ s_139.s2 = c_104;
+
+ a1of1 c_105;
+ syn_fullseq fs_142(c_105, c_102);
+ e_102.out.t = c_105.r;
+ gc_26.t = c_105.a;
+ gc_26.f = e_102.out.f;
+ r1of2 gc_27;
+/* skip */   a1of1 c_106;
+ syn_skip s_143(c_106);
+ a1of1 c_107;
+ syn_fullseq fs_144(c_107, c_106);
+ gc_27.r = c_107.r;
+ gc_27.t = c_107.a;
+ gc_27.f = GND;
+ a1of1 c_108;
+ /* gc cascade, start=26, end=27 */
+ gc_26.f = gc_27.r;
+ gc_26.r = c_108.r;
+ syn_or2 or_145(gc_26.t,gc_27.t);
+ or_145.out = c_108.a;
+ /* ----- end of gc (#14) ----- */
+
+ syn_seq s_146(c_101);
+ s_146.s1 = c_108;
+ a1of1 c_109;
+ s_146.s2 = c_109;
+
+ /*--- emit individual gc (#15) [selection] ---*/
+ r1of2 gc_28;
+ bundled_is_brz_false_1 e_107;
+ (i:4: e_107.v0[i] = var_exec_op[i].v;)
+ (i:8: e_107.v1[i] = var_stack0_data[i].v;)
+ syn_expr_var e_108(,const_1.v);
+ e_108.go_r = e_107.go_r;
+ syn_expr_eq e_109(e_107.out, e_108.out);
+/* HOUSTON WE HAD AN E_EQ W/ RET 109 */
+ syn_fullseq s_147;
+ gc_28.r = s_147.go.r;
+ syn_recv rtv_147;
+ syn_expr_var e_110;
+ syn_var_init_false tv_147(rtv_147.v);
+ e_110.v = tv_147.v;
+ s_147.r.r = e_107.go_r;
+ s_147.r = rtv_147.go;
+ e_109.out.t = rtv_147.in.t;
+ e_109.out.f = rtv_147.in.f;
+ s_147.go.a = e_110.go_r;
+/* comma */
+ a1of1 c_110;
+/* assign */
+ syn_expr_var e_111(,const_0.v);
+ a1of1 c_111;
+ syn_fullseq s_149;
+ c_111.r = s_149.go.r;
+ syn_recv rtv_149;
+ syn_expr_var e_112;
+ syn_var_init_false tv_149(rtv_149.v);
+ e_112.v = tv_149.v;
+ s_149.r.r = e_111.go_r;
+ s_149.r = rtv_149.go;
+ e_111.out.t = rtv_149.in.t;
+ e_111.out.f = rtv_149.in.f;
+ s_149.go.a = e_112.go_r;
+ syn_recv s_148(c_111);
+ s_148.in.t = e_112.out.t;
+ s_148.in.f = e_112.out.f;
+ s_148.v = var_stack_should_perform.v;
+
+ syn_par s_150(c_110);
+ s_150.s1 = c_111;
+/* assign */
+ bundled_pcincrement_12 e_113;
+ (i:12: e_113.v0[i] = var_pc_index[i].v;)
+ a1of1 c_112;
  syn_fullseq s_152;
- c_102.r = s_152.go.r;
+ c_112.r = s_152.go.r;
  syn_recv rtv_152[12];
- syn_expr_vararray<12> e_205;
+ syn_expr_vararray<12> e_114;
  syn_var_init_false tv_152[12];
- (i:12: e_205.v[i] = tv_152[i].v; e_205.v[i]=rtv_152[i].v;)
- s_152.r.r = e_204.go_r;
+ (i:12: e_114.v[i] = tv_152[i].v; e_114.v[i]=rtv_152[i].v;)
+ s_152.r.r = e_113.go_r;
  (i:12: s_152.r.r = rtv_152[i].go.r;)
  syn_ctree<12> ct_152;
  (i:12: ct_152.in[i]=rtv_152[i].go.a;)
  s_152.r.a = ct_152.out;
- (i:12: e_204.out[i].t = rtv_152[i].in.t; e_204.out[i].f = rtv_152[i].in.f;)
- s_152.go.a = e_205.go_r;
- c_102.a = chan_FEX.a;
- (i:12: chan_FEX.d[i] = e_205.out[i];)
+ (i:12: e_113.out[i].t = rtv_152[i].in.t; e_113.out[i].f = rtv_152[i].in.f;)
+ s_152.go.a = e_114.go_r;
+ syn_recv s_151[12];
+ (i:12: s_151[i].go.r = c_112.r;)
+ syn_ctree<12> ct_151;
+ (i:12: ct_151.in[i]=s_151[i].go.a;)
+ ct_151.out=c_112.a;
+ (i:12: s_151[i].in.t = e_114.out[i].t;
+          s_151[i].in.f = e_114.out[i].f;
+          s_151[i].v = var_pc_index[i].v; )
 
- s_151.s2 = c_102;
+ s_150.s2 = c_112;
 
- gc_3.r = c_17.r;
- gc_3.t = c_17.a;
- gc_3.f = GND;
- a1of1 c_103;
- /* gc cascade, start=3, end=3 */
- syn_notand na_153;
- na_153.x = c_103.r;
- na_153.out = gc_3.r;
- gc_3.t = na_153.y;
- gc_3.f = c_103.a;
- /* ----- end of gc (#2) ----- */
-
- syn_par s_154(c_16);
- s_154.s1 = c_103;
- a1of1 c_104;
- s_154.s2 = c_104;
-/* semicolon */
- a1of1 c_105;
-/* assign */
- syn_expr_var e_206(,const_0.v);
- a1of1 c_106;
- syn_fullseq s_156;
- c_106.r = s_156.go.r;
- syn_recv rtv_156;
- syn_expr_var e_207;
- syn_var_init_false tv_156(rtv_156.v);
- e_207.v = tv_156.v;
- s_156.r.r = e_206.go_r;
- s_156.r = rtv_156.go;
- e_206.out.t = rtv_156.in.t;
- e_206.out.f = rtv_156.in.f;
- s_156.go.a = e_207.go_r;
- syn_recv s_155(c_106);
- s_155.in.t = e_207.out.t;
- s_155.in.f = e_207.out.f;
- s_155.v = var_stack0_is_full.v;
-
- syn_seq s_157(c_105);
- s_157.s1 = c_106;
-
- /*--- emit individual gc (#14) [loop] ---*/
- r1of2 gc_27;
-/* semicolon */
- a1of1 c_107;
-/* recv */
- a1of1 c_108;
- syn_recv s_158(c_108);
- s_158.in = chan_stack0_op_chan;
- s_158.v = var_stack0_op.v;
-
- syn_seq s_159(c_107);
- s_159.s1 = c_108;
-
- /*--- emit individual gc (#15) [selection] ---*/
- r1of2 gc_28;
- syn_expr_var e_208(,var_stack0_is_full.v);
- syn_expr_not e_209(e_208.out);
- syn_expr_var e_210(,var_stack0_op.v);
- e_210.go_r = e_208.go_r;
- syn_expr_and e_211(e_209.out, e_210.out);
- syn_fullseq s_160;
- gc_28.r = s_160.go.r;
- syn_recv rtv_160;
- syn_expr_var e_212;
- syn_var_init_false tv_160(rtv_160.v);
- e_212.v = tv_160.v;
- s_160.r.r = e_208.go_r;
- s_160.r = rtv_160.go;
- e_211.out.t = rtv_160.in.t;
- e_211.out.f = rtv_160.in.f;
- s_160.go.a = e_212.go_r;
-/* comma */
- a1of1 c_109;
-/* recv */
- a1of1 c_110;
- syn_recv s_161[8];
- (i:8: s_161[i].go.r = c_110.r;)
- syn_ctree<8> ct_161;
- (i:8: ct_161.in[i]=s_161[i].go.a;)
- ct_161.out=c_110.a; c_110.a=chan_stack0_comm_chan.a;
- (i:8: s_161[i].in.t = chan_stack0_comm_chan.d[i].t;
-          s_161[i].in.f = chan_stack0_comm_chan.d[i].f;
-          s_161[i].v = var_stack0_data[i].v; )
-
- syn_par s_162(c_109);
- s_162.s1 = c_110;
-/* assign */
- syn_expr_var e_213(,const_1.v);
- a1of1 c_111;
- syn_fullseq s_164;
- c_111.r = s_164.go.r;
- syn_recv rtv_164;
- syn_expr_var e_214;
- syn_var_init_false tv_164(rtv_164.v);
- e_214.v = tv_164.v;
- s_164.r.r = e_213.go_r;
- s_164.r = rtv_164.go;
- e_213.out.t = rtv_164.in.t;
- e_213.out.f = rtv_164.in.f;
- s_164.go.a = e_214.go_r;
- syn_recv s_163(c_111);
- s_163.in.t = e_214.out.t;
- s_163.in.f = e_214.out.f;
- s_163.v = var_stack0_is_full.v;
-
- s_162.s2 = c_111;
-
- e_212.out.t = c_109.r;
- gc_28.t = c_109.a;
- gc_28.f = e_212.out.f;
- r1of2 gc_29;
- syn_expr_var e_215(,var_stack0_is_full.v);
- syn_expr_not e_216(e_215.out);
- syn_expr_var e_217(,var_stack0_op.v);
- e_217.go_r = e_215.go_r;
- syn_expr_not e_218(e_217.out);
- syn_expr_and e_219(e_216.out, e_218.out);
- syn_fullseq s_165;
- gc_29.r = s_165.go.r;
- syn_recv rtv_165;
- syn_expr_var e_220;
- syn_var_init_false tv_165(rtv_165.v);
- e_220.v = tv_165.v;
- s_165.r.r = e_215.go_r;
- s_165.r = rtv_165.go;
- e_219.out.t = rtv_165.in.t;
- e_219.out.f = rtv_165.in.f;
- s_165.go.a = e_220.go_r;
-/* semicolon */
- a1of1 c_112;
-/* send */
- syn_expr_var e_221(,const_0.v);
  a1of1 c_113;
- syn_fullseq s_166;
- c_113.r = s_166.go.r;
- syn_recv rtv_166;
- syn_expr_var e_222;
- syn_var_init_false tv_166(rtv_166.v);
- e_222.v = tv_166.v;
- s_166.r.r = e_221.go_r;
- s_166.r = rtv_166.go;
- e_221.out.t = rtv_166.in.t;
- e_221.out.f = rtv_166.in.f;
- s_166.go.a = e_222.go_r;
- c_113.a = chan_stack1_op_chan.a;
- chan_stack1_op_chan.t = e_222.out.t;
- chan_stack1_op_chan.f = e_222.out.f;
-
- syn_seq s_167(c_112);
- s_167.s1 = c_113;
- a1of1 c_114;
- s_167.s2 = c_114;
-/* recv */
+ syn_fullseq fs_153(c_113, c_110);
+ e_110.out.t = c_113.r;
+ gc_28.t = c_113.a;
+ gc_28.f = e_110.out.f;
+ r1of2 gc_29;
+/* skip */   a1of1 c_114;
+ syn_skip s_154(c_114);
  a1of1 c_115;
- syn_recv s_168[8];
- (i:8: s_168[i].go.r = c_115.r;)
- syn_ctree<8> ct_168;
- (i:8: ct_168.in[i]=s_168[i].go.a;)
- ct_168.out=c_115.a; c_115.a=chan_stack1_comm_chan.a;
- (i:8: s_168[i].in.t = chan_stack1_comm_chan.d[i].t;
-          s_168[i].in.f = chan_stack1_comm_chan.d[i].f;
-          s_168[i].v = var_stack0_data[i].v; )
-
- syn_seq s_169(c_114);
- s_169.s1 = c_115;
-/* send */
- syn_expr_vararray<8> e_223;
- (i:8: e_223.v[i] = var_stack0_data[i].v;)
+ syn_fullseq fs_155(c_115, c_114);
+ gc_29.r = c_115.r;
+ gc_29.t = c_115.a;
+ gc_29.f = GND;
  a1of1 c_116;
- syn_fullseq s_170;
- c_116.r = s_170.go.r;
- syn_recv rtv_170[8];
- syn_expr_vararray<8> e_224;
- syn_var_init_false tv_170[8];
- (i:8: e_224.v[i] = tv_170[i].v; e_224.v[i]=rtv_170[i].v;)
- s_170.r.r = e_223.go_r;
- (i:8: s_170.r.r = rtv_170[i].go.r;)
- syn_ctree<8> ct_170;
- (i:8: ct_170.in[i]=rtv_170[i].go.a;)
- s_170.r.a = ct_170.out;
- (i:8: e_223.out[i].t = rtv_170[i].in.t; e_223.out[i].f = rtv_170[i].in.f;)
- s_170.go.a = e_224.go_r;
- c_116.a = chan_stack0_comm_chan.a;
- (i:8: chan_stack0_comm_chan.d[i] = e_224.out[i];)
-
- s_169.s2 = c_116;
-
- e_220.out.t = c_112.r;
- gc_29.t = c_112.a;
- gc_29.f = e_220.out.f;
- r1of2 gc_30;
- syn_expr_var e_225(,var_stack0_is_full.v);
- syn_expr_var e_226(,var_stack0_op.v);
- e_226.go_r = e_225.go_r;
- syn_expr_and e_227(e_225.out, e_226.out);
- syn_fullseq s_171;
- gc_30.r = s_171.go.r;
- syn_recv rtv_171;
- syn_expr_var e_228;
- syn_var_init_false tv_171(rtv_171.v);
- e_228.v = tv_171.v;
- s_171.r.r = e_225.go_r;
- s_171.r = rtv_171.go;
- e_227.out.t = rtv_171.in.t;
- e_227.out.f = rtv_171.in.f;
- s_171.go.a = e_228.go_r;
-/* semicolon */
- a1of1 c_117;
-/* send */
- syn_expr_var e_229(,const_1.v);
- a1of1 c_118;
- syn_fullseq s_172;
- c_118.r = s_172.go.r;
- syn_recv rtv_172;
- syn_expr_var e_230;
- syn_var_init_false tv_172(rtv_172.v);
- e_230.v = tv_172.v;
- s_172.r.r = e_229.go_r;
- s_172.r = rtv_172.go;
- e_229.out.t = rtv_172.in.t;
- e_229.out.f = rtv_172.in.f;
- s_172.go.a = e_230.go_r;
- c_118.a = chan_stack1_op_chan.a;
- chan_stack1_op_chan.t = e_230.out.t;
- chan_stack1_op_chan.f = e_230.out.f;
-
- syn_seq s_173(c_117);
- s_173.s1 = c_118;
- a1of1 c_119;
- s_173.s2 = c_119;
-/* send */
- syn_expr_vararray<8> e_231;
- (i:8: e_231.v[i] = var_stack0_data[i].v;)
- a1of1 c_120;
- syn_fullseq s_174;
- c_120.r = s_174.go.r;
- syn_recv rtv_174[8];
- syn_expr_vararray<8> e_232;
- syn_var_init_false tv_174[8];
- (i:8: e_232.v[i] = tv_174[i].v; e_232.v[i]=rtv_174[i].v;)
- s_174.r.r = e_231.go_r;
- (i:8: s_174.r.r = rtv_174[i].go.r;)
- syn_ctree<8> ct_174;
- (i:8: ct_174.in[i]=rtv_174[i].go.a;)
- s_174.r.a = ct_174.out;
- (i:8: e_231.out[i].t = rtv_174[i].in.t; e_231.out[i].f = rtv_174[i].in.f;)
- s_174.go.a = e_232.go_r;
- c_120.a = chan_stack1_comm_chan.a;
- (i:8: chan_stack1_comm_chan.d[i] = e_232.out[i];)
-
- syn_seq s_175(c_119);
- s_175.s1 = c_120;
-/* recv */
- a1of1 c_121;
- syn_recv s_176[8];
- (i:8: s_176[i].go.r = c_121.r;)
- syn_ctree<8> ct_176;
- (i:8: ct_176.in[i]=s_176[i].go.a;)
- ct_176.out=c_121.a; c_121.a=chan_stack0_comm_chan.a;
- (i:8: s_176[i].in.t = chan_stack0_comm_chan.d[i].t;
-          s_176[i].in.f = chan_stack0_comm_chan.d[i].f;
-          s_176[i].v = var_stack0_data[i].v; )
-
- s_175.s2 = c_121;
-
- e_228.out.t = c_117.r;
- gc_30.t = c_117.a;
- gc_30.f = e_228.out.f;
- r1of2 gc_31;
- syn_expr_var e_233(,var_stack0_is_full.v);
- syn_expr_var e_234(,var_stack0_op.v);
- e_234.go_r = e_233.go_r;
- syn_expr_not e_235(e_234.out);
- syn_expr_and e_236(e_233.out, e_235.out);
- syn_fullseq s_177;
- gc_31.r = s_177.go.r;
- syn_recv rtv_177;
- syn_expr_var e_237;
- syn_var_init_false tv_177(rtv_177.v);
- e_237.v = tv_177.v;
- s_177.r.r = e_233.go_r;
- s_177.r = rtv_177.go;
- e_236.out.t = rtv_177.in.t;
- e_236.out.f = rtv_177.in.f;
- s_177.go.a = e_237.go_r;
-/* comma */
- a1of1 c_122;
-/* send */
- syn_expr_vararray<8> e_238;
- (i:8: e_238.v[i] = var_stack0_data[i].v;)
- a1of1 c_123;
- syn_fullseq s_178;
- c_123.r = s_178.go.r;
- syn_recv rtv_178[8];
- syn_expr_vararray<8> e_239;
- syn_var_init_false tv_178[8];
- (i:8: e_239.v[i] = tv_178[i].v; e_239.v[i]=rtv_178[i].v;)
- s_178.r.r = e_238.go_r;
- (i:8: s_178.r.r = rtv_178[i].go.r;)
- syn_ctree<8> ct_178;
- (i:8: ct_178.in[i]=rtv_178[i].go.a;)
- s_178.r.a = ct_178.out;
- (i:8: e_238.out[i].t = rtv_178[i].in.t; e_238.out[i].f = rtv_178[i].in.f;)
- s_178.go.a = e_239.go_r;
- c_123.a = chan_stack0_comm_chan.a;
- (i:8: chan_stack0_comm_chan.d[i] = e_239.out[i];)
-
- syn_par s_179(c_122);
- s_179.s1 = c_123;
-/* assign */
- syn_expr_var e_240(,const_0.v);
- a1of1 c_124;
- syn_fullseq s_181;
- c_124.r = s_181.go.r;
- syn_recv rtv_181;
- syn_expr_var e_241;
- syn_var_init_false tv_181(rtv_181.v);
- e_241.v = tv_181.v;
- s_181.r.r = e_240.go_r;
- s_181.r = rtv_181.go;
- e_240.out.t = rtv_181.in.t;
- e_240.out.f = rtv_181.in.f;
- s_181.go.a = e_241.go_r;
- syn_recv s_180(c_124);
- s_180.in.t = e_241.out.t;
- s_180.in.f = e_241.out.f;
- s_180.v = var_stack0_is_full.v;
-
- s_179.s2 = c_124;
-
- e_237.out.t = c_122.r;
- gc_31.t = c_122.a;
- gc_31.f = e_237.out.f;
- a1of1 c_125;
- /* gc cascade, start=28, end=31 */
+ /* gc cascade, start=28, end=29 */
  gc_28.f = gc_29.r;
- gc_29.f = gc_30.r;
- gc_30.f = gc_31.r;
- gc_28.r = c_125.r;
- syn_or2 or_182(gc_28.t,gc_29.t);
- syn_or2 or_183(or_182.out,gc_30.t);
- or_183.out = c_125.a;
+ gc_28.r = c_116.r;
+ syn_or2 or_156(gc_28.t,gc_29.t);
+ or_156.out = c_116.a;
  /* ----- end of gc (#15) ----- */
 
- s_159.s2 = c_125;
+ syn_seq s_157(c_109);
+ s_157.s1 = c_116;
+ a1of1 c_117;
+ s_157.s2 = c_117;
 
- gc_27.r = c_107.r;
- gc_27.t = c_107.a;
- gc_27.f = GND;
- a1of1 c_126;
- /* gc cascade, start=27, end=27 */
- syn_notand na_184;
- na_184.x = c_126.r;
- na_184.out = gc_27.r;
- gc_27.t = na_184.y;
- gc_27.f = c_126.a;
- /* ----- end of gc (#14) ----- */
-
- s_157.s2 = c_126;
-
- syn_par s_185(c_104);
- s_185.s1 = c_105;
- a1of1 c_127;
- s_185.s2 = c_127;
-/* semicolon */
- a1of1 c_128;
+ /*--- emit individual gc (#16) [selection] ---*/
+ r1of2 gc_30;
+ bundled_is_brlz_true_1 e_115;
+ (i:4: e_115.v0[i] = var_exec_op[i].v;)
+ (i:8: e_115.v1[i] = var_stack0_data[i].v;)
+ syn_expr_var e_116(,const_1.v);
+ e_116.go_r = e_115.go_r;
+ syn_expr_eq e_117(e_115.out, e_116.out);
+/* HOUSTON WE HAD AN E_EQ W/ RET 117 */
+ syn_fullseq s_158;
+ gc_30.r = s_158.go.r;
+ syn_recv rtv_158;
+ syn_expr_var e_118;
+ syn_var_init_false tv_158(rtv_158.v);
+ e_118.v = tv_158.v;
+ s_158.r.r = e_115.go_r;
+ s_158.r = rtv_158.go;
+ e_117.out.t = rtv_158.in.t;
+ e_117.out.f = rtv_158.in.f;
+ s_158.go.a = e_118.go_r;
+/* comma */
+ a1of1 c_118;
 /* assign */
- syn_expr_var e_242(,const_0.v);
- a1of1 c_129;
- syn_fullseq s_187;
- c_129.r = s_187.go.r;
- syn_recv rtv_187;
- syn_expr_var e_243;
- syn_var_init_false tv_187(rtv_187.v);
- e_243.v = tv_187.v;
- s_187.r.r = e_242.go_r;
- s_187.r = rtv_187.go;
- e_242.out.t = rtv_187.in.t;
- e_242.out.f = rtv_187.in.f;
- s_187.go.a = e_243.go_r;
- syn_recv s_186(c_129);
- s_186.in.t = e_243.out.t;
- s_186.in.f = e_243.out.f;
- s_186.v = var_stack1_is_full.v;
+ syn_expr_var e_119(,const_0.v);
+ a1of1 c_119;
+ syn_fullseq s_160;
+ c_119.r = s_160.go.r;
+ syn_recv rtv_160;
+ syn_expr_var e_120;
+ syn_var_init_false tv_160(rtv_160.v);
+ e_120.v = tv_160.v;
+ s_160.r.r = e_119.go_r;
+ s_160.r = rtv_160.go;
+ e_119.out.t = rtv_160.in.t;
+ e_119.out.f = rtv_160.in.f;
+ s_160.go.a = e_120.go_r;
+ syn_recv s_159(c_119);
+ s_159.in.t = e_120.out.t;
+ s_159.in.f = e_120.out.f;
+ s_159.v = var_stack_should_perform.v;
 
- syn_seq s_188(c_128);
- s_188.s1 = c_129;
+ syn_par s_161(c_118);
+ s_161.s1 = c_119;
+/* assign */
+ bundled_pcadd_12 e_121;
+ (i:12: e_121.v0[i] = var_pc_index[i].v;)
+ (i:8: e_121.v1[i] = var_exec_data[i].v;)
+ a1of1 c_120;
+ syn_fullseq s_163;
+ c_120.r = s_163.go.r;
+ syn_recv rtv_163[12];
+ syn_expr_vararray<12> e_122;
+ syn_var_init_false tv_163[12];
+ (i:12: e_122.v[i] = tv_163[i].v; e_122.v[i]=rtv_163[i].v;)
+ s_163.r.r = e_121.go_r;
+ (i:12: s_163.r.r = rtv_163[i].go.r;)
+ syn_ctree<12> ct_163;
+ (i:12: ct_163.in[i]=rtv_163[i].go.a;)
+ s_163.r.a = ct_163.out;
+ (i:12: e_121.out[i].t = rtv_163[i].in.t; e_121.out[i].f = rtv_163[i].in.f;)
+ s_163.go.a = e_122.go_r;
+ syn_recv s_162[12];
+ (i:12: s_162[i].go.r = c_120.r;)
+ syn_ctree<12> ct_162;
+ (i:12: ct_162.in[i]=s_162[i].go.a;)
+ ct_162.out=c_120.a;
+ (i:12: s_162[i].in.t = e_122.out[i].t;
+          s_162[i].in.f = e_122.out[i].f;
+          s_162[i].v = var_pc_index[i].v; )
 
- /*--- emit individual gc (#16) [loop] ---*/
- r1of2 gc_32;
-/* semicolon */
- a1of1 c_130;
-/* recv */
- a1of1 c_131;
- syn_recv s_189(c_131);
- s_189.in = chan_stack1_op_chan;
- s_189.v = var_stack1_op.v;
+ s_161.s2 = c_120;
 
- syn_seq s_190(c_130);
- s_190.s1 = c_131;
+ a1of1 c_121;
+ syn_fullseq fs_164(c_121, c_118);
+ e_118.out.t = c_121.r;
+ gc_30.t = c_121.a;
+ gc_30.f = e_118.out.f;
+ r1of2 gc_31;
+/* skip */   a1of1 c_122;
+ syn_skip s_165(c_122);
+ a1of1 c_123;
+ syn_fullseq fs_166(c_123, c_122);
+ gc_31.r = c_123.r;
+ gc_31.t = c_123.a;
+ gc_31.f = GND;
+ a1of1 c_124;
+ /* gc cascade, start=30, end=31 */
+ gc_30.f = gc_31.r;
+ gc_30.r = c_124.r;
+ syn_or2 or_167(gc_30.t,gc_31.t);
+ or_167.out = c_124.a;
+ /* ----- end of gc (#16) ----- */
+
+ syn_seq s_168(c_117);
+ s_168.s1 = c_124;
+ a1of1 c_125;
+ s_168.s2 = c_125;
 
  /*--- emit individual gc (#17) [selection] ---*/
- r1of2 gc_33;
- syn_expr_var e_244(,var_stack1_is_full.v);
- syn_expr_not e_245(e_244.out);
- syn_expr_var e_246(,var_stack1_op.v);
- e_246.go_r = e_244.go_r;
- syn_expr_and e_247(e_245.out, e_246.out);
- syn_fullseq s_191;
- gc_33.r = s_191.go.r;
- syn_recv rtv_191;
- syn_expr_var e_248;
- syn_var_init_false tv_191(rtv_191.v);
- e_248.v = tv_191.v;
- s_191.r.r = e_244.go_r;
- s_191.r = rtv_191.go;
- e_247.out.t = rtv_191.in.t;
- e_247.out.f = rtv_191.in.f;
- s_191.go.a = e_248.go_r;
-/* comma */
- a1of1 c_132;
-/* recv */
- a1of1 c_133;
- syn_recv s_192[8];
- (i:8: s_192[i].go.r = c_133.r;)
- syn_ctree<8> ct_192;
- (i:8: ct_192.in[i]=s_192[i].go.a;)
- ct_192.out=c_133.a; c_133.a=chan_stack1_comm_chan.a;
- (i:8: s_192[i].in.t = chan_stack1_comm_chan.d[i].t;
-          s_192[i].in.f = chan_stack1_comm_chan.d[i].f;
-          s_192[i].v = var_stack1_data[i].v; )
-
- syn_par s_193(c_132);
- s_193.s1 = c_133;
-/* assign */
- syn_expr_var e_249(,const_1.v);
- a1of1 c_134;
- syn_fullseq s_195;
- c_134.r = s_195.go.r;
- syn_recv rtv_195;
- syn_expr_var e_250;
- syn_var_init_false tv_195(rtv_195.v);
- e_250.v = tv_195.v;
- s_195.r.r = e_249.go_r;
- s_195.r = rtv_195.go;
- e_249.out.t = rtv_195.in.t;
- e_249.out.f = rtv_195.in.f;
- s_195.go.a = e_250.go_r;
- syn_recv s_194(c_134);
- s_194.in.t = e_250.out.t;
- s_194.in.f = e_250.out.f;
- s_194.v = var_stack1_is_full.v;
-
- s_193.s2 = c_134;
-
- e_248.out.t = c_132.r;
- gc_33.t = c_132.a;
- gc_33.f = e_248.out.f;
- r1of2 gc_34;
- syn_expr_var e_251(,var_stack1_is_full.v);
- syn_expr_not e_252(e_251.out);
- syn_expr_var e_253(,var_stack1_op.v);
- e_253.go_r = e_251.go_r;
- syn_expr_not e_254(e_253.out);
- syn_expr_and e_255(e_252.out, e_254.out);
- syn_fullseq s_196;
- gc_34.r = s_196.go.r;
- syn_recv rtv_196;
- syn_expr_var e_256;
- syn_var_init_false tv_196(rtv_196.v);
- e_256.v = tv_196.v;
- s_196.r.r = e_251.go_r;
- s_196.r = rtv_196.go;
- e_255.out.t = rtv_196.in.t;
- e_255.out.f = rtv_196.in.f;
- s_196.go.a = e_256.go_r;
+ r1of2 gc_32;
+ bundled_is_brlz_false_1 e_123;
+ (i:4: e_123.v0[i] = var_exec_op[i].v;)
+ (i:8: e_123.v1[i] = var_stack0_data[i].v;)
+ syn_expr_var e_124(,const_1.v);
+ e_124.go_r = e_123.go_r;
+ syn_expr_eq e_125(e_123.out, e_124.out);
+/* HOUSTON WE HAD AN E_EQ W/ RET 125 */
+ syn_fullseq s_169;
+ gc_32.r = s_169.go.r;
+ syn_recv rtv_169;
+ syn_expr_var e_126;
+ syn_var_init_false tv_169(rtv_169.v);
+ e_126.v = tv_169.v;
+ s_169.r.r = e_123.go_r;
+ s_169.r = rtv_169.go;
+ e_125.out.t = rtv_169.in.t;
+ e_125.out.f = rtv_169.in.f;
+ s_169.go.a = e_126.go_r;
 /* semicolon */
+ a1of1 c_126;
+/* assign */
+ syn_expr_var e_127(,const_1.v);
+ a1of1 c_127;
+ syn_fullseq s_171;
+ c_127.r = s_171.go.r;
+ syn_recv rtv_171;
+ syn_expr_var e_128;
+ syn_var_init_false tv_171(rtv_171.v);
+ e_128.v = tv_171.v;
+ s_171.r.r = e_127.go_r;
+ s_171.r = rtv_171.go;
+ e_127.out.t = rtv_171.in.t;
+ e_127.out.f = rtv_171.in.f;
+ s_171.go.a = e_128.go_r;
+ syn_recv s_170(c_127);
+ s_170.in.t = e_128.out.t;
+ s_170.in.f = e_128.out.f;
+ s_170.v = var_dbg.v;
+
+ syn_seq s_172(c_126);
+ s_172.s1 = c_127;
+/* comma */
+ a1of1 c_128;
+/* assign */
+ syn_expr_var e_129(,const_0.v);
+ a1of1 c_129;
+ syn_fullseq s_174;
+ c_129.r = s_174.go.r;
+ syn_recv rtv_174;
+ syn_expr_var e_130;
+ syn_var_init_false tv_174(rtv_174.v);
+ e_130.v = tv_174.v;
+ s_174.r.r = e_129.go_r;
+ s_174.r = rtv_174.go;
+ e_129.out.t = rtv_174.in.t;
+ e_129.out.f = rtv_174.in.f;
+ s_174.go.a = e_130.go_r;
+ syn_recv s_173(c_129);
+ s_173.in.t = e_130.out.t;
+ s_173.in.f = e_130.out.f;
+ s_173.v = var_stack_should_perform.v;
+
+ syn_par s_175(c_128);
+ s_175.s1 = c_129;
+/* assign */
+ bundled_pcincrement_12 e_131;
+ (i:12: e_131.v0[i] = var_pc_index[i].v;)
+ a1of1 c_130;
+ syn_fullseq s_177;
+ c_130.r = s_177.go.r;
+ syn_recv rtv_177[12];
+ syn_expr_vararray<12> e_132;
+ syn_var_init_false tv_177[12];
+ (i:12: e_132.v[i] = tv_177[i].v; e_132.v[i]=rtv_177[i].v;)
+ s_177.r.r = e_131.go_r;
+ (i:12: s_177.r.r = rtv_177[i].go.r;)
+ syn_ctree<12> ct_177;
+ (i:12: ct_177.in[i]=rtv_177[i].go.a;)
+ s_177.r.a = ct_177.out;
+ (i:12: e_131.out[i].t = rtv_177[i].in.t; e_131.out[i].f = rtv_177[i].in.f;)
+ s_177.go.a = e_132.go_r;
+ syn_recv s_176[12];
+ (i:12: s_176[i].go.r = c_130.r;)
+ syn_ctree<12> ct_176;
+ (i:12: ct_176.in[i]=s_176[i].go.a;)
+ ct_176.out=c_130.a;
+ (i:12: s_176[i].in.t = e_132.out[i].t;
+          s_176[i].in.f = e_132.out[i].f;
+          s_176[i].v = var_pc_index[i].v; )
+
+ s_175.s2 = c_130;
+
+ s_172.s2 = c_128;
+
+ a1of1 c_131;
+ syn_fullseq fs_178(c_131, c_126);
+ e_126.out.t = c_131.r;
+ gc_32.t = c_131.a;
+ gc_32.f = e_126.out.f;
+ r1of2 gc_33;
+/* skip */   a1of1 c_132;
+ syn_skip s_179(c_132);
+ a1of1 c_133;
+ syn_fullseq fs_180(c_133, c_132);
+ gc_33.r = c_133.r;
+ gc_33.t = c_133.a;
+ gc_33.f = GND;
+ a1of1 c_134;
+ /* gc cascade, start=32, end=33 */
+ gc_32.f = gc_33.r;
+ gc_32.r = c_134.r;
+ syn_or2 or_181(gc_32.t,gc_33.t);
+ or_181.out = c_134.a;
+ /* ----- end of gc (#17) ----- */
+
+ syn_seq s_182(c_125);
+ s_182.s1 = c_134;
  a1of1 c_135;
-/* send */
- syn_expr_var e_257(,const_0.v);
+ s_182.s2 = c_135;
+
+ /*--- emit individual gc (#18) [selection] ---*/
+ r1of2 gc_34;
+ bundled_is_halt_1 e_133;
+ (i:4: e_133.v0[i] = var_exec_op[i].v;)
+ syn_expr_var e_134(,const_1.v);
+ e_134.go_r = e_133.go_r;
+ syn_expr_eq e_135(e_133.out, e_134.out);
+/* HOUSTON WE HAD AN E_EQ W/ RET 135 */
+ syn_fullseq s_183;
+ gc_34.r = s_183.go.r;
+ syn_recv rtv_183;
+ syn_expr_var e_136;
+ syn_var_init_false tv_183(rtv_183.v);
+ e_136.v = tv_183.v;
+ s_183.r.r = e_133.go_r;
+ s_183.r = rtv_183.go;
+ e_135.out.t = rtv_183.in.t;
+ e_135.out.f = rtv_183.in.f;
+ s_183.go.a = e_136.go_r;
+/* assign */
+ syn_expr_var e_137(,const_0.v);
  a1of1 c_136;
- syn_fullseq s_197;
- c_136.r = s_197.go.r;
- syn_recv rtv_197;
- syn_expr_var e_258;
- syn_var_init_false tv_197(rtv_197.v);
- e_258.v = tv_197.v;
- s_197.r.r = e_257.go_r;
- s_197.r = rtv_197.go;
- e_257.out.t = rtv_197.in.t;
- e_257.out.f = rtv_197.in.f;
- s_197.go.a = e_258.go_r;
- c_136.a = chan_stack2_op_chan.a;
- chan_stack2_op_chan.t = e_258.out.t;
- chan_stack2_op_chan.f = e_258.out.f;
+ syn_fullseq s_185;
+ c_136.r = s_185.go.r;
+ syn_recv rtv_185;
+ syn_expr_var e_138;
+ syn_var_init_false tv_185(rtv_185.v);
+ e_138.v = tv_185.v;
+ s_185.r.r = e_137.go_r;
+ s_185.r = rtv_185.go;
+ e_137.out.t = rtv_185.in.t;
+ e_137.out.f = rtv_185.in.f;
+ s_185.go.a = e_138.go_r;
+ syn_recv s_184(c_136);
+ s_184.in.t = e_138.out.t;
+ s_184.in.f = e_138.out.f;
+ s_184.v = var_stack_should_perform.v;
 
- syn_seq s_198(c_135);
- s_198.s1 = c_136;
  a1of1 c_137;
- s_198.s2 = c_137;
-/* recv */
- a1of1 c_138;
- syn_recv s_199[8];
- (i:8: s_199[i].go.r = c_138.r;)
- syn_ctree<8> ct_199;
- (i:8: ct_199.in[i]=s_199[i].go.a;)
- ct_199.out=c_138.a; c_138.a=chan_stack2_comm_chan.a;
- (i:8: s_199[i].in.t = chan_stack2_comm_chan.d[i].t;
-          s_199[i].in.f = chan_stack2_comm_chan.d[i].f;
-          s_199[i].v = var_stack1_data[i].v; )
-
- syn_seq s_200(c_137);
- s_200.s1 = c_138;
-/* send */
- syn_expr_vararray<8> e_259;
- (i:8: e_259.v[i] = var_stack1_data[i].v;)
+ syn_fullseq fs_186(c_137, c_136);
+ e_136.out.t = c_137.r;
+ gc_34.t = c_137.a;
+ gc_34.f = e_136.out.f;
+ r1of2 gc_35;
+/* skip */   a1of1 c_138;
+ syn_skip s_187(c_138);
  a1of1 c_139;
+ syn_fullseq fs_188(c_139, c_138);
+ gc_35.r = c_139.r;
+ gc_35.t = c_139.a;
+ gc_35.f = GND;
+ a1of1 c_140;
+ /* gc cascade, start=34, end=35 */
+ gc_34.f = gc_35.r;
+ gc_34.r = c_140.r;
+ syn_or2 or_189(gc_34.t,gc_35.t);
+ or_189.out = c_140.a;
+ /* ----- end of gc (#18) ----- */
+
+ syn_seq s_190(c_135);
+ s_190.s1 = c_140;
+ a1of1 c_141;
+ s_190.s2 = c_141;
+
+ /*--- emit individual gc (#19) [selection] ---*/
+ r1of2 gc_36;
+ syn_expr_var e_139(,var_stack_should_perform.v);
+ syn_fullseq s_191;
+ gc_36.r = s_191.go.r;
+ syn_recv rtv_191;
+ syn_expr_var e_140;
+ syn_var_init_false tv_191(rtv_191.v);
+ e_140.v = tv_191.v;
+ s_191.r.r = e_139.go_r;
+ s_191.r = rtv_191.go;
+ e_139.out.t = rtv_191.in.t;
+ e_139.out.f = rtv_191.in.f;
+ s_191.go.a = e_140.go_r;
+/* send */
+ syn_expr_var e_141(,var_stack_op.v);
+ a1of1 c_142;
+ a1of1 recv_r_192;
+ syn_fullseq fs_192(c_142, recv_r_192);
+ syn_fullseq s_193;
+ recv_r_192.r = s_193.go.r;
+ syn_recv rtv_193;
+ syn_expr_var e_142;
+ syn_var_init_false tv_193(rtv_193.v);
+ e_142.v = tv_193.v;
+ s_193.r.r = e_141.go_r;
+ s_193.r = rtv_193.go;
+ e_141.out.t = rtv_193.in.t;
+ e_141.out.f = rtv_193.in.f;
+ s_193.go.a = e_142.go_r;
+ recv_r_192.a = chan_stack0_op_chan.a;
+ chan_stack0_op_chan.t = e_142.out.t;
+ chan_stack0_op_chan.f = e_142.out.f;
+
+ a1of1 c_143;
+ syn_fullseq fs_194(c_143, c_142);
+ e_140.out.t = c_143.r;
+ gc_36.t = c_143.a;
+ gc_36.f = e_140.out.f;
+ r1of2 gc_37;
+/* skip */   a1of1 c_144;
+ syn_skip s_195(c_144);
+ a1of1 c_145;
+ syn_fullseq fs_196(c_145, c_144);
+ gc_37.r = c_145.r;
+ gc_37.t = c_145.a;
+ gc_37.f = GND;
+ a1of1 c_146;
+ /* gc cascade, start=36, end=37 */
+ gc_36.f = gc_37.r;
+ gc_36.r = c_146.r;
+ syn_or2 or_197(gc_36.t,gc_37.t);
+ or_197.out = c_146.a;
+ /* ----- end of gc (#19) ----- */
+
+ syn_seq s_198(c_141);
+ s_198.s1 = c_146;
+ a1of1 c_147;
+ s_198.s2 = c_147;
+
+ /*--- emit individual gc (#20) [selection] ---*/
+ r1of2 gc_38;
+ syn_expr_var e_143(,var_stack_should_perform.v);
+ syn_expr_var e_144(,var_stack_op.v);
+ e_144.go_r = e_143.go_r;
+ syn_expr_and e_145(e_143.out, e_144.out);
+ syn_fullseq s_199;
+ gc_38.r = s_199.go.r;
+ syn_recv rtv_199;
+ syn_expr_var e_146;
+ syn_var_init_false tv_199(rtv_199.v);
+ e_146.v = tv_199.v;
+ s_199.r.r = e_143.go_r;
+ s_199.r = rtv_199.go;
+ e_145.out.t = rtv_199.in.t;
+ e_145.out.f = rtv_199.in.f;
+ s_199.go.a = e_146.go_r;
+/* send */
+ syn_expr_vararray<8> e_147;
+ (i:8: e_147.v[i] = var_stack_data[i].v;)
+ a1of1 c_148;
+ a1of1 recv_r_200;
+ syn_fullseq fs_200(c_148, recv_r_200);
  syn_fullseq s_201;
- c_139.r = s_201.go.r;
+ recv_r_200.r = s_201.go.r;
  syn_recv rtv_201[8];
- syn_expr_vararray<8> e_260;
+ syn_expr_vararray<8> e_148;
  syn_var_init_false tv_201[8];
- (i:8: e_260.v[i] = tv_201[i].v; e_260.v[i]=rtv_201[i].v;)
- s_201.r.r = e_259.go_r;
+ (i:8: e_148.v[i] = tv_201[i].v; e_148.v[i]=rtv_201[i].v;)
+ s_201.r.r = e_147.go_r;
  (i:8: s_201.r.r = rtv_201[i].go.r;)
  syn_ctree<8> ct_201;
  (i:8: ct_201.in[i]=rtv_201[i].go.a;)
  s_201.r.a = ct_201.out;
- (i:8: e_259.out[i].t = rtv_201[i].in.t; e_259.out[i].f = rtv_201[i].in.f;)
- s_201.go.a = e_260.go_r;
- c_139.a = chan_stack1_comm_chan.a;
- (i:8: chan_stack1_comm_chan.d[i] = e_260.out[i];)
+ (i:8: e_147.out[i].t = rtv_201[i].in.t; e_147.out[i].f = rtv_201[i].in.f;)
+ s_201.go.a = e_148.go_r;
+ recv_r_200.a = chan_stack0_push_chan.a;
+ (i:8: chan_stack0_push_chan.d[i] = e_148.out[i];)
 
- s_200.s2 = c_139;
-
- e_256.out.t = c_135.r;
- gc_34.t = c_135.a;
- gc_34.f = e_256.out.f;
- r1of2 gc_35;
- syn_expr_var e_261(,var_stack1_is_full.v);
- syn_expr_var e_262(,var_stack1_op.v);
- e_262.go_r = e_261.go_r;
- syn_expr_and e_263(e_261.out, e_262.out);
- syn_fullseq s_202;
- gc_35.r = s_202.go.r;
- syn_recv rtv_202;
- syn_expr_var e_264;
- syn_var_init_false tv_202(rtv_202.v);
- e_264.v = tv_202.v;
- s_202.r.r = e_261.go_r;
- s_202.r = rtv_202.go;
- e_263.out.t = rtv_202.in.t;
- e_263.out.f = rtv_202.in.f;
- s_202.go.a = e_264.go_r;
-/* semicolon */
- a1of1 c_140;
-/* send */
- syn_expr_var e_265(,const_1.v);
- a1of1 c_141;
- syn_fullseq s_203;
- c_141.r = s_203.go.r;
- syn_recv rtv_203;
- syn_expr_var e_266;
- syn_var_init_false tv_203(rtv_203.v);
- e_266.v = tv_203.v;
- s_203.r.r = e_265.go_r;
- s_203.r = rtv_203.go;
- e_265.out.t = rtv_203.in.t;
- e_265.out.f = rtv_203.in.f;
- s_203.go.a = e_266.go_r;
- c_141.a = chan_stack2_op_chan.a;
- chan_stack2_op_chan.t = e_266.out.t;
- chan_stack2_op_chan.f = e_266.out.f;
-
- syn_seq s_204(c_140);
- s_204.s1 = c_141;
- a1of1 c_142;
- s_204.s2 = c_142;
-/* send */
- syn_expr_vararray<8> e_267;
- (i:8: e_267.v[i] = var_stack1_data[i].v;)
- a1of1 c_143;
- syn_fullseq s_205;
- c_143.r = s_205.go.r;
- syn_recv rtv_205[8];
- syn_expr_vararray<8> e_268;
- syn_var_init_false tv_205[8];
- (i:8: e_268.v[i] = tv_205[i].v; e_268.v[i]=rtv_205[i].v;)
- s_205.r.r = e_267.go_r;
- (i:8: s_205.r.r = rtv_205[i].go.r;)
- syn_ctree<8> ct_205;
- (i:8: ct_205.in[i]=rtv_205[i].go.a;)
- s_205.r.a = ct_205.out;
- (i:8: e_267.out[i].t = rtv_205[i].in.t; e_267.out[i].f = rtv_205[i].in.f;)
- s_205.go.a = e_268.go_r;
- c_143.a = chan_stack2_comm_chan.a;
- (i:8: chan_stack2_comm_chan.d[i] = e_268.out[i];)
-
- syn_seq s_206(c_142);
- s_206.s1 = c_143;
-/* recv */
- a1of1 c_144;
- syn_recv s_207[8];
- (i:8: s_207[i].go.r = c_144.r;)
- syn_ctree<8> ct_207;
- (i:8: ct_207.in[i]=s_207[i].go.a;)
- ct_207.out=c_144.a; c_144.a=chan_stack1_comm_chan.a;
- (i:8: s_207[i].in.t = chan_stack1_comm_chan.d[i].t;
-          s_207[i].in.f = chan_stack1_comm_chan.d[i].f;
-          s_207[i].v = var_stack1_data[i].v; )
-
- s_206.s2 = c_144;
-
- e_264.out.t = c_140.r;
- gc_35.t = c_140.a;
- gc_35.f = e_264.out.f;
- r1of2 gc_36;
- syn_expr_var e_269(,var_stack1_is_full.v);
- syn_expr_var e_270(,var_stack1_op.v);
- e_270.go_r = e_269.go_r;
- syn_expr_not e_271(e_270.out);
- syn_expr_and e_272(e_269.out, e_271.out);
- syn_fullseq s_208;
- gc_36.r = s_208.go.r;
- syn_recv rtv_208;
- syn_expr_var e_273;
- syn_var_init_false tv_208(rtv_208.v);
- e_273.v = tv_208.v;
- s_208.r.r = e_269.go_r;
- s_208.r = rtv_208.go;
- e_272.out.t = rtv_208.in.t;
- e_272.out.f = rtv_208.in.f;
- s_208.go.a = e_273.go_r;
-/* comma */
- a1of1 c_145;
-/* send */
- syn_expr_vararray<8> e_274;
- (i:8: e_274.v[i] = var_stack1_data[i].v;)
- a1of1 c_146;
- syn_fullseq s_209;
- c_146.r = s_209.go.r;
- syn_recv rtv_209[8];
- syn_expr_vararray<8> e_275;
- syn_var_init_false tv_209[8];
- (i:8: e_275.v[i] = tv_209[i].v; e_275.v[i]=rtv_209[i].v;)
- s_209.r.r = e_274.go_r;
- (i:8: s_209.r.r = rtv_209[i].go.r;)
- syn_ctree<8> ct_209;
- (i:8: ct_209.in[i]=rtv_209[i].go.a;)
- s_209.r.a = ct_209.out;
- (i:8: e_274.out[i].t = rtv_209[i].in.t; e_274.out[i].f = rtv_209[i].in.f;)
- s_209.go.a = e_275.go_r;
- c_146.a = chan_stack1_comm_chan.a;
- (i:8: chan_stack1_comm_chan.d[i] = e_275.out[i];)
-
- syn_par s_210(c_145);
- s_210.s1 = c_146;
-/* assign */
- syn_expr_var e_276(,const_0.v);
- a1of1 c_147;
- syn_fullseq s_212;
- c_147.r = s_212.go.r;
- syn_recv rtv_212;
- syn_expr_var e_277;
- syn_var_init_false tv_212(rtv_212.v);
- e_277.v = tv_212.v;
- s_212.r.r = e_276.go_r;
- s_212.r = rtv_212.go;
- e_276.out.t = rtv_212.in.t;
- e_276.out.f = rtv_212.in.f;
- s_212.go.a = e_277.go_r;
- syn_recv s_211(c_147);
- s_211.in.t = e_277.out.t;
- s_211.in.f = e_277.out.f;
- s_211.v = var_stack1_is_full.v;
-
- s_210.s2 = c_147;
-
- e_273.out.t = c_145.r;
- gc_36.t = c_145.a;
- gc_36.f = e_273.out.f;
- a1of1 c_148;
- /* gc cascade, start=33, end=36 */
- gc_33.f = gc_34.r;
- gc_34.f = gc_35.r;
- gc_35.f = gc_36.r;
- gc_33.r = c_148.r;
- syn_or2 or_213(gc_33.t,gc_34.t);
- syn_or2 or_214(or_213.out,gc_35.t);
- or_214.out = c_148.a;
- /* ----- end of gc (#17) ----- */
-
- s_190.s2 = c_148;
-
- gc_32.r = c_130.r;
- gc_32.t = c_130.a;
- gc_32.f = GND;
  a1of1 c_149;
- /* gc cascade, start=32, end=32 */
- syn_notand na_215;
- na_215.x = c_149.r;
- na_215.out = gc_32.r;
- gc_32.t = na_215.y;
- gc_32.f = c_149.a;
- /* ----- end of gc (#16) ----- */
-
- s_188.s2 = c_149;
-
- syn_par s_216(c_127);
- s_216.s1 = c_128;
-
- /*--- emit individual gc (#18) [loop] ---*/
- r1of2 gc_37;
-/* semicolon */
- a1of1 c_150;
-/* recv */
- a1of1 c_151;
- syn_recv s_217(c_151);
- s_217.in = chan_stack2_op_chan;
- s_217.v = var_stack2_op.v;
-
- syn_seq s_218(c_150);
- s_218.s1 = c_151;
-
- /*--- emit individual gc (#19) [selection] ---*/
- r1of2 gc_38;
- syn_expr_var e_278(,var_stack2_op.v);
- syn_fullseq s_219;
- gc_38.r = s_219.go.r;
- syn_recv rtv_219;
- syn_expr_var e_279;
- syn_var_init_false tv_219(rtv_219.v);
- e_279.v = tv_219.v;
- s_219.r.r = e_278.go_r;
- s_219.r = rtv_219.go;
- e_278.out.t = rtv_219.in.t;
- e_278.out.f = rtv_219.in.f;
- s_219.go.a = e_279.go_r;
-/* recv */
- a1of1 c_152;
- syn_recv s_220[8];
- (i:8: s_220[i].go.r = c_152.r;)
- syn_ctree<8> ct_220;
- (i:8: ct_220.in[i]=s_220[i].go.a;)
- ct_220.out=c_152.a; c_152.a=chan_stack2_comm_chan.a;
- (i:8: s_220[i].in.t = chan_stack2_comm_chan.d[i].t;
-          s_220[i].in.f = chan_stack2_comm_chan.d[i].f;
-          s_220[i].v = var_stack2_data[i].v; )
-
- e_279.out.t = c_152.r;
- gc_38.t = c_152.a;
- gc_38.f = e_279.out.f;
+ syn_fullseq fs_202(c_149, c_148);
+ e_146.out.t = c_149.r;
+ gc_38.t = c_149.a;
+ gc_38.f = e_146.out.f;
  r1of2 gc_39;
- syn_expr_var e_280(,var_stack2_op.v);
- syn_expr_not e_281(e_280.out);
- syn_fullseq s_221;
- gc_39.r = s_221.go.r;
- syn_recv rtv_221;
- syn_expr_var e_282;
- syn_var_init_false tv_221(rtv_221.v);
- e_282.v = tv_221.v;
- s_221.r.r = e_280.go_r;
- s_221.r = rtv_221.go;
- e_281.out.t = rtv_221.in.t;
- e_281.out.f = rtv_221.in.f;
- s_221.go.a = e_282.go_r;
-/* send */
- syn_expr_vararray<8> e_283;
- (i:8: e_283.v[i] = var_stack2_data[i].v;)
- a1of1 c_153;
- syn_fullseq s_222;
- c_153.r = s_222.go.r;
- syn_recv rtv_222[8];
- syn_expr_vararray<8> e_284;
- syn_var_init_false tv_222[8];
- (i:8: e_284.v[i] = tv_222[i].v; e_284.v[i]=rtv_222[i].v;)
- s_222.r.r = e_283.go_r;
- (i:8: s_222.r.r = rtv_222[i].go.r;)
- syn_ctree<8> ct_222;
- (i:8: ct_222.in[i]=rtv_222[i].go.a;)
- s_222.r.a = ct_222.out;
- (i:8: e_283.out[i].t = rtv_222[i].in.t; e_283.out[i].f = rtv_222[i].in.f;)
- s_222.go.a = e_284.go_r;
- c_153.a = chan_stack2_comm_chan.a;
- (i:8: chan_stack2_comm_chan.d[i] = e_284.out[i];)
-
- e_282.out.t = c_153.r;
- gc_39.t = c_153.a;
- gc_39.f = e_282.out.f;
- a1of1 c_154;
+/* skip */   a1of1 c_150;
+ syn_skip s_203(c_150);
+ a1of1 c_151;
+ syn_fullseq fs_204(c_151, c_150);
+ gc_39.r = c_151.r;
+ gc_39.t = c_151.a;
+ gc_39.f = GND;
+ a1of1 c_152;
  /* gc cascade, start=38, end=39 */
  gc_38.f = gc_39.r;
- gc_38.r = c_154.r;
- syn_or2 or_223(gc_38.t,gc_39.t);
- or_223.out = c_154.a;
- /* ----- end of gc (#19) ----- */
+ gc_38.r = c_152.r;
+ syn_or2 or_205(gc_38.t,gc_39.t);
+ or_205.out = c_152.a;
+ /* ----- end of gc (#20) ----- */
 
- s_218.s2 = c_154;
+ syn_seq s_206(c_147);
+ s_206.s1 = c_152;
+ a1of1 c_153;
+ s_206.s2 = c_153;
 
- gc_37.r = c_150.r;
- gc_37.t = c_150.a;
- gc_37.f = GND;
+ /*--- emit individual gc (#21) [selection] ---*/
+ r1of2 gc_40;
+ syn_expr_var e_149(,var_stack_should_perform.v);
+ syn_expr_var e_150(,var_stack_op.v);
+ e_150.go_r = e_149.go_r;
+ syn_expr_not e_151(e_150.out);
+ syn_expr_and e_152(e_149.out, e_151.out);
+ syn_fullseq s_207;
+ gc_40.r = s_207.go.r;
+ syn_recv rtv_207;
+ syn_expr_var e_153;
+ syn_var_init_false tv_207(rtv_207.v);
+ e_153.v = tv_207.v;
+ s_207.r.r = e_149.go_r;
+ s_207.r = rtv_207.go;
+ e_152.out.t = rtv_207.in.t;
+ e_152.out.f = rtv_207.in.f;
+ s_207.go.a = e_153.go_r;
+/* semicolon */
+ a1of1 c_154;
+/* recv */
  a1of1 c_155;
- /* gc cascade, start=37, end=37 */
- syn_notand na_224;
- na_224.x = c_155.r;
- na_224.out = gc_37.r;
- gc_37.t = na_224.y;
- gc_37.f = c_155.a;
- /* ----- end of gc (#18) ----- */
+ syn_fullseq fs_208(c_155,);
+ syn_recv s_208(fs_208.r);
+ s_208.in = chan_stack0_full_chan;
+ s_208.v = var_jnk.v;
 
- s_216.s2 = c_155;
+ syn_seq s_209(c_154);
+ s_209.s1 = c_155;
+/* recv */
+ a1of1 c_156;
+ syn_fullseq fs_210(c_156,);
+ syn_recv s_210[8];
+ (i:8: s_210[i].go.r = fs_210.r.r;)
+ syn_ctree<8> ct_210;
+ (i:8: ct_210.in[i]=s_210[i].go.a;)
+ ct_210.out=fs_210.r.a; fs_210.r.a=chan_stack0_pop_chan.a;
+ (i:8: s_210[i].in.t = chan_stack0_pop_chan.d[i].t;
+          s_210[i].in.f = chan_stack0_pop_chan.d[i].f;
+          s_210[i].v = var_stack_data[i].v; )
+
+ s_209.s2 = c_156;
+
+ a1of1 c_157;
+ syn_fullseq fs_211(c_157, c_154);
+ e_153.out.t = c_157.r;
+ gc_40.t = c_157.a;
+ gc_40.f = e_153.out.f;
+ r1of2 gc_41;
+/* skip */   a1of1 c_158;
+ syn_skip s_212(c_158);
+ a1of1 c_159;
+ syn_fullseq fs_213(c_159, c_158);
+ gc_41.r = c_159.r;
+ gc_41.t = c_159.a;
+ gc_41.f = GND;
+ a1of1 c_160;
+ /* gc cascade, start=40, end=41 */
+ gc_40.f = gc_41.r;
+ gc_40.r = c_160.r;
+ syn_or2 or_214(gc_40.t,gc_41.t);
+ or_214.out = c_160.a;
+ /* ----- end of gc (#21) ----- */
+
+ syn_seq s_215(c_153);
+ s_215.s1 = c_160;
+ a1of1 c_161;
+ s_215.s2 = c_161;
+
+ /*--- emit individual gc (#22) [selection] ---*/
+ r1of2 gc_42;
+ bundled_is_popout_1 e_154;
+ (i:4: e_154.v0[i] = var_exec_op[i].v;)
+ syn_expr_var e_155(,const_1.v);
+ e_155.go_r = e_154.go_r;
+ syn_expr_eq e_156(e_154.out, e_155.out);
+/* HOUSTON WE HAD AN E_EQ W/ RET 156 */
+ syn_fullseq s_216;
+ gc_42.r = s_216.go.r;
+ syn_recv rtv_216;
+ syn_expr_var e_157;
+ syn_var_init_false tv_216(rtv_216.v);
+ e_157.v = tv_216.v;
+ s_216.r.r = e_154.go_r;
+ s_216.r = rtv_216.go;
+ e_156.out.t = rtv_216.in.t;
+ e_156.out.f = rtv_216.in.f;
+ s_216.go.a = e_157.go_r;
+/* semicolon */
+ a1of1 c_162;
+/* assign */
+ bundled_join_12 e_158;
+ (i:4: e_158.v0[i] = var_exec_op[i].v;)
+ (i:8: e_158.v1[i] = var_stack_data[i].v;)
+ a1of1 c_163;
+ syn_fullseq s_218;
+ c_163.r = s_218.go.r;
+ syn_recv rtv_218[12];
+ syn_expr_vararray<12> e_159;
+ syn_var_init_false tv_218[12];
+ (i:12: e_159.v[i] = tv_218[i].v; e_159.v[i]=rtv_218[i].v;)
+ s_218.r.r = e_158.go_r;
+ (i:12: s_218.r.r = rtv_218[i].go.r;)
+ syn_ctree<12> ct_218;
+ (i:12: ct_218.in[i]=rtv_218[i].go.a;)
+ s_218.r.a = ct_218.out;
+ (i:12: e_158.out[i].t = rtv_218[i].in.t; e_158.out[i].f = rtv_218[i].in.f;)
+ s_218.go.a = e_159.go_r;
+ syn_recv s_217[12];
+ (i:12: s_217[i].go.r = c_163.r;)
+ syn_ctree<12> ct_217;
+ (i:12: ct_217.in[i]=s_217[i].go.a;)
+ ct_217.out=c_163.a;
+ (i:12: s_217[i].in.t = e_159.out[i].t;
+          s_217[i].in.f = e_159.out[i].f;
+          s_217[i].v = var_exec_temp[i].v; )
+
+ syn_seq s_219(c_162);
+ s_219.s1 = c_163;
+/* send */
+ syn_expr_vararray<12> e_160;
+ (i:12: e_160.v[i] = var_exec_temp[i].v;)
+ a1of1 c_164;
+ a1of1 recv_r_220;
+ syn_fullseq fs_220(c_164, recv_r_220);
+ syn_fullseq s_221;
+ recv_r_220.r = s_221.go.r;
+ syn_recv rtv_221[12];
+ syn_expr_vararray<12> e_161;
+ syn_var_init_false tv_221[12];
+ (i:12: e_161.v[i] = tv_221[i].v; e_161.v[i]=rtv_221[i].v;)
+ s_221.r.r = e_160.go_r;
+ (i:12: s_221.r.r = rtv_221[i].go.r;)
+ syn_ctree<12> ct_221;
+ (i:12: ct_221.in[i]=rtv_221[i].go.a;)
+ s_221.r.a = ct_221.out;
+ (i:12: e_160.out[i].t = rtv_221[i].in.t; e_160.out[i].f = rtv_221[i].in.f;)
+ s_221.go.a = e_161.go_r;
+ recv_r_220.a = chan_OUT.a;
+ (i:12: chan_OUT.d[i] = e_161.out[i];)
+
+ s_219.s2 = c_164;
+
+ a1of1 c_165;
+ syn_fullseq fs_222(c_165, c_162);
+ e_157.out.t = c_165.r;
+ gc_42.t = c_165.a;
+ gc_42.f = e_157.out.f;
+ r1of2 gc_43;
+/* skip */   a1of1 c_166;
+ syn_skip s_223(c_166);
+ a1of1 c_167;
+ syn_fullseq fs_224(c_167, c_166);
+ gc_43.r = c_167.r;
+ gc_43.t = c_167.a;
+ gc_43.f = GND;
+ a1of1 c_168;
+ /* gc cascade, start=42, end=43 */
+ gc_42.f = gc_43.r;
+ gc_42.r = c_168.r;
+ syn_or2 or_225(gc_42.t,gc_43.t);
+ or_225.out = c_168.a;
+ /* ----- end of gc (#22) ----- */
+
+ syn_seq s_226(c_161);
+ s_226.s1 = c_168;
+ a1of1 c_169;
+ s_226.s2 = c_169;
+
+ /*--- emit individual gc (#23) [selection] ---*/
+ r1of2 gc_44;
+ bundled_is_popreg0_1 e_162;
+ (i:4: e_162.v0[i] = var_exec_op[i].v;)
+ (i:8: e_162.v1[i] = var_exec_data[i].v;)
+ syn_expr_var e_163(,const_1.v);
+ e_163.go_r = e_162.go_r;
+ syn_expr_eq e_164(e_162.out, e_163.out);
+/* HOUSTON WE HAD AN E_EQ W/ RET 164 */
+ syn_fullseq s_227;
+ gc_44.r = s_227.go.r;
+ syn_recv rtv_227;
+ syn_expr_var e_165;
+ syn_var_init_false tv_227(rtv_227.v);
+ e_165.v = tv_227.v;
+ s_227.r.r = e_162.go_r;
+ s_227.r = rtv_227.go;
+ e_164.out.t = rtv_227.in.t;
+ e_164.out.f = rtv_227.in.f;
+ s_227.go.a = e_165.go_r;
+/* assign */
+ syn_expr_vararray<8> e_166;
+ (i:8: e_166.v[i] = var_stack_data[i].v;)
+ a1of1 c_170;
+ syn_fullseq s_229;
+ c_170.r = s_229.go.r;
+ syn_recv rtv_229[8];
+ syn_expr_vararray<8> e_167;
+ syn_var_init_false tv_229[8];
+ (i:8: e_167.v[i] = tv_229[i].v; e_167.v[i]=rtv_229[i].v;)
+ s_229.r.r = e_166.go_r;
+ (i:8: s_229.r.r = rtv_229[i].go.r;)
+ syn_ctree<8> ct_229;
+ (i:8: ct_229.in[i]=rtv_229[i].go.a;)
+ s_229.r.a = ct_229.out;
+ (i:8: e_166.out[i].t = rtv_229[i].in.t; e_166.out[i].f = rtv_229[i].in.f;)
+ s_229.go.a = e_167.go_r;
+ syn_recv s_228[8];
+ (i:8: s_228[i].go.r = c_170.r;)
+ syn_ctree<8> ct_228;
+ (i:8: ct_228.in[i]=s_228[i].go.a;)
+ ct_228.out=c_170.a;
+ (i:8: s_228[i].in.t = e_167.out[i].t;
+          s_228[i].in.f = e_167.out[i].f;
+          s_228[i].v = var_reg0[i].v; )
+
+ a1of1 c_171;
+ syn_fullseq fs_230(c_171, c_170);
+ e_165.out.t = c_171.r;
+ gc_44.t = c_171.a;
+ gc_44.f = e_165.out.f;
+ r1of2 gc_45;
+/* skip */   a1of1 c_172;
+ syn_skip s_231(c_172);
+ a1of1 c_173;
+ syn_fullseq fs_232(c_173, c_172);
+ gc_45.r = c_173.r;
+ gc_45.t = c_173.a;
+ gc_45.f = GND;
+ a1of1 c_174;
+ /* gc cascade, start=44, end=45 */
+ gc_44.f = gc_45.r;
+ gc_44.r = c_174.r;
+ syn_or2 or_233(gc_44.t,gc_45.t);
+ or_233.out = c_174.a;
+ /* ----- end of gc (#23) ----- */
+
+ syn_seq s_234(c_169);
+ s_234.s1 = c_174;
+ a1of1 c_175;
+ s_234.s2 = c_175;
+
+ /*--- emit individual gc (#24) [selection] ---*/
+ r1of2 gc_46;
+ bundled_is_popreg1_1 e_168;
+ (i:4: e_168.v0[i] = var_exec_op[i].v;)
+ (i:8: e_168.v1[i] = var_exec_data[i].v;)
+ syn_expr_var e_169(,const_1.v);
+ e_169.go_r = e_168.go_r;
+ syn_expr_eq e_170(e_168.out, e_169.out);
+/* HOUSTON WE HAD AN E_EQ W/ RET 170 */
+ syn_fullseq s_235;
+ gc_46.r = s_235.go.r;
+ syn_recv rtv_235;
+ syn_expr_var e_171;
+ syn_var_init_false tv_235(rtv_235.v);
+ e_171.v = tv_235.v;
+ s_235.r.r = e_168.go_r;
+ s_235.r = rtv_235.go;
+ e_170.out.t = rtv_235.in.t;
+ e_170.out.f = rtv_235.in.f;
+ s_235.go.a = e_171.go_r;
+/* assign */
+ syn_expr_vararray<8> e_172;
+ (i:8: e_172.v[i] = var_stack_data[i].v;)
+ a1of1 c_176;
+ syn_fullseq s_237;
+ c_176.r = s_237.go.r;
+ syn_recv rtv_237[8];
+ syn_expr_vararray<8> e_173;
+ syn_var_init_false tv_237[8];
+ (i:8: e_173.v[i] = tv_237[i].v; e_173.v[i]=rtv_237[i].v;)
+ s_237.r.r = e_172.go_r;
+ (i:8: s_237.r.r = rtv_237[i].go.r;)
+ syn_ctree<8> ct_237;
+ (i:8: ct_237.in[i]=rtv_237[i].go.a;)
+ s_237.r.a = ct_237.out;
+ (i:8: e_172.out[i].t = rtv_237[i].in.t; e_172.out[i].f = rtv_237[i].in.f;)
+ s_237.go.a = e_173.go_r;
+ syn_recv s_236[8];
+ (i:8: s_236[i].go.r = c_176.r;)
+ syn_ctree<8> ct_236;
+ (i:8: ct_236.in[i]=s_236[i].go.a;)
+ ct_236.out=c_176.a;
+ (i:8: s_236[i].in.t = e_173.out[i].t;
+          s_236[i].in.f = e_173.out[i].f;
+          s_236[i].v = var_reg1[i].v; )
+
+ a1of1 c_177;
+ syn_fullseq fs_238(c_177, c_176);
+ e_171.out.t = c_177.r;
+ gc_46.t = c_177.a;
+ gc_46.f = e_171.out.f;
+ r1of2 gc_47;
+/* skip */   a1of1 c_178;
+ syn_skip s_239(c_178);
+ a1of1 c_179;
+ syn_fullseq fs_240(c_179, c_178);
+ gc_47.r = c_179.r;
+ gc_47.t = c_179.a;
+ gc_47.f = GND;
+ a1of1 c_180;
+ /* gc cascade, start=46, end=47 */
+ gc_46.f = gc_47.r;
+ gc_46.r = c_180.r;
+ syn_or2 or_241(gc_46.t,gc_47.t);
+ or_241.out = c_180.a;
+ /* ----- end of gc (#24) ----- */
+
+ syn_seq s_242(c_175);
+ s_242.s1 = c_180;
+ a1of1 c_181;
+ s_242.s2 = c_181;
+
+ /*--- emit individual gc (#25) [selection] ---*/
+ r1of2 gc_48;
+ bundled_is_popreg2_1 e_174;
+ (i:4: e_174.v0[i] = var_exec_op[i].v;)
+ (i:8: e_174.v1[i] = var_exec_data[i].v;)
+ syn_expr_var e_175(,const_1.v);
+ e_175.go_r = e_174.go_r;
+ syn_expr_eq e_176(e_174.out, e_175.out);
+/* HOUSTON WE HAD AN E_EQ W/ RET 176 */
+ syn_fullseq s_243;
+ gc_48.r = s_243.go.r;
+ syn_recv rtv_243;
+ syn_expr_var e_177;
+ syn_var_init_false tv_243(rtv_243.v);
+ e_177.v = tv_243.v;
+ s_243.r.r = e_174.go_r;
+ s_243.r = rtv_243.go;
+ e_176.out.t = rtv_243.in.t;
+ e_176.out.f = rtv_243.in.f;
+ s_243.go.a = e_177.go_r;
+/* assign */
+ syn_expr_vararray<8> e_178;
+ (i:8: e_178.v[i] = var_stack_data[i].v;)
+ a1of1 c_182;
+ syn_fullseq s_245;
+ c_182.r = s_245.go.r;
+ syn_recv rtv_245[8];
+ syn_expr_vararray<8> e_179;
+ syn_var_init_false tv_245[8];
+ (i:8: e_179.v[i] = tv_245[i].v; e_179.v[i]=rtv_245[i].v;)
+ s_245.r.r = e_178.go_r;
+ (i:8: s_245.r.r = rtv_245[i].go.r;)
+ syn_ctree<8> ct_245;
+ (i:8: ct_245.in[i]=rtv_245[i].go.a;)
+ s_245.r.a = ct_245.out;
+ (i:8: e_178.out[i].t = rtv_245[i].in.t; e_178.out[i].f = rtv_245[i].in.f;)
+ s_245.go.a = e_179.go_r;
+ syn_recv s_244[8];
+ (i:8: s_244[i].go.r = c_182.r;)
+ syn_ctree<8> ct_244;
+ (i:8: ct_244.in[i]=s_244[i].go.a;)
+ ct_244.out=c_182.a;
+ (i:8: s_244[i].in.t = e_179.out[i].t;
+          s_244[i].in.f = e_179.out[i].f;
+          s_244[i].v = var_reg2[i].v; )
+
+ a1of1 c_183;
+ syn_fullseq fs_246(c_183, c_182);
+ e_177.out.t = c_183.r;
+ gc_48.t = c_183.a;
+ gc_48.f = e_177.out.f;
+ r1of2 gc_49;
+/* skip */   a1of1 c_184;
+ syn_skip s_247(c_184);
+ a1of1 c_185;
+ syn_fullseq fs_248(c_185, c_184);
+ gc_49.r = c_185.r;
+ gc_49.t = c_185.a;
+ gc_49.f = GND;
+ a1of1 c_186;
+ /* gc cascade, start=48, end=49 */
+ gc_48.f = gc_49.r;
+ gc_48.r = c_186.r;
+ syn_or2 or_249(gc_48.t,gc_49.t);
+ or_249.out = c_186.a;
+ /* ----- end of gc (#25) ----- */
+
+ syn_seq s_250(c_181);
+ s_250.s1 = c_186;
+
+ /*--- emit individual gc (#26) [selection] ---*/
+ r1of2 gc_50;
+ bundled_is_popreg3_1 e_180;
+ (i:4: e_180.v0[i] = var_exec_op[i].v;)
+ (i:8: e_180.v1[i] = var_exec_data[i].v;)
+ syn_expr_var e_181(,const_1.v);
+ e_181.go_r = e_180.go_r;
+ syn_expr_eq e_182(e_180.out, e_181.out);
+/* HOUSTON WE HAD AN E_EQ W/ RET 182 */
+ syn_fullseq s_251;
+ gc_50.r = s_251.go.r;
+ syn_recv rtv_251;
+ syn_expr_var e_183;
+ syn_var_init_false tv_251(rtv_251.v);
+ e_183.v = tv_251.v;
+ s_251.r.r = e_180.go_r;
+ s_251.r = rtv_251.go;
+ e_182.out.t = rtv_251.in.t;
+ e_182.out.f = rtv_251.in.f;
+ s_251.go.a = e_183.go_r;
+/* assign */
+ syn_expr_vararray<8> e_184;
+ (i:8: e_184.v[i] = var_stack_data[i].v;)
+ a1of1 c_187;
+ syn_fullseq s_253;
+ c_187.r = s_253.go.r;
+ syn_recv rtv_253[8];
+ syn_expr_vararray<8> e_185;
+ syn_var_init_false tv_253[8];
+ (i:8: e_185.v[i] = tv_253[i].v; e_185.v[i]=rtv_253[i].v;)
+ s_253.r.r = e_184.go_r;
+ (i:8: s_253.r.r = rtv_253[i].go.r;)
+ syn_ctree<8> ct_253;
+ (i:8: ct_253.in[i]=rtv_253[i].go.a;)
+ s_253.r.a = ct_253.out;
+ (i:8: e_184.out[i].t = rtv_253[i].in.t; e_184.out[i].f = rtv_253[i].in.f;)
+ s_253.go.a = e_185.go_r;
+ syn_recv s_252[8];
+ (i:8: s_252[i].go.r = c_187.r;)
+ syn_ctree<8> ct_252;
+ (i:8: ct_252.in[i]=s_252[i].go.a;)
+ ct_252.out=c_187.a;
+ (i:8: s_252[i].in.t = e_185.out[i].t;
+          s_252[i].in.f = e_185.out[i].f;
+          s_252[i].v = var_reg3[i].v; )
+
+ a1of1 c_188;
+ syn_fullseq fs_254(c_188, c_187);
+ e_183.out.t = c_188.r;
+ gc_50.t = c_188.a;
+ gc_50.f = e_183.out.f;
+ r1of2 gc_51;
+/* skip */   a1of1 c_189;
+ syn_skip s_255(c_189);
+ a1of1 c_190;
+ syn_fullseq fs_256(c_190, c_189);
+ gc_51.r = c_190.r;
+ gc_51.t = c_190.a;
+ gc_51.f = GND;
+ a1of1 c_191;
+ /* gc cascade, start=50, end=51 */
+ gc_50.f = gc_51.r;
+ gc_50.r = c_191.r;
+ syn_or2 or_257(gc_50.t,gc_51.t);
+ or_257.out = c_191.a;
+ /* ----- end of gc (#26) ----- */
+
+ s_250.s2 = c_191;
+
+ a1of1 c_192;
+ syn_fullseq fs_258(c_192, c_1);
+ gc_0.r = c_192.r;
+ gc_0.t = c_192.a;
+ gc_0.f = GND;
+ a1of1 c_193;
+ /* gc cascade, start=0, end=0 */
+ syn_notand na_259;
+ na_259.x = c_193.r;
+ na_259.out = gc_0.r;
+ gc_0.t = na_259.y;
+ gc_0.f = c_193.a;
+ /* ----- end of gc (#0) ----- */
+
+ syn_par s_260(c_0);
+ s_260.s1 = c_193;
+ a1of1 c_194;
+ s_260.s2 = c_194;
+/* semicolon */
+ a1of1 c_195;
+/* assign */
+ syn_expr_var e_186(,const_0.v);
+ a1of1 c_196;
+ syn_fullseq s_262;
+ c_196.r = s_262.go.r;
+ syn_recv rtv_262;
+ syn_expr_var e_187;
+ syn_var_init_false tv_262(rtv_262.v);
+ e_187.v = tv_262.v;
+ s_262.r.r = e_186.go_r;
+ s_262.r = rtv_262.go;
+ e_186.out.t = rtv_262.in.t;
+ e_186.out.f = rtv_262.in.f;
+ s_262.go.a = e_187.go_r;
+ syn_recv s_261(c_196);
+ s_261.in.t = e_187.out.t;
+ s_261.in.f = e_187.out.f;
+ s_261.v = var_stack0_is_full.v;
+
+ syn_seq s_263(c_195);
+ s_263.s1 = c_196;
+
+ /*--- emit individual gc (#27) [loop] ---*/
+ r1of2 gc_52;
+/* semicolon */
+ a1of1 c_197;
+/* recv */
+ a1of1 c_198;
+ syn_fullseq fs_264(c_198,);
+ syn_recv s_264(fs_264.r);
+ s_264.in = chan_stack0_op_chan;
+ s_264.v = var_stack0_op.v;
+
+ syn_seq s_265(c_197);
+ s_265.s1 = c_198;
+ a1of1 c_199;
+ s_265.s2 = c_199;
+
+ /*--- emit individual gc (#28) [selection] ---*/
+ r1of2 gc_53;
+ syn_expr_var e_188(,var_stack0_op.v);
+ syn_expr_not e_189(e_188.out);
+ syn_fullseq s_266;
+ gc_53.r = s_266.go.r;
+ syn_recv rtv_266;
+ syn_expr_var e_190;
+ syn_var_init_false tv_266(rtv_266.v);
+ e_190.v = tv_266.v;
+ s_266.r.r = e_188.go_r;
+ s_266.r = rtv_266.go;
+ e_189.out.t = rtv_266.in.t;
+ e_189.out.f = rtv_266.in.f;
+ s_266.go.a = e_190.go_r;
+/* semicolon */
+ a1of1 c_200;
+/* send */
+ syn_expr_var e_191(,var_stack0_is_full.v);
+ a1of1 c_201;
+ a1of1 recv_r_267;
+ syn_fullseq fs_267(c_201, recv_r_267);
+ syn_fullseq s_268;
+ recv_r_267.r = s_268.go.r;
+ syn_recv rtv_268;
+ syn_expr_var e_192;
+ syn_var_init_false tv_268(rtv_268.v);
+ e_192.v = tv_268.v;
+ s_268.r.r = e_191.go_r;
+ s_268.r = rtv_268.go;
+ e_191.out.t = rtv_268.in.t;
+ e_191.out.f = rtv_268.in.f;
+ s_268.go.a = e_192.go_r;
+ recv_r_267.a = chan_stack0_full_chan.a;
+ chan_stack0_full_chan.t = e_192.out.t;
+ chan_stack0_full_chan.f = e_192.out.f;
+
+ syn_seq s_269(c_200);
+ s_269.s1 = c_201;
+/* send */
+ syn_expr_vararray<8> e_193;
+ (i:8: e_193.v[i] = var_stack0_data[i].v;)
+ a1of1 c_202;
+ a1of1 recv_r_270;
+ syn_fullseq fs_270(c_202, recv_r_270);
+ syn_fullseq s_271;
+ recv_r_270.r = s_271.go.r;
+ syn_recv rtv_271[8];
+ syn_expr_vararray<8> e_194;
+ syn_var_init_false tv_271[8];
+ (i:8: e_194.v[i] = tv_271[i].v; e_194.v[i]=rtv_271[i].v;)
+ s_271.r.r = e_193.go_r;
+ (i:8: s_271.r.r = rtv_271[i].go.r;)
+ syn_ctree<8> ct_271;
+ (i:8: ct_271.in[i]=rtv_271[i].go.a;)
+ s_271.r.a = ct_271.out;
+ (i:8: e_193.out[i].t = rtv_271[i].in.t; e_193.out[i].f = rtv_271[i].in.f;)
+ s_271.go.a = e_194.go_r;
+ recv_r_270.a = chan_stack0_pop_chan.a;
+ (i:8: chan_stack0_pop_chan.d[i] = e_194.out[i];)
+
+ s_269.s2 = c_202;
+
+ a1of1 c_203;
+ syn_fullseq fs_272(c_203, c_200);
+ e_190.out.t = c_203.r;
+ gc_53.t = c_203.a;
+ gc_53.f = e_190.out.f;
+ r1of2 gc_54;
+/* skip */   a1of1 c_204;
+ syn_skip s_273(c_204);
+ a1of1 c_205;
+ syn_fullseq fs_274(c_205, c_204);
+ gc_54.r = c_205.r;
+ gc_54.t = c_205.a;
+ gc_54.f = GND;
+ a1of1 c_206;
+ /* gc cascade, start=53, end=54 */
+ gc_53.f = gc_54.r;
+ gc_53.r = c_206.r;
+ syn_or2 or_275(gc_53.t,gc_54.t);
+ or_275.out = c_206.a;
+ /* ----- end of gc (#28) ----- */
+
+ syn_seq s_276(c_199);
+ s_276.s1 = c_206;
+ a1of1 c_207;
+ s_276.s2 = c_207;
+
+ /*--- emit individual gc (#29) [selection] ---*/
+ r1of2 gc_55;
+ syn_expr_var e_195(,var_stack0_is_full.v);
+ syn_fullseq s_277;
+ gc_55.r = s_277.go.r;
+ syn_recv rtv_277;
+ syn_expr_var e_196;
+ syn_var_init_false tv_277(rtv_277.v);
+ e_196.v = tv_277.v;
+ s_277.r.r = e_195.go_r;
+ s_277.r = rtv_277.go;
+ e_195.out.t = rtv_277.in.t;
+ e_195.out.f = rtv_277.in.f;
+ s_277.go.a = e_196.go_r;
+/* send */
+ syn_expr_var e_197(,var_stack0_op.v);
+ a1of1 c_208;
+ a1of1 recv_r_278;
+ syn_fullseq fs_278(c_208, recv_r_278);
+ syn_fullseq s_279;
+ recv_r_278.r = s_279.go.r;
+ syn_recv rtv_279;
+ syn_expr_var e_198;
+ syn_var_init_false tv_279(rtv_279.v);
+ e_198.v = tv_279.v;
+ s_279.r.r = e_197.go_r;
+ s_279.r = rtv_279.go;
+ e_197.out.t = rtv_279.in.t;
+ e_197.out.f = rtv_279.in.f;
+ s_279.go.a = e_198.go_r;
+ recv_r_278.a = chan_stack1_op_chan.a;
+ chan_stack1_op_chan.t = e_198.out.t;
+ chan_stack1_op_chan.f = e_198.out.f;
+
+ a1of1 c_209;
+ syn_fullseq fs_280(c_209, c_208);
+ e_196.out.t = c_209.r;
+ gc_55.t = c_209.a;
+ gc_55.f = e_196.out.f;
+ r1of2 gc_56;
+/* skip */   a1of1 c_210;
+ syn_skip s_281(c_210);
+ a1of1 c_211;
+ syn_fullseq fs_282(c_211, c_210);
+ gc_56.r = c_211.r;
+ gc_56.t = c_211.a;
+ gc_56.f = GND;
+ a1of1 c_212;
+ /* gc cascade, start=55, end=56 */
+ gc_55.f = gc_56.r;
+ gc_55.r = c_212.r;
+ syn_or2 or_283(gc_55.t,gc_56.t);
+ or_283.out = c_212.a;
+ /* ----- end of gc (#29) ----- */
+
+ syn_seq s_284(c_207);
+ s_284.s1 = c_212;
+ a1of1 c_213;
+ s_284.s2 = c_213;
+
+ /*--- emit individual gc (#30) [selection] ---*/
+ r1of2 gc_57;
+ syn_expr_var e_199(,var_stack0_op.v);
+ syn_expr_var e_200(,var_stack0_is_full.v);
+ e_200.go_r = e_199.go_r;
+ syn_expr_and e_201(e_199.out, e_200.out);
+ syn_fullseq s_285;
+ gc_57.r = s_285.go.r;
+ syn_recv rtv_285;
+ syn_expr_var e_202;
+ syn_var_init_false tv_285(rtv_285.v);
+ e_202.v = tv_285.v;
+ s_285.r.r = e_199.go_r;
+ s_285.r = rtv_285.go;
+ e_201.out.t = rtv_285.in.t;
+ e_201.out.f = rtv_285.in.f;
+ s_285.go.a = e_202.go_r;
+/* send */
+ syn_expr_vararray<8> e_203;
+ (i:8: e_203.v[i] = var_stack0_data[i].v;)
+ a1of1 c_214;
+ a1of1 recv_r_286;
+ syn_fullseq fs_286(c_214, recv_r_286);
+ syn_fullseq s_287;
+ recv_r_286.r = s_287.go.r;
+ syn_recv rtv_287[8];
+ syn_expr_vararray<8> e_204;
+ syn_var_init_false tv_287[8];
+ (i:8: e_204.v[i] = tv_287[i].v; e_204.v[i]=rtv_287[i].v;)
+ s_287.r.r = e_203.go_r;
+ (i:8: s_287.r.r = rtv_287[i].go.r;)
+ syn_ctree<8> ct_287;
+ (i:8: ct_287.in[i]=rtv_287[i].go.a;)
+ s_287.r.a = ct_287.out;
+ (i:8: e_203.out[i].t = rtv_287[i].in.t; e_203.out[i].f = rtv_287[i].in.f;)
+ s_287.go.a = e_204.go_r;
+ recv_r_286.a = chan_stack1_push_chan.a;
+ (i:8: chan_stack1_push_chan.d[i] = e_204.out[i];)
+
+ a1of1 c_215;
+ syn_fullseq fs_288(c_215, c_214);
+ e_202.out.t = c_215.r;
+ gc_57.t = c_215.a;
+ gc_57.f = e_202.out.f;
+ r1of2 gc_58;
+/* skip */   a1of1 c_216;
+ syn_skip s_289(c_216);
+ a1of1 c_217;
+ syn_fullseq fs_290(c_217, c_216);
+ gc_58.r = c_217.r;
+ gc_58.t = c_217.a;
+ gc_58.f = GND;
+ a1of1 c_218;
+ /* gc cascade, start=57, end=58 */
+ gc_57.f = gc_58.r;
+ gc_57.r = c_218.r;
+ syn_or2 or_291(gc_57.t,gc_58.t);
+ or_291.out = c_218.a;
+ /* ----- end of gc (#30) ----- */
+
+ syn_seq s_292(c_213);
+ s_292.s1 = c_218;
+ a1of1 c_219;
+ s_292.s2 = c_219;
+
+ /*--- emit individual gc (#31) [selection] ---*/
+ r1of2 gc_59;
+ syn_expr_var e_205(,var_stack0_op.v);
+ syn_fullseq s_293;
+ gc_59.r = s_293.go.r;
+ syn_recv rtv_293;
+ syn_expr_var e_206;
+ syn_var_init_false tv_293(rtv_293.v);
+ e_206.v = tv_293.v;
+ s_293.r.r = e_205.go_r;
+ s_293.r = rtv_293.go;
+ e_205.out.t = rtv_293.in.t;
+ e_205.out.f = rtv_293.in.f;
+ s_293.go.a = e_206.go_r;
+/* comma */
+ a1of1 c_220;
+/* recv */
+ a1of1 c_221;
+ syn_fullseq fs_294(c_221,);
+ syn_recv s_294[8];
+ (i:8: s_294[i].go.r = fs_294.r.r;)
+ syn_ctree<8> ct_294;
+ (i:8: ct_294.in[i]=s_294[i].go.a;)
+ ct_294.out=fs_294.r.a; fs_294.r.a=chan_stack0_push_chan.a;
+ (i:8: s_294[i].in.t = chan_stack0_push_chan.d[i].t;
+          s_294[i].in.f = chan_stack0_push_chan.d[i].f;
+          s_294[i].v = var_stack0_data[i].v; )
+
+ syn_par s_295(c_220);
+ s_295.s1 = c_221;
+/* assign */
+ syn_expr_var e_207(,const_1.v);
+ a1of1 c_222;
+ syn_fullseq s_297;
+ c_222.r = s_297.go.r;
+ syn_recv rtv_297;
+ syn_expr_var e_208;
+ syn_var_init_false tv_297(rtv_297.v);
+ e_208.v = tv_297.v;
+ s_297.r.r = e_207.go_r;
+ s_297.r = rtv_297.go;
+ e_207.out.t = rtv_297.in.t;
+ e_207.out.f = rtv_297.in.f;
+ s_297.go.a = e_208.go_r;
+ syn_recv s_296(c_222);
+ s_296.in.t = e_208.out.t;
+ s_296.in.f = e_208.out.f;
+ s_296.v = var_stack0_is_full.v;
+
+ s_295.s2 = c_222;
+
+ a1of1 c_223;
+ syn_fullseq fs_298(c_223, c_220);
+ e_206.out.t = c_223.r;
+ gc_59.t = c_223.a;
+ gc_59.f = e_206.out.f;
+ r1of2 gc_60;
+/* skip */   a1of1 c_224;
+ syn_skip s_299(c_224);
+ a1of1 c_225;
+ syn_fullseq fs_300(c_225, c_224);
+ gc_60.r = c_225.r;
+ gc_60.t = c_225.a;
+ gc_60.f = GND;
+ a1of1 c_226;
+ /* gc cascade, start=59, end=60 */
+ gc_59.f = gc_60.r;
+ gc_59.r = c_226.r;
+ syn_or2 or_301(gc_59.t,gc_60.t);
+ or_301.out = c_226.a;
+ /* ----- end of gc (#31) ----- */
+
+ syn_seq s_302(c_219);
+ s_302.s1 = c_226;
+
+ /*--- emit individual gc (#32) [selection] ---*/
+ r1of2 gc_61;
+ syn_expr_var e_209(,var_stack0_op.v);
+ syn_expr_not e_210(e_209.out);
+ syn_expr_var e_211(,var_stack0_is_full.v);
+ e_211.go_r = e_209.go_r;
+ syn_expr_and e_212(e_210.out, e_211.out);
+ syn_fullseq s_303;
+ gc_61.r = s_303.go.r;
+ syn_recv rtv_303;
+ syn_expr_var e_213;
+ syn_var_init_false tv_303(rtv_303.v);
+ e_213.v = tv_303.v;
+ s_303.r.r = e_209.go_r;
+ s_303.r = rtv_303.go;
+ e_212.out.t = rtv_303.in.t;
+ e_212.out.f = rtv_303.in.f;
+ s_303.go.a = e_213.go_r;
+/* semicolon */
+ a1of1 c_227;
+/* recv */
+ a1of1 c_228;
+ syn_fullseq fs_304(c_228,);
+ syn_recv s_304(fs_304.r);
+ s_304.in = chan_stack1_full_chan;
+ s_304.v = var_stack0_is_full.v;
+
+ syn_seq s_305(c_227);
+ s_305.s1 = c_228;
+/* recv */
+ a1of1 c_229;
+ syn_fullseq fs_306(c_229,);
+ syn_recv s_306[8];
+ (i:8: s_306[i].go.r = fs_306.r.r;)
+ syn_ctree<8> ct_306;
+ (i:8: ct_306.in[i]=s_306[i].go.a;)
+ ct_306.out=fs_306.r.a; fs_306.r.a=chan_stack1_pop_chan.a;
+ (i:8: s_306[i].in.t = chan_stack1_pop_chan.d[i].t;
+          s_306[i].in.f = chan_stack1_pop_chan.d[i].f;
+          s_306[i].v = var_stack0_data[i].v; )
+
+ s_305.s2 = c_229;
+
+ a1of1 c_230;
+ syn_fullseq fs_307(c_230, c_227);
+ e_213.out.t = c_230.r;
+ gc_61.t = c_230.a;
+ gc_61.f = e_213.out.f;
+ r1of2 gc_62;
+/* skip */   a1of1 c_231;
+ syn_skip s_308(c_231);
+ a1of1 c_232;
+ syn_fullseq fs_309(c_232, c_231);
+ gc_62.r = c_232.r;
+ gc_62.t = c_232.a;
+ gc_62.f = GND;
+ a1of1 c_233;
+ /* gc cascade, start=61, end=62 */
+ gc_61.f = gc_62.r;
+ gc_61.r = c_233.r;
+ syn_or2 or_310(gc_61.t,gc_62.t);
+ or_310.out = c_233.a;
+ /* ----- end of gc (#32) ----- */
+
+ s_302.s2 = c_233;
+
+ a1of1 c_234;
+ syn_fullseq fs_311(c_234, c_197);
+ gc_52.r = c_234.r;
+ gc_52.t = c_234.a;
+ gc_52.f = GND;
+ a1of1 c_235;
+ /* gc cascade, start=52, end=52 */
+ syn_notand na_312;
+ na_312.x = c_235.r;
+ na_312.out = gc_52.r;
+ gc_52.t = na_312.y;
+ gc_52.f = c_235.a;
+ /* ----- end of gc (#27) ----- */
+
+ s_263.s2 = c_235;
+
+ syn_par s_313(c_194);
+ s_313.s1 = c_195;
+/* semicolon */
+ a1of1 c_236;
+/* assign */
+ syn_expr_var e_214(,const_0.v);
+ a1of1 c_237;
+ syn_fullseq s_315;
+ c_237.r = s_315.go.r;
+ syn_recv rtv_315;
+ syn_expr_var e_215;
+ syn_var_init_false tv_315(rtv_315.v);
+ e_215.v = tv_315.v;
+ s_315.r.r = e_214.go_r;
+ s_315.r = rtv_315.go;
+ e_214.out.t = rtv_315.in.t;
+ e_214.out.f = rtv_315.in.f;
+ s_315.go.a = e_215.go_r;
+ syn_recv s_314(c_237);
+ s_314.in.t = e_215.out.t;
+ s_314.in.f = e_215.out.f;
+ s_314.v = var_stack1_is_full.v;
+
+ syn_seq s_316(c_236);
+ s_316.s1 = c_237;
+
+ /*--- emit individual gc (#33) [loop] ---*/
+ r1of2 gc_63;
+/* semicolon */
+ a1of1 c_238;
+/* recv */
+ a1of1 c_239;
+ syn_fullseq fs_317(c_239,);
+ syn_recv s_317(fs_317.r);
+ s_317.in = chan_stack1_op_chan;
+ s_317.v = var_stack1_op.v;
+
+ syn_seq s_318(c_238);
+ s_318.s1 = c_239;
+ a1of1 c_240;
+ s_318.s2 = c_240;
+
+ /*--- emit individual gc (#34) [selection] ---*/
+ r1of2 gc_64;
+ syn_expr_var e_216(,var_stack1_op.v);
+ syn_expr_not e_217(e_216.out);
+ syn_fullseq s_319;
+ gc_64.r = s_319.go.r;
+ syn_recv rtv_319;
+ syn_expr_var e_218;
+ syn_var_init_false tv_319(rtv_319.v);
+ e_218.v = tv_319.v;
+ s_319.r.r = e_216.go_r;
+ s_319.r = rtv_319.go;
+ e_217.out.t = rtv_319.in.t;
+ e_217.out.f = rtv_319.in.f;
+ s_319.go.a = e_218.go_r;
+/* semicolon */
+ a1of1 c_241;
+/* send */
+ syn_expr_var e_219(,var_stack1_is_full.v);
+ a1of1 c_242;
+ a1of1 recv_r_320;
+ syn_fullseq fs_320(c_242, recv_r_320);
+ syn_fullseq s_321;
+ recv_r_320.r = s_321.go.r;
+ syn_recv rtv_321;
+ syn_expr_var e_220;
+ syn_var_init_false tv_321(rtv_321.v);
+ e_220.v = tv_321.v;
+ s_321.r.r = e_219.go_r;
+ s_321.r = rtv_321.go;
+ e_219.out.t = rtv_321.in.t;
+ e_219.out.f = rtv_321.in.f;
+ s_321.go.a = e_220.go_r;
+ recv_r_320.a = chan_stack1_full_chan.a;
+ chan_stack1_full_chan.t = e_220.out.t;
+ chan_stack1_full_chan.f = e_220.out.f;
+
+ syn_seq s_322(c_241);
+ s_322.s1 = c_242;
+/* send */
+ syn_expr_vararray<8> e_221;
+ (i:8: e_221.v[i] = var_stack1_data[i].v;)
+ a1of1 c_243;
+ a1of1 recv_r_323;
+ syn_fullseq fs_323(c_243, recv_r_323);
+ syn_fullseq s_324;
+ recv_r_323.r = s_324.go.r;
+ syn_recv rtv_324[8];
+ syn_expr_vararray<8> e_222;
+ syn_var_init_false tv_324[8];
+ (i:8: e_222.v[i] = tv_324[i].v; e_222.v[i]=rtv_324[i].v;)
+ s_324.r.r = e_221.go_r;
+ (i:8: s_324.r.r = rtv_324[i].go.r;)
+ syn_ctree<8> ct_324;
+ (i:8: ct_324.in[i]=rtv_324[i].go.a;)
+ s_324.r.a = ct_324.out;
+ (i:8: e_221.out[i].t = rtv_324[i].in.t; e_221.out[i].f = rtv_324[i].in.f;)
+ s_324.go.a = e_222.go_r;
+ recv_r_323.a = chan_stack1_pop_chan.a;
+ (i:8: chan_stack1_pop_chan.d[i] = e_222.out[i];)
+
+ s_322.s2 = c_243;
+
+ a1of1 c_244;
+ syn_fullseq fs_325(c_244, c_241);
+ e_218.out.t = c_244.r;
+ gc_64.t = c_244.a;
+ gc_64.f = e_218.out.f;
+ r1of2 gc_65;
+/* skip */   a1of1 c_245;
+ syn_skip s_326(c_245);
+ a1of1 c_246;
+ syn_fullseq fs_327(c_246, c_245);
+ gc_65.r = c_246.r;
+ gc_65.t = c_246.a;
+ gc_65.f = GND;
+ a1of1 c_247;
+ /* gc cascade, start=64, end=65 */
+ gc_64.f = gc_65.r;
+ gc_64.r = c_247.r;
+ syn_or2 or_328(gc_64.t,gc_65.t);
+ or_328.out = c_247.a;
+ /* ----- end of gc (#34) ----- */
+
+ syn_seq s_329(c_240);
+ s_329.s1 = c_247;
+ a1of1 c_248;
+ s_329.s2 = c_248;
+
+ /*--- emit individual gc (#35) [selection] ---*/
+ r1of2 gc_66;
+ syn_expr_var e_223(,var_stack1_is_full.v);
+ syn_fullseq s_330;
+ gc_66.r = s_330.go.r;
+ syn_recv rtv_330;
+ syn_expr_var e_224;
+ syn_var_init_false tv_330(rtv_330.v);
+ e_224.v = tv_330.v;
+ s_330.r.r = e_223.go_r;
+ s_330.r = rtv_330.go;
+ e_223.out.t = rtv_330.in.t;
+ e_223.out.f = rtv_330.in.f;
+ s_330.go.a = e_224.go_r;
+/* send */
+ syn_expr_var e_225(,var_stack1_op.v);
+ a1of1 c_249;
+ a1of1 recv_r_331;
+ syn_fullseq fs_331(c_249, recv_r_331);
+ syn_fullseq s_332;
+ recv_r_331.r = s_332.go.r;
+ syn_recv rtv_332;
+ syn_expr_var e_226;
+ syn_var_init_false tv_332(rtv_332.v);
+ e_226.v = tv_332.v;
+ s_332.r.r = e_225.go_r;
+ s_332.r = rtv_332.go;
+ e_225.out.t = rtv_332.in.t;
+ e_225.out.f = rtv_332.in.f;
+ s_332.go.a = e_226.go_r;
+ recv_r_331.a = chan_stack2_op_chan.a;
+ chan_stack2_op_chan.t = e_226.out.t;
+ chan_stack2_op_chan.f = e_226.out.f;
+
+ a1of1 c_250;
+ syn_fullseq fs_333(c_250, c_249);
+ e_224.out.t = c_250.r;
+ gc_66.t = c_250.a;
+ gc_66.f = e_224.out.f;
+ r1of2 gc_67;
+/* skip */   a1of1 c_251;
+ syn_skip s_334(c_251);
+ a1of1 c_252;
+ syn_fullseq fs_335(c_252, c_251);
+ gc_67.r = c_252.r;
+ gc_67.t = c_252.a;
+ gc_67.f = GND;
+ a1of1 c_253;
+ /* gc cascade, start=66, end=67 */
+ gc_66.f = gc_67.r;
+ gc_66.r = c_253.r;
+ syn_or2 or_336(gc_66.t,gc_67.t);
+ or_336.out = c_253.a;
+ /* ----- end of gc (#35) ----- */
+
+ syn_seq s_337(c_248);
+ s_337.s1 = c_253;
+ a1of1 c_254;
+ s_337.s2 = c_254;
+
+ /*--- emit individual gc (#36) [selection] ---*/
+ r1of2 gc_68;
+ syn_expr_var e_227(,var_stack1_op.v);
+ syn_expr_var e_228(,var_stack1_is_full.v);
+ e_228.go_r = e_227.go_r;
+ syn_expr_and e_229(e_227.out, e_228.out);
+ syn_fullseq s_338;
+ gc_68.r = s_338.go.r;
+ syn_recv rtv_338;
+ syn_expr_var e_230;
+ syn_var_init_false tv_338(rtv_338.v);
+ e_230.v = tv_338.v;
+ s_338.r.r = e_227.go_r;
+ s_338.r = rtv_338.go;
+ e_229.out.t = rtv_338.in.t;
+ e_229.out.f = rtv_338.in.f;
+ s_338.go.a = e_230.go_r;
+/* send */
+ syn_expr_vararray<8> e_231;
+ (i:8: e_231.v[i] = var_stack1_data[i].v;)
+ a1of1 c_255;
+ a1of1 recv_r_339;
+ syn_fullseq fs_339(c_255, recv_r_339);
+ syn_fullseq s_340;
+ recv_r_339.r = s_340.go.r;
+ syn_recv rtv_340[8];
+ syn_expr_vararray<8> e_232;
+ syn_var_init_false tv_340[8];
+ (i:8: e_232.v[i] = tv_340[i].v; e_232.v[i]=rtv_340[i].v;)
+ s_340.r.r = e_231.go_r;
+ (i:8: s_340.r.r = rtv_340[i].go.r;)
+ syn_ctree<8> ct_340;
+ (i:8: ct_340.in[i]=rtv_340[i].go.a;)
+ s_340.r.a = ct_340.out;
+ (i:8: e_231.out[i].t = rtv_340[i].in.t; e_231.out[i].f = rtv_340[i].in.f;)
+ s_340.go.a = e_232.go_r;
+ recv_r_339.a = chan_stack2_push_chan.a;
+ (i:8: chan_stack2_push_chan.d[i] = e_232.out[i];)
+
+ a1of1 c_256;
+ syn_fullseq fs_341(c_256, c_255);
+ e_230.out.t = c_256.r;
+ gc_68.t = c_256.a;
+ gc_68.f = e_230.out.f;
+ r1of2 gc_69;
+/* skip */   a1of1 c_257;
+ syn_skip s_342(c_257);
+ a1of1 c_258;
+ syn_fullseq fs_343(c_258, c_257);
+ gc_69.r = c_258.r;
+ gc_69.t = c_258.a;
+ gc_69.f = GND;
+ a1of1 c_259;
+ /* gc cascade, start=68, end=69 */
+ gc_68.f = gc_69.r;
+ gc_68.r = c_259.r;
+ syn_or2 or_344(gc_68.t,gc_69.t);
+ or_344.out = c_259.a;
+ /* ----- end of gc (#36) ----- */
+
+ syn_seq s_345(c_254);
+ s_345.s1 = c_259;
+ a1of1 c_260;
+ s_345.s2 = c_260;
+
+ /*--- emit individual gc (#37) [selection] ---*/
+ r1of2 gc_70;
+ syn_expr_var e_233(,var_stack1_op.v);
+ syn_fullseq s_346;
+ gc_70.r = s_346.go.r;
+ syn_recv rtv_346;
+ syn_expr_var e_234;
+ syn_var_init_false tv_346(rtv_346.v);
+ e_234.v = tv_346.v;
+ s_346.r.r = e_233.go_r;
+ s_346.r = rtv_346.go;
+ e_233.out.t = rtv_346.in.t;
+ e_233.out.f = rtv_346.in.f;
+ s_346.go.a = e_234.go_r;
+/* comma */
+ a1of1 c_261;
+/* recv */
+ a1of1 c_262;
+ syn_fullseq fs_347(c_262,);
+ syn_recv s_347[8];
+ (i:8: s_347[i].go.r = fs_347.r.r;)
+ syn_ctree<8> ct_347;
+ (i:8: ct_347.in[i]=s_347[i].go.a;)
+ ct_347.out=fs_347.r.a; fs_347.r.a=chan_stack1_push_chan.a;
+ (i:8: s_347[i].in.t = chan_stack1_push_chan.d[i].t;
+          s_347[i].in.f = chan_stack1_push_chan.d[i].f;
+          s_347[i].v = var_stack1_data[i].v; )
+
+ syn_par s_348(c_261);
+ s_348.s1 = c_262;
+/* assign */
+ syn_expr_var e_235(,const_1.v);
+ a1of1 c_263;
+ syn_fullseq s_350;
+ c_263.r = s_350.go.r;
+ syn_recv rtv_350;
+ syn_expr_var e_236;
+ syn_var_init_false tv_350(rtv_350.v);
+ e_236.v = tv_350.v;
+ s_350.r.r = e_235.go_r;
+ s_350.r = rtv_350.go;
+ e_235.out.t = rtv_350.in.t;
+ e_235.out.f = rtv_350.in.f;
+ s_350.go.a = e_236.go_r;
+ syn_recv s_349(c_263);
+ s_349.in.t = e_236.out.t;
+ s_349.in.f = e_236.out.f;
+ s_349.v = var_stack1_is_full.v;
+
+ s_348.s2 = c_263;
+
+ a1of1 c_264;
+ syn_fullseq fs_351(c_264, c_261);
+ e_234.out.t = c_264.r;
+ gc_70.t = c_264.a;
+ gc_70.f = e_234.out.f;
+ r1of2 gc_71;
+/* skip */   a1of1 c_265;
+ syn_skip s_352(c_265);
+ a1of1 c_266;
+ syn_fullseq fs_353(c_266, c_265);
+ gc_71.r = c_266.r;
+ gc_71.t = c_266.a;
+ gc_71.f = GND;
+ a1of1 c_267;
+ /* gc cascade, start=70, end=71 */
+ gc_70.f = gc_71.r;
+ gc_70.r = c_267.r;
+ syn_or2 or_354(gc_70.t,gc_71.t);
+ or_354.out = c_267.a;
+ /* ----- end of gc (#37) ----- */
+
+ syn_seq s_355(c_260);
+ s_355.s1 = c_267;
+
+ /*--- emit individual gc (#38) [selection] ---*/
+ r1of2 gc_72;
+ syn_expr_var e_237(,var_stack1_op.v);
+ syn_expr_not e_238(e_237.out);
+ syn_expr_var e_239(,var_stack1_is_full.v);
+ e_239.go_r = e_237.go_r;
+ syn_expr_and e_240(e_238.out, e_239.out);
+ syn_fullseq s_356;
+ gc_72.r = s_356.go.r;
+ syn_recv rtv_356;
+ syn_expr_var e_241;
+ syn_var_init_false tv_356(rtv_356.v);
+ e_241.v = tv_356.v;
+ s_356.r.r = e_237.go_r;
+ s_356.r = rtv_356.go;
+ e_240.out.t = rtv_356.in.t;
+ e_240.out.f = rtv_356.in.f;
+ s_356.go.a = e_241.go_r;
+/* semicolon */
+ a1of1 c_268;
+/* recv */
+ a1of1 c_269;
+ syn_fullseq fs_357(c_269,);
+ syn_recv s_357(fs_357.r);
+ s_357.in = chan_stack2_full_chan;
+ s_357.v = var_stack1_is_full.v;
+
+ syn_seq s_358(c_268);
+ s_358.s1 = c_269;
+/* recv */
+ a1of1 c_270;
+ syn_fullseq fs_359(c_270,);
+ syn_recv s_359[8];
+ (i:8: s_359[i].go.r = fs_359.r.r;)
+ syn_ctree<8> ct_359;
+ (i:8: ct_359.in[i]=s_359[i].go.a;)
+ ct_359.out=fs_359.r.a; fs_359.r.a=chan_stack2_pop_chan.a;
+ (i:8: s_359[i].in.t = chan_stack2_pop_chan.d[i].t;
+          s_359[i].in.f = chan_stack2_pop_chan.d[i].f;
+          s_359[i].v = var_stack1_data[i].v; )
+
+ s_358.s2 = c_270;
+
+ a1of1 c_271;
+ syn_fullseq fs_360(c_271, c_268);
+ e_241.out.t = c_271.r;
+ gc_72.t = c_271.a;
+ gc_72.f = e_241.out.f;
+ r1of2 gc_73;
+/* skip */   a1of1 c_272;
+ syn_skip s_361(c_272);
+ a1of1 c_273;
+ syn_fullseq fs_362(c_273, c_272);
+ gc_73.r = c_273.r;
+ gc_73.t = c_273.a;
+ gc_73.f = GND;
+ a1of1 c_274;
+ /* gc cascade, start=72, end=73 */
+ gc_72.f = gc_73.r;
+ gc_72.r = c_274.r;
+ syn_or2 or_363(gc_72.t,gc_73.t);
+ or_363.out = c_274.a;
+ /* ----- end of gc (#38) ----- */
+
+ s_355.s2 = c_274;
+
+ a1of1 c_275;
+ syn_fullseq fs_364(c_275, c_238);
+ gc_63.r = c_275.r;
+ gc_63.t = c_275.a;
+ gc_63.f = GND;
+ a1of1 c_276;
+ /* gc cascade, start=63, end=63 */
+ syn_notand na_365;
+ na_365.x = c_276.r;
+ na_365.out = gc_63.r;
+ gc_63.t = na_365.y;
+ gc_63.f = c_276.a;
+ /* ----- end of gc (#33) ----- */
+
+ s_316.s2 = c_276;
+
+ s_313.s2 = c_236;
 
  go = c_0;
 }
-
-toplevel t;
