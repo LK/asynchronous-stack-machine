@@ -1,4 +1,5 @@
 ana go/r go/a Reset _Reset p/chan_PC/a p/chan_PC/d\[0\]/t p/chan_PC/d\[1\]/t p/chan_PC/d\[2\]/t p/chan_PC/d\[3\]/t
+ana go/r go/a Reset _Reset
 
 l GND!
 h Vdd!
@@ -31,57 +32,36 @@ l p/chan_IN/d\[10\]/t
 l p/chan_IN/d\[10\]/f
 l p/chan_IN/d\[11\]/t
 l p/chan_IN/d\[11\]/f
-
-
-l p/chan_stack10_pop_chan/d\[0\]/t
-l p/chan_stack10_pop_chan/d\[0\]/f
-l p/chan_stack10_pop_chan/d\[1\]/t
-l p/chan_stack10_pop_chan/d\[1\]/f
-l p/chan_stack10_pop_chan/d\[2\]/t
-l p/chan_stack10_pop_chan/d\[2\]/f
-l p/chan_stack10_pop_chan/d\[3\]/t
-l p/chan_stack10_pop_chan/d\[3\]/f
-l p/chan_stack10_pop_chan/d\[4\]/t
-l p/chan_stack10_pop_chan/d\[4\]/f
-l p/chan_stack10_pop_chan/d\[5\]/t
-l p/chan_stack10_pop_chan/d\[5\]/f
-l p/chan_stack10_pop_chan/d\[6\]/t
-l p/chan_stack10_pop_chan/d\[6\]/f
-l p/chan_stack10_pop_chan/d\[7\]/t
-l p/chan_stack10_pop_chan/d\[7\]/f
-l p/chan_stack10_push_chan/a
-l p/chan_stack10_op_chan/a
-l p/chan_stack10_full_chan/t
-l p/chan_stack10_full_chan/f
+l p/chan_STACK_POP/d\[0\]/t
+l p/chan_STACK_POP/d\[0\]/f
+l p/chan_STACK_POP/d\[1\]/t
+l p/chan_STACK_POP/d\[1\]/f
+l p/chan_STACK_POP/d\[2\]/t
+l p/chan_STACK_POP/d\[2\]/f
+l p/chan_STACK_POP/d\[3\]/t
+l p/chan_STACK_POP/d\[3\]/f
+l p/chan_STACK_POP/d\[4\]/t
+l p/chan_STACK_POP/d\[4\]/f
+l p/chan_STACK_POP/d\[5\]/t
+l p/chan_STACK_POP/d\[5\]/f
+l p/chan_STACK_POP/d\[6\]/t
+l p/chan_STACK_POP/d\[6\]/f
+l p/chan_STACK_POP/d\[7\]/t
+l p/chan_STACK_POP/d\[7\]/f
+l p/chan_STACK_PUSH/a
+l p/chan_STACK_OP/a
+l p/chan_STACK_FULL/t
+l p/chan_STACK_FULL/f
 s
-
 l Reset
 h _Reset
 s
-
 h go/r
 s
-
 assert p/var_stack0_is_full/v/t 0
 assert p/var_stack0_is_full/v/f 1
 assert p/var_stack1_is_full/v/t 0
 assert p/var_stack1_is_full/v/f 1
-assert p/var_stack2_is_full/v/t 0
-assert p/var_stack2_is_full/v/f 1
-assert p/var_stack3_is_full/v/t 0
-assert p/var_stack3_is_full/v/f 1
-assert p/var_stack4_is_full/v/t 0
-assert p/var_stack4_is_full/v/f 1
-assert p/var_stack5_is_full/v/t 0
-assert p/var_stack5_is_full/v/f 1
-assert p/var_stack6_is_full/v/t 0
-assert p/var_stack6_is_full/v/f 1
-assert p/var_stack7_is_full/v/t 0
-assert p/var_stack7_is_full/v/f 1
-assert p/var_stack8_is_full/v/t 0
-assert p/var_stack8_is_full/v/f 1
-assert p/var_stack9_is_full/v/t 0
-assert p/var_stack9_is_full/v/f 1
 assert p/var_reg0\[0\]/v/t 0
 assert p/var_reg0\[0\]/v/f 1
 assert p/var_reg0\[1\]/v/t 0
@@ -196,7 +176,6 @@ assert p/chan_PC/d\[11\]/t 0
 assert p/chan_PC/d\[11\]/f 1
 h p/chan_PC/a
 s
-
 assert p/chan_PC/d\[0\]/t 0
 assert p/chan_PC/d\[0\]/f 0
 assert p/chan_PC/d\[1\]/t 0
@@ -223,7 +202,6 @@ assert p/chan_PC/d\[11\]/t 0
 assert p/chan_PC/d\[11\]/f 0
 l p/chan_PC/a
 s
-
 h p/chan_IN/d\[0\]/t
 l p/chan_IN/d\[0\]/f
 l p/chan_IN/d\[1\]/t
@@ -249,7 +227,6 @@ h p/chan_IN/d\[10\]/f
 l p/chan_IN/d\[11\]/t
 h p/chan_IN/d\[11\]/f
 s
-
 assert p/chan_IN/a 1
 l p/chan_IN/d\[0\]/t
 l p/chan_IN/d\[0\]/f
@@ -276,7 +253,6 @@ l p/chan_IN/d\[10\]/f
 l p/chan_IN/d\[11\]/t
 l p/chan_IN/d\[11\]/f
 s
-
 assert p/chan_IN/a 0
 assert p/var_stack0_is_full/v/t 1
 assert p/var_stack0_is_full/v/f 0
@@ -298,22 +274,6 @@ assert p/var_stack0_data\[7\]/v/t 0
 assert p/var_stack0_data\[7\]/v/f 1
 assert p/var_stack1_is_full/v/t 0
 assert p/var_stack1_is_full/v/f 1
-assert p/var_stack2_is_full/v/t 0
-assert p/var_stack2_is_full/v/f 1
-assert p/var_stack3_is_full/v/t 0
-assert p/var_stack3_is_full/v/f 1
-assert p/var_stack4_is_full/v/t 0
-assert p/var_stack4_is_full/v/f 1
-assert p/var_stack5_is_full/v/t 0
-assert p/var_stack5_is_full/v/f 1
-assert p/var_stack6_is_full/v/t 0
-assert p/var_stack6_is_full/v/f 1
-assert p/var_stack7_is_full/v/t 0
-assert p/var_stack7_is_full/v/f 1
-assert p/var_stack8_is_full/v/t 0
-assert p/var_stack8_is_full/v/f 1
-assert p/var_stack9_is_full/v/t 0
-assert p/var_stack9_is_full/v/f 1
 assert p/var_reg0\[0\]/v/t 0
 assert p/var_reg0\[0\]/v/f 1
 assert p/var_reg0\[1\]/v/t 0
@@ -508,10 +468,10 @@ s
 assert p/chan_IN/a 0
 assert p/var_stack0_is_full/v/t 1
 assert p/var_stack0_is_full/v/f 0
-assert p/var_stack0_data\[0\]/v/t 1
-assert p/var_stack0_data\[0\]/v/f 0
-assert p/var_stack0_data\[1\]/v/t 0
-assert p/var_stack0_data\[1\]/v/f 1
+assert p/var_stack0_data\[0\]/v/t 0
+assert p/var_stack0_data\[0\]/v/f 1
+assert p/var_stack0_data\[1\]/v/t 1
+assert p/var_stack0_data\[1\]/v/f 0
 assert p/var_stack0_data\[2\]/v/t 0
 assert p/var_stack0_data\[2\]/v/f 1
 assert p/var_stack0_data\[3\]/v/t 0
@@ -526,10 +486,10 @@ assert p/var_stack0_data\[7\]/v/t 0
 assert p/var_stack0_data\[7\]/v/f 1
 assert p/var_stack1_is_full/v/t 1
 assert p/var_stack1_is_full/v/f 0
-assert p/var_stack1_data\[0\]/v/t 0
-assert p/var_stack1_data\[0\]/v/f 1
-assert p/var_stack1_data\[1\]/v/t 1
-assert p/var_stack1_data\[1\]/v/f 0
+assert p/var_stack1_data\[0\]/v/t 1
+assert p/var_stack1_data\[0\]/v/f 0
+assert p/var_stack1_data\[1\]/v/t 0
+assert p/var_stack1_data\[1\]/v/f 1
 assert p/var_stack1_data\[2\]/v/t 0
 assert p/var_stack1_data\[2\]/v/f 1
 assert p/var_stack1_data\[3\]/v/t 0
@@ -542,22 +502,6 @@ assert p/var_stack1_data\[6\]/v/t 0
 assert p/var_stack1_data\[6\]/v/f 1
 assert p/var_stack1_data\[7\]/v/t 0
 assert p/var_stack1_data\[7\]/v/f 1
-assert p/var_stack2_is_full/v/t 0
-assert p/var_stack2_is_full/v/f 1
-assert p/var_stack3_is_full/v/t 0
-assert p/var_stack3_is_full/v/f 1
-assert p/var_stack4_is_full/v/t 0
-assert p/var_stack4_is_full/v/f 1
-assert p/var_stack5_is_full/v/t 0
-assert p/var_stack5_is_full/v/f 1
-assert p/var_stack6_is_full/v/t 0
-assert p/var_stack6_is_full/v/f 1
-assert p/var_stack7_is_full/v/t 0
-assert p/var_stack7_is_full/v/f 1
-assert p/var_stack8_is_full/v/t 0
-assert p/var_stack8_is_full/v/f 1
-assert p/var_stack9_is_full/v/t 0
-assert p/var_stack9_is_full/v/f 1
 assert p/var_reg0\[0\]/v/t 0
 assert p/var_reg0\[0\]/v/f 1
 assert p/var_reg0\[1\]/v/t 0
@@ -768,24 +712,42 @@ assert p/var_stack0_data\[6\]/v/t 0
 assert p/var_stack0_data\[6\]/v/f 1
 assert p/var_stack0_data\[7\]/v/t 0
 assert p/var_stack0_data\[7\]/v/f 1
+assert p/chan_STACK_OP/f 1
+assert p/chan_STACK_OP/t 0
+h p/chan_STACK_OP/a
+s
+assert p/chan_STACK_OP/f 0
+assert p/chan_STACK_OP/t 0
+l p/chan_STACK_OP/a
+s
+h p/chan_STACK_FULL/f
+s
+assert p/chan_STACK_FULL/a 1
+l p/chan_STACK_FULL/f
+s
+assert p/chan_STACK_FULL/a 0
+h p/chan_STACK_POP/d\[0\]/f
+h p/chan_STACK_POP/d\[1\]/f
+h p/chan_STACK_POP/d\[2\]/f
+h p/chan_STACK_POP/d\[3\]/f
+h p/chan_STACK_POP/d\[4\]/f
+h p/chan_STACK_POP/d\[5\]/f
+h p/chan_STACK_POP/d\[6\]/f
+h p/chan_STACK_POP/d\[7\]/f
+s
+assert p/chan_STACK_POP/a 1
+l p/chan_STACK_POP/d\[0\]/f
+l p/chan_STACK_POP/d\[1\]/f
+l p/chan_STACK_POP/d\[2\]/f
+l p/chan_STACK_POP/d\[3\]/f
+l p/chan_STACK_POP/d\[4\]/f
+l p/chan_STACK_POP/d\[5\]/f
+l p/chan_STACK_POP/d\[6\]/f
+l p/chan_STACK_POP/d\[7\]/f
+s
+assert p/chan_STACK_POP/a 0
 assert p/var_stack1_is_full/v/t 0
 assert p/var_stack1_is_full/v/f 1
-assert p/var_stack2_is_full/v/t 0
-assert p/var_stack2_is_full/v/f 1
-assert p/var_stack3_is_full/v/t 0
-assert p/var_stack3_is_full/v/f 1
-assert p/var_stack4_is_full/v/t 0
-assert p/var_stack4_is_full/v/f 1
-assert p/var_stack5_is_full/v/t 0
-assert p/var_stack5_is_full/v/f 1
-assert p/var_stack6_is_full/v/t 0
-assert p/var_stack6_is_full/v/f 1
-assert p/var_stack7_is_full/v/t 0
-assert p/var_stack7_is_full/v/f 1
-assert p/var_stack8_is_full/v/t 0
-assert p/var_stack8_is_full/v/f 1
-assert p/var_stack9_is_full/v/t 0
-assert p/var_stack9_is_full/v/f 1
 assert p/var_reg0\[0\]/v/t 0
 assert p/var_reg0\[0\]/v/f 1
 assert p/var_reg0\[1\]/v/t 0
@@ -926,14 +888,14 @@ assert p/chan_PC/d\[11\]/t 0
 assert p/chan_PC/d\[11\]/f 0
 l p/chan_PC/a
 s
-l p/chan_IN/d\[0\]/t
-h p/chan_IN/d\[0\]/f
-l p/chan_IN/d\[1\]/t
-h p/chan_IN/d\[1\]/f
-l p/chan_IN/d\[2\]/t
-h p/chan_IN/d\[2\]/f
-l p/chan_IN/d\[3\]/t
-h p/chan_IN/d\[3\]/f
+h p/chan_IN/d\[0\]/t
+l p/chan_IN/d\[0\]/f
+h p/chan_IN/d\[1\]/t
+l p/chan_IN/d\[1\]/f
+h p/chan_IN/d\[2\]/t
+l p/chan_IN/d\[2\]/f
+h p/chan_IN/d\[3\]/t
+l p/chan_IN/d\[3\]/f
 l p/chan_IN/d\[4\]/t
 h p/chan_IN/d\[4\]/f
 l p/chan_IN/d\[5\]/t
@@ -978,7 +940,111 @@ l p/chan_IN/d\[11\]/t
 l p/chan_IN/d\[11\]/f
 s
 assert p/chan_IN/a 0
-assert go/a 1
-l go/r
-s
-assert go/a 0
+assert p/var_stack0_is_full/v/t 1
+assert p/var_stack0_is_full/v/f 0
+assert p/var_stack0_data\[0\]/v/t 1
+assert p/var_stack0_data\[0\]/v/f 0
+assert p/var_stack0_data\[1\]/v/t 1
+assert p/var_stack0_data\[1\]/v/f 0
+assert p/var_stack0_data\[2\]/v/t 0
+assert p/var_stack0_data\[2\]/v/f 1
+assert p/var_stack0_data\[3\]/v/t 0
+assert p/var_stack0_data\[3\]/v/f 1
+assert p/var_stack0_data\[4\]/v/t 0
+assert p/var_stack0_data\[4\]/v/f 1
+assert p/var_stack0_data\[5\]/v/t 0
+assert p/var_stack0_data\[5\]/v/f 1
+assert p/var_stack0_data\[6\]/v/t 0
+assert p/var_stack0_data\[6\]/v/f 1
+assert p/var_stack0_data\[7\]/v/t 0
+assert p/var_stack0_data\[7\]/v/f 1
+assert p/var_stack1_is_full/v/t 0
+assert p/var_stack1_is_full/v/f 1
+assert p/var_reg0\[0\]/v/t 0
+assert p/var_reg0\[0\]/v/f 1
+assert p/var_reg0\[1\]/v/t 0
+assert p/var_reg0\[1\]/v/f 1
+assert p/var_reg0\[2\]/v/t 0
+assert p/var_reg0\[2\]/v/f 1
+assert p/var_reg0\[3\]/v/t 0
+assert p/var_reg0\[3\]/v/f 1
+assert p/var_reg0\[4\]/v/t 0
+assert p/var_reg0\[4\]/v/f 1
+assert p/var_reg0\[5\]/v/t 0
+assert p/var_reg0\[5\]/v/f 1
+assert p/var_reg0\[6\]/v/t 0
+assert p/var_reg0\[6\]/v/f 1
+assert p/var_reg0\[7\]/v/t 0
+assert p/var_reg0\[7\]/v/f 1
+assert p/var_reg1\[0\]/v/t 0
+assert p/var_reg1\[0\]/v/f 1
+assert p/var_reg1\[1\]/v/t 0
+assert p/var_reg1\[1\]/v/f 1
+assert p/var_reg1\[2\]/v/t 0
+assert p/var_reg1\[2\]/v/f 1
+assert p/var_reg1\[3\]/v/t 0
+assert p/var_reg1\[3\]/v/f 1
+assert p/var_reg1\[4\]/v/t 0
+assert p/var_reg1\[4\]/v/f 1
+assert p/var_reg1\[5\]/v/t 0
+assert p/var_reg1\[5\]/v/f 1
+assert p/var_reg1\[6\]/v/t 0
+assert p/var_reg1\[6\]/v/f 1
+assert p/var_reg1\[7\]/v/t 0
+assert p/var_reg1\[7\]/v/f 1
+assert p/var_reg2\[0\]/v/t 0
+assert p/var_reg2\[0\]/v/f 1
+assert p/var_reg2\[1\]/v/t 0
+assert p/var_reg2\[1\]/v/f 1
+assert p/var_reg2\[2\]/v/t 0
+assert p/var_reg2\[2\]/v/f 1
+assert p/var_reg2\[3\]/v/t 0
+assert p/var_reg2\[3\]/v/f 1
+assert p/var_reg2\[4\]/v/t 0
+assert p/var_reg2\[4\]/v/f 1
+assert p/var_reg2\[5\]/v/t 0
+assert p/var_reg2\[5\]/v/f 1
+assert p/var_reg2\[6\]/v/t 0
+assert p/var_reg2\[6\]/v/f 1
+assert p/var_reg2\[7\]/v/t 0
+assert p/var_reg2\[7\]/v/f 1
+assert p/var_reg3\[0\]/v/t 0
+assert p/var_reg3\[0\]/v/f 1
+assert p/var_reg3\[1\]/v/t 0
+assert p/var_reg3\[1\]/v/f 1
+assert p/var_reg3\[2\]/v/t 0
+assert p/var_reg3\[2\]/v/f 1
+assert p/var_reg3\[3\]/v/t 0
+assert p/var_reg3\[3\]/v/f 1
+assert p/var_reg3\[4\]/v/t 0
+assert p/var_reg3\[4\]/v/f 1
+assert p/var_reg3\[5\]/v/t 0
+assert p/var_reg3\[5\]/v/f 1
+assert p/var_reg3\[6\]/v/t 0
+assert p/var_reg3\[6\]/v/f 1
+assert p/var_reg3\[7\]/v/t 0
+assert p/var_reg3\[7\]/v/f 1
+assert p/var_pc_index\[0\]/v/t 1
+assert p/var_pc_index\[0\]/v/f 0
+assert p/var_pc_index\[1\]/v/t 1
+assert p/var_pc_index\[1\]/v/f 0
+assert p/var_pc_index\[2\]/v/t 0
+assert p/var_pc_index\[2\]/v/f 1
+assert p/var_pc_index\[3\]/v/t 0
+assert p/var_pc_index\[3\]/v/f 1
+assert p/var_pc_index\[4\]/v/t 0
+assert p/var_pc_index\[4\]/v/f 1
+assert p/var_pc_index\[5\]/v/t 0
+assert p/var_pc_index\[5\]/v/f 1
+assert p/var_pc_index\[6\]/v/t 0
+assert p/var_pc_index\[6\]/v/f 1
+assert p/var_pc_index\[7\]/v/t 0
+assert p/var_pc_index\[7\]/v/f 1
+assert p/var_pc_index\[8\]/v/t 0
+assert p/var_pc_index\[8\]/v/f 1
+assert p/var_pc_index\[9\]/v/t 0
+assert p/var_pc_index\[9\]/v/f 1
+assert p/var_pc_index\[10\]/v/t 0
+assert p/var_pc_index\[10\]/v/f 1
+assert p/var_pc_index\[11\]/v/t 0
+assert p/var_pc_index\[11\]/v/f 1
