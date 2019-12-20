@@ -39,14 +39,14 @@
 ```
 
 ### The instruction set supports the following operations:
-HALT: terminate the program.
-PUSHC: push a constant onto the stack.
-POP: discard the top element of the stack.
-POPOUT: pop the top element off of the stack and send it over the OUT channel.
-PUSHREG: push the value of a register onto the stack, leaving the register intact.
-POPREG: pop the top value off of the stack and store it in the specified register.
-ADD: replace the two 2 elements at the top of the stack with one element containing their sum.
-SUB: subtract the top-most element of the stack from the element below it, and replace the top two elements of the stack with one element containing the result.
-JMP: relative jump, offsetting the program counter by a given amount.
-BRZ: conditional branch, if the top element of the stack is a “0” then offset the program counter by the given amount, otherwise fall through to the next instruction. Leaves the stack intact.
-BRLZ: conditional branch, if the top element of the stack is strictly less than zero then offset the program counter by the given amount, otherwise fall through to the next instruction. Leaves the stack intact.
+* HALT: terminate the program.
+* PUSHC: push a constant onto the stack.
+* POP: discard the top element of the stack.
+* POPOUT: pop the top element off of the stack and send it over the OUT channel.
+* PUSHREG: push the value of a register onto the stack, leaving the register intact.
+* POPREG: pop the top value off of the stack and store it in the specified register.
+* ADD: replace the two 2 elements at the top of the stack with one element containing their sum.
+* SUB: subtract the top-most element of the stack from the element below it, and replace the top two elements of the stack with one element containing the result.
+* JMP: relative jump, offsetting the program counter by a given amount.
+* BRZ: conditional branch, if the top element of the stack is a “0” then offset the program counter by the given amount, otherwise fall through to the next instruction. Leaves the stack intact.
+* BRLZ: conditional branch, if the top element of the stack is strictly less than zero then offset the program counter by the given amount, otherwise fall through to the next instruction. Leaves the stack intact.
